@@ -1,0 +1,9 @@
+@mixin appPlaylistView
+{
+
+  .App--playlistView &
+  {
+    @content;
+  }
+
+}

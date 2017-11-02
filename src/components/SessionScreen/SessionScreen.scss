@@ -1,0 +1,73 @@
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.LandingScreen
+{
+}
+
+.LandingScreen__intro
+{
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  height:           33vh;
+  background-color: #F0F0F0;
+}
+
+.LandingScreen__intro__title
+{
+  font-size:   32px;
+  line-height: 36px;
+  font-weight: 500;
+}
+
+.LandingScreen__blurb
+{
+  @include sideMargin;
+  font-size:  14px;
+  margin-top: 20px;
+
+  p
+  {
+    margin-top: 10px;
+
+    &:first-of-type
+    {
+      margin-top: 0;
+    }
+
+  }
+
+}
+
+.LandingScreen__options
+{
+  margin-bottom: 20px;
+  position:      fixed;
+  left:          20px;
+  right:         20px;
+  bottom:        0;
+}
+
+.LandingScreen__options__divider
+{
+  margin:     20px 0;
+  font-style: italic;
+  text-align: center;
+}
+
+.LandingScreen__option
+{
+
+  &.LandingScreen__option--input
+  {
+    @include plainInput;
+  }
+
+  &.LandingScreen__option--action
+  {
+    @include mainButton;
+  }
+
+}

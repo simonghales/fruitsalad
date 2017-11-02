@@ -1,0 +1,31 @@
+@import "styles/settings/colors";
+@import "styles/tools/text";
+
+@mixin buttonReset
+{
+  border:     0;
+  background: none;
+  font:       inherit;
+  color:      inherit;
+  padding:    0;
+
+  &:focus
+  {
+    outline: none;
+  }
+
+}
+
+@mixin mainButton
+{
+  @include buttonReset;
+  background-color: #FFFFFF;
+  box-shadow:       0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.1);
+  color:            #505050;
+  border-radius:    3px;
+  font-size:        18px;
+  font-weight:      700;
+  padding:          20px;
+  text-align:       center;
+  text-transform:   uppercase;
+}
