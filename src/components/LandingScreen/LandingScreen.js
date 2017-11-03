@@ -3,6 +3,7 @@ import './LandingScreen.css';
 import {
   withRouter,
 } from 'react-router-dom';
+import PlainInput from '../PlainInput/PlainInput';
 
 class LandingScreen extends Component {
 
@@ -35,8 +36,10 @@ class LandingScreen extends Component {
           </p>
         </div>
         <div className='LandingScreen__options'>
-          <input type='text' className='LandingScreen__option LandingScreen__option--input'
-                 placeholder='Enter session code'/>
+          <PlainInput align='center'>
+            <input type='text' className='LandingScreen__option LandingScreen__option--input'
+                   placeholder='Enter session code'/>
+          </PlainInput>
           <div className='LandingScreen__options__divider'>or</div>
           <div className='LandingScreen__option LandingScreen__option--action' onClick={this.hostSession}>Host Session
           </div>

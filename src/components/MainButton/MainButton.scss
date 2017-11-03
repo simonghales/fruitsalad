@@ -1,0 +1,25 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.MainButton
+{
+
+  > button
+  {
+    @include mainButton;
+  }
+
+  &.MainButton--fullWidth
+  {
+
+    > button
+    {
+      width:   100%;
+      display: block;
+    }
+
+  }
+
+}

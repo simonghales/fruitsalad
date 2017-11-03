@@ -1,0 +1,51 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.UserHeader
+{
+  position:         fixed;
+  top:              0;
+  left:             0;
+  right:            0;
+  height:           $header-height;
+  display:          flex;
+  background-color: #FFFFFF;
+  box-shadow:       0 1px 8px rgba(0, 0, 0, 0.1);
+}
+
+.UserHeader__thumbWrapper
+{
+
+}
+
+.UserHeader__thumb
+{
+  width:         $header-height - 10px;
+  height:        $header-height - 10px;
+  margin:        5px;
+  border:        2px solid #F0F0F0;
+  border-radius: 50%;
+}
+
+.UserHeader__info
+{
+  flex:            1;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+}
+
+.UserHeader__name
+{
+  font-weight: 500;
+}
+
+.UserHeader__roomCode
+{
+  font-size:      13px;
+  line-height:    15px;
+  font-style:     italic;
+  text-transform: uppercase;
+}

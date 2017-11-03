@@ -1,0 +1,33 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.PlayerCard
+{
+  width:      50%;
+  margin-bottom: 40px;
+
+  //&:nth-child(1),
+  //&:nth-child(2)
+  //{
+  //  margin-top: 0;
+  //}
+
+  &:nth-child(even)
+  {
+    padding-left: 10px;
+  }
+
+  &:nth-child(odd)
+  {
+    padding-right: 10px;
+  }
+
+}
+
+.PlayerCard__image
+{
+  height:           160px;
+  background-color: #E0E0E0;
+}

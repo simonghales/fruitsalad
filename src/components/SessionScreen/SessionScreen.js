@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import './SessionScreen.css';
+import UserHeader from '../UserHeader/UserHeader';
+import SessionJoin from '../SessionJoin/SessionJoin';
+import SessionGroup from '../SessionGroup/SessionGroup';
 
 class SessionScreen extends Component {
 
@@ -10,12 +13,9 @@ class SessionScreen extends Component {
   render() {
     return (
       <div className='SessionScreen'>
-        <header>Top</header>
-        <div>
-          <div>enter your name</div>
-          <div>draw yourself</div>
-          <div>done</div>
-        </div>
+        <UserHeader/>
+        {/*<SessionJoin/>*/}
+        <SessionGroup/>
       </div>
     );
   }

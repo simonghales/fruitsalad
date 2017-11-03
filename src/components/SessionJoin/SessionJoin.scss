@@ -3,11 +3,7 @@
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
-.SessionScreen
-{
-}
-
-.SessionScreen__body
+.SessionJoin
 {
   @include sideMargin;
   @include topMargin($header-height);
@@ -16,7 +12,7 @@
   flex-direction: column;
 }
 
-.SessionScreen__drawing
+.SessionJoin__drawing
 {
   flex:            1;
   margin:          20px 0;
@@ -26,7 +22,7 @@
   justify-content: center;
 }
 
-.SessionScreen__bottomControls
+.SessionJoin__bottomControls
 {
   margin-bottom: 20px;
 }

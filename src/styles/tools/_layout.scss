@@ -3,3 +3,8 @@
   padding-left:  20px;
   padding-right: 20px;
 }
+
+@mixin topMargin($extraPadding: 0)
+{
+  padding-top: (20px + $extraPadding);
+}

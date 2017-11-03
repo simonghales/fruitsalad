@@ -2,15 +2,13 @@
 
 @mixin plainInput
 {
-  color:          #505050;
-  font-size:      18px;
-  font-weight:    700;
-  padding:        20px 20px 17px 20px;
-  text-align:     center;
-  text-transform: uppercase;
-  border-bottom:  3px solid #D0D0D0;
-  display:        block;
-  width:          100%;
+  color:         #505050;
+  font-size:     18px;
+  font-weight:   700;
+  padding:       20px 20px 17px 20px;
+  border-bottom: 3px solid #D0D0D0;
+  display:       block;
+  width:         100%;
 
   &:focus
   {

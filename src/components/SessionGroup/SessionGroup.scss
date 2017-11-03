@@ -1,0 +1,39 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.SessionGroup
+{
+  @include sideMargin;
+  @include topMargin($header-height);
+  min-height: 100vh;
+}
+
+.SessionGroup__playersList
+{
+  display:   flex;
+  flex-wrap: wrap;
+}
+
+.SessionGroup__controls
+{
+  margin-bottom: 20px;
+  position:      fixed;
+  left:          20px;
+  right:         20px;
+  bottom:        0;
+  display:       flex;
+}
+
+.SessionGroup__controls__playersCount
+{
+  flex:          1;
+  padding-right: 5px;
+}
+
+.SessionGroup__controls__startWrapper
+{
+  flex:         1;
+  padding-left: 5px;
+}
