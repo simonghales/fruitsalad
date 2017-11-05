@@ -1,4 +1,24 @@
 @mixin textShadow
 {
-  text-shadow: 0 5px 25px rgba(0,0,0,0.5);
+  text-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+}
+
+@mixin placeholder
+{
+  &::-webkit-input-placeholder
+  {
+    @content
+  }
+  &:-moz-placeholder
+  {
+    @content
+  }
+  &::-moz-placeholder
+  {
+    @content
+  }
+  &:-ms-input-placeholder
+  {
+    @content
+  }
 }

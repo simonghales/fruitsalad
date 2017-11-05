@@ -1,0 +1,36 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.SessionLoading
+{
+  height:          100vh;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.SessionLoading__message
+{
+  @include sideMargin;
+  width: 100%;
+}
+
+.SessionLoading__message__title
+{
+  color:      #A0A0A0;
+  font-size:  14px;
+  font-style: italic;
+  text-align: center;
+}
+
+.SessionLoading__message__code
+{
+  @include plainInput;
+  margin-top:       20px;
+  text-align:       center;
+  border:           0;
+  padding-bottom:   20px;
+  background-color: #F0F0F0;
+}

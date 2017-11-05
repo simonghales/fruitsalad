@@ -28,3 +28,11 @@
   padding:          20px;
   text-align:       center;
 }
+
+@mixin clearButton
+{
+  @include buttonReset;
+  width:  22px;
+  height: 22px;
+  color:  #D0D0D0;
+}

@@ -9,7 +9,7 @@ const PlayerCard = () => {
     ])}>
       <div className='PlayerCard__image'>
       </div>
-      <div>Player Name</div>
+      <div className='PlayerCard__name'>Player Name</div>
     </div>
   );
 }

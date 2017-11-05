@@ -2,6 +2,16 @@
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
+@mixin joinable
+{
+
+  .LandingScreen__options--joinable &
+  {
+    @content;
+  }
+
+}
+
 .LandingScreen
 {
 }
@@ -41,6 +51,56 @@
 
 }
 
+.LandingScreen__joinInputWrapper
+{
+  position: relative;
+}
+
+.LandingScreen__joinInput__clearButton
+{
+  @include clearButton;
+  position:   absolute;
+  top:        18px;
+  right:      0;
+
+  transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
+  transform:  translateY(100%);
+  opacity:    0;
+  visibility: hidden;
+
+  @include joinable
+  {
+    transform:        translateY(0);
+    opacity:          1;
+    visibility:       visible;
+    transition-delay: 0s;
+  }
+
+}
+
+.LandingScreen__joinButtonWrapper
+{
+  position:   absolute;
+  top:        100%;
+  left:       0;
+  right:      0;
+  margin-top: 20px;
+
+  transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
+  transform:  translateY(100%);
+  opacity:    0;
+  visibility: hidden;
+
+  @include joinable
+  {
+    transform:        translateY(0);
+    opacity:          1;
+    visibility:       visible;
+    transition-delay: 0s;
+  }
+
+}
+
 .LandingScreen__options
 {
   margin-bottom: 20px;
@@ -66,7 +126,21 @@
 
   &.LandingScreen__option--action
   {
-    @include mainButton;
+  }
+
+}
+
+.LandingScreen__options__divider,
+.LandingScreen__option--action
+{
+  transition: opacity 300ms ease, transform 300ms ease;
+
+  @include joinable
+  {
+    transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
+    transform:  translateY(100%);
+    opacity:    0;
+    visibility: hidden;
   }
 
 }

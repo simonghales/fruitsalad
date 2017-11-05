@@ -22,4 +22,29 @@
 
   }
 
+  &.MainButton--setHeight
+  {
+
+    > button
+    {
+      height:         60px;
+      padding-top:    0;
+      padding-bottom: 0;
+    }
+
+  }
+
+  .MainButton__title
+  {
+    position: relative;
+    top:      4px;
+  }
+
+  .MainButton__subtitle
+  {
+    font-size: 12px;
+    position:  relative;
+    top:       2px;
+  }
+
 }

@@ -20,14 +20,12 @@ class SessionGroup extends Component {
           ))}
         </div>
         <div className='SessionGroup__controls'>
-          <div className='SessionGroup__controls__playersCount'>
-            <MainButton fullWidth={true}>
-              <button>5 players</button>
-            </MainButton>
-          </div>
           <div className='SessionGroup__controls__startWrapper'>
-            <MainButton fullWidth={true}>
-              <button>Start</button>
+            <MainButton fullWidth={true} setHeight={true}>
+              <button className='SessionGroup__controls__start'>
+                <div className='MainButton__title'>Start the Game</div>
+                <div className='MainButton__subtitle'>5 players</div>
+              </button>
             </MainButton>
           </div>
         </div>
