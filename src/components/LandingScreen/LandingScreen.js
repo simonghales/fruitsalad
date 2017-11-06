@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './LandingScreen.css';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 import FaClose from 'react-icons/lib/fa/close';
@@ -30,6 +31,7 @@ class LandingScreen extends Component {
       sessionCode: '',
     };
     this.clearSessionCode = this.clearSessionCode.bind(this);
+    this.createSession = this.createSession.bind(this);
     this.handleSessionCodeInputChange = this.handleSessionCodeInputChange.bind(this);
     this.hostSession = this.hostSession.bind(this);
     this.closeHostSessionModal = this.closeHostSessionModal.bind(this);
@@ -48,6 +50,7 @@ class LandingScreen extends Component {
   }
 
   closeHostSessionModal() {
+    console.log('close...');
     this.setState({
       hostSessionModalOpen: false,
     });
@@ -57,6 +60,11 @@ class LandingScreen extends Component {
     this.setState({
       hostSessionModalOpen: true,
     });
+  }
+
+  createSession() {
+    const {history} = this.props;
+    history.push('/session');
   }
 
   joinSession() {
@@ -121,11 +129,18 @@ class LandingScreen extends Component {
             </MainButton>
           </div>
         </div>
-        {
-          hostSessionModalOpen && (
-            <HostSession close={this.closeHostSessionModal}/>
-          )
-        }
+        <TransitionGroup>
+          {
+            hostSessionModalOpen ? (
+              <CSSTransition
+                timeout={350}
+                classNames='fade'
+                key='hostSession'>
+                <HostSession close={this.closeHostSessionModal} createSession={this.createSession}/>
+              </CSSTransition>
+            ) : null
+          }
+        </TransitionGroup>
       </div>
     );
   }

@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import './HostSession.css';
+import {connect} from 'react-redux';
 import Modal from '../Modal/Modal';
 import MainButton from '../MainButton/MainButton';
 
 class HostSession extends Component {
 
   props: {
+    sessionCode: string,
     close(): void,
+    createSession(): void,
   };
 
   constructor(props) {
@@ -20,6 +23,7 @@ class HostSession extends Component {
   }
 
   render() {
+    const {createSession, sessionCode} = this.props;
     return (
       <Modal>
         <div className='HostSession'>
@@ -27,11 +31,11 @@ class HostSession extends Component {
           <div className='HostSession__content'>
             <div className='HostSession__sessionCode'>
               <div className='HostSession__sessionCode__label'>Your Session Code will be</div>
-              <div className='HostSession__sessionCode__code'>SESSION CODE</div>
+              <div className='HostSession__sessionCode__code'>{sessionCode}</div>
             </div>
             <div className='HostSession__create'>
               <MainButton fullWidth={true}>
-                <button className='HostSession__create__button'>Host Session</button>
+                <button className='HostSession__create__button' onClick={createSession}>Host Session</button>
               </MainButton>
             </div>
             <div className='HostSession__close' onClick={this.closeModal}>
@@ -44,4 +48,14 @@ class HostSession extends Component {
   }
 }
 
-export default HostSession;
+const mapStateToProps = (state: SessionState) => {
+  return {
+    sessionCode: state.sessionCode,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HostSession);

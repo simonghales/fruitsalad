@@ -5,6 +5,46 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
+@mixin fadeEnter
+{
+
+  .fade-enter &
+  {
+    @content;
+  }
+
+}
+
+@mixin fadeEnterActive
+{
+
+  .fade-enter.fade-enter-active &
+  {
+    @content;
+  }
+
+}
+
+@mixin fadeExit
+{
+
+  .fade-exit &
+  {
+    @content;
+  }
+
+}
+
+@mixin fadeExitActive
+{
+
+  .fade-exit.fade-exit-active &
+  {
+    @content;
+  }
+
+}
+
 .HostSession
 {
   position:        fixed;
@@ -13,7 +53,7 @@
   right:           0;
   bottom:          0;
   display:         flex;
-  align-items:     center;
+  align-items:     flex-end;
   justify-content: center;
   padding:         10px;
 }
@@ -26,6 +66,29 @@
   right:            0;
   bottom:           0;
   background-color: rgba(0, 0, 0, 0.25);
+
+  @include fadeEnter
+  {
+    opacity: 0.01;
+  }
+
+  @include fadeEnterActive
+  {
+    opacity:    1;
+    transition: opacity 350ms ease;
+  }
+
+  @include fadeExit
+  {
+    opacity: 1;
+  }
+
+  @include fadeExitActive
+  {
+    opacity:    0.01;
+    transition: opacity 350ms ease;
+  }
+
 }
 
 .HostSession__content
@@ -37,6 +100,33 @@
   display:          block;
   width:            100%;
   padding:          20px;
+
+  @include fadeEnter
+  {
+    opacity:   0.01;
+    transform: translateY(150px);
+  }
+
+  @include fadeEnterActive
+  {
+    opacity:    1;
+    transform:  translateY(0);
+    transition: opacity 250ms ease-in, transform 250ms cubic-bezier(0.47, 0, 0.75, 0.72)
+  }
+
+  @include fadeExit
+  {
+    transform: translateY(0);
+    opacity:   1;
+  }
+
+  @include fadeExitActive
+  {
+    transform:  translateY(150px);
+    opacity:    0.01;
+    transition: opacity 250ms ease-in, transform 250ms cubic-bezier(0.47, 0, 0.75, 0.72)
+  }
+
 }
 
 .HostSession__sessionCode
@@ -48,7 +138,7 @@
 {
   @include smallSizeFont;
   color:         $color-medium;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
   text-align:    center;
 }
 
