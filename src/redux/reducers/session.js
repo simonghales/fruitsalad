@@ -1,11 +1,18 @@
+import {Player} from '../../models/player';
+import {CURRENT_PLAYER, PLAYERS} from '../../data/dummy';
+
 export interface SessionState {
   sessionCode: string,
   userName: string,
+  user: Player,
+  players: Player[],
 }
 
 const initialSessionState: SessionState = {
   sessionCode: 'SILLYCATS',
   userName: 'Simon',
+  user: CURRENT_PLAYER,
+  players: PLAYERS,
 };
 
 const SET_SESSION_CODE = 'SET_SESSION_CODE';

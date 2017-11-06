@@ -3,10 +3,8 @@
 
 @mixin plainInput
 {
+  @include mediumSizeFont;
   color:          #505050;
-  font-size:      18px;
-  line-height:    22px;
-  font-weight:    700;
   padding:        20px 20px 17px 20px;
   border-bottom:  3px solid #D0D0D0;
   display:        block;

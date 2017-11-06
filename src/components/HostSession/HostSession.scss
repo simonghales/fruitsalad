@@ -1,0 +1,78 @@
+@import "../../styles/settings/colors";
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.HostSession
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         10px;
+}
+
+.HostSession__background
+{
+  position:         absolute;
+  top:              0;
+  left:             0;
+  right:            0;
+  bottom:           0;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.HostSession__content
+{
+  position:         relative;
+  background-color: $color-background;
+  border-radius:    4px;
+  box-shadow:       0 1px 1px rgba(0, 0, 0, 0.1);
+  display:          block;
+  width:            100%;
+  padding:          20px;
+}
+
+.HostSession__sessionCode
+{
+  margin-top: 20px;
+}
+
+.HostSession__sessionCode__label
+{
+  @include smallSizeFont;
+  color:         $color-medium;
+  margin-bottom: 10px;
+  text-align:    center;
+}
+
+.HostSession__sessionCode__code
+{
+  @include mediumSizeFont;
+  text-align: center;
+}
+
+.HostSession__create
+{
+  margin-top: 20px;
+}
+
+.HostSession__create__button
+{
+
+}
+
+.HostSession__close
+{
+  @include smallSizeFont;
+  color:           $color-faint;
+  margin-top:      20px;
+  text-align:      center;
+  text-decoration: underline;
+}

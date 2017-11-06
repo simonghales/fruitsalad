@@ -9,6 +9,7 @@ import {
 import PlainInput from '../PlainInput/PlainInput';
 import MainButton from '../MainButton/MainButton';
 import {SessionState, setSessionCode} from '../../redux/reducers/session';
+import HostSession from '../HostSession/HostSession';
 
 class LandingScreen extends Component {
 
@@ -18,17 +19,21 @@ class LandingScreen extends Component {
   };
 
   state: {
+    hostSessionModalOpen: boolean,
     sessionCode: string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
+      hostSessionModalOpen: false,
       sessionCode: '',
     };
     this.clearSessionCode = this.clearSessionCode.bind(this);
     this.handleSessionCodeInputChange = this.handleSessionCodeInputChange.bind(this);
     this.hostSession = this.hostSession.bind(this);
+    this.closeHostSessionModal = this.closeHostSessionModal.bind(this);
+    this.openHostSessionModal = this.openHostSessionModal.bind(this);
     this.joinSession = this.joinSession.bind(this);
   }
 
@@ -39,8 +44,19 @@ class LandingScreen extends Component {
   }
 
   hostSession() {
-    const {history} = this.props;
-    history.push('/session');
+    this.openHostSessionModal();
+  }
+
+  closeHostSessionModal() {
+    this.setState({
+      hostSessionModalOpen: false,
+    });
+  }
+
+  openHostSessionModal() {
+    this.setState({
+      hostSessionModalOpen: true,
+    });
   }
 
   joinSession() {
@@ -63,7 +79,7 @@ class LandingScreen extends Component {
   }
 
   render() {
-    const {sessionCode} = this.state;
+    const {hostSessionModalOpen, sessionCode} = this.state;
     return (
       <div className='LandingScreen'>
         <div className='LandingScreen__intro'>
@@ -105,6 +121,11 @@ class LandingScreen extends Component {
             </MainButton>
           </div>
         </div>
+        {
+          hostSessionModalOpen && (
+            <HostSession close={this.closeHostSessionModal}/>
+          )
+        }
       </div>
     );
   }

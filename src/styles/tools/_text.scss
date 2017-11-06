@@ -22,3 +22,16 @@
     @content
   }
 }
+
+@mixin smallSizeFont
+{
+  font-size:   13px;
+  line-height: 15px;
+}
+
+@mixin mediumSizeFont
+{
+  font-size:   18px;
+  line-height: 22px;
+  font-weight: 700;
+}
