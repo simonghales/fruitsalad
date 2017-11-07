@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './App.css';
 import {
   Route,
-  withRouter,
 } from 'react-router-dom';
 import LandingScreen from '../LandingScreen/LandingScreen';
 import SessionScreen from '../SessionScreen/SessionScreen';
@@ -17,7 +16,7 @@ class App extends Component {
     return (
       <div className='App'>
         <Route key='/' exact path='/' component={LandingScreen}/>
-        <Route key='/session' exact path='/session' component={SessionScreen}/>
+        <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
       </div>
     );
   }

@@ -72,7 +72,7 @@ class LandingScreen extends Component {
     const {sessionCode} = this.state;
     if (!sessionCode) return;
     setSessionCode(sessionCode);
-    history.push('/session');
+    history.push(`/session/${sessionCode}`);
   }
 
   clearSessionCode() {

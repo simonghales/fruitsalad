@@ -136,8 +136,7 @@
 
 .HostSession__sessionCode__label
 {
-  @include smallSizeFont;
-  color:         $color-medium;
+  @include smallFaintText;
   margin-bottom: 13px;
   text-align:    center;
 }

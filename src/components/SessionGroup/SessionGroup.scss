@@ -5,13 +5,18 @@
 
 .SessionGroup
 {
-  @include sideMargin;
-  @include topMargin($header-height);
+  margin-top: $header-height;
   min-height: 100vh;
+}
+
+.SessionGroup__gameSelector
+{
+  margin: 20px 0;
 }
 
 .SessionGroup__playersList
 {
+  @include sideMargin;
   display:       flex;
   flex-wrap:     wrap;
   margin-bottom: 100px;

@@ -28,8 +28,10 @@
 
 .PlayerCard__image
 {
-  height:           160px;
-  background-color: #E0E0E0;
+  height:           calc(50vw - 30px);
+  background-color: #FFFFFF;
+  border:           2px solid #F0F0F0;
+  border-radius:    50%;
 }
 
 .PlayerCard__name

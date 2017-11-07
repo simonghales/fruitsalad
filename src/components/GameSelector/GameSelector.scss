@@ -1,0 +1,49 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.GameSelector
+{
+  background-color: #FFFFFF;
+  box-shadow:       0 1px 8px rgba(0, 0, 0, 0.1);
+  padding:          20px;
+}
+
+.GameSelector__content
+{
+
+}
+
+.GameSelector__game
+{
+  display: flex;
+}
+
+.GameSelector__game__thumb
+{
+  width:            60px;
+  height:           60px;
+  background-color: #F0F0F0;
+  margin-right:     10px;
+}
+
+.GameSelector__game__info
+{
+  flex:            1;
+  justify-content: center;
+  display:         flex;
+  flex-direction:  column;
+}
+
+.GameSelector__game__name
+{
+  font-weight: 500;
+}
+
+.GameSelector__game__recommendedPlayers
+{
+  @include smallFaintText;
+  margin-top: 3px;
+}

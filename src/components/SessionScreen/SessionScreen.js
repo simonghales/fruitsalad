@@ -1,63 +1,39 @@
 import React, {Component} from 'react';
 import './SessionScreen.css';
+import {
+  Route,
+} from 'react-router-dom';
 import {connect} from 'react-redux';
 import UserHeader from '../UserHeader/UserHeader';
 import SessionJoin from '../SessionJoin/SessionJoin';
 import SessionGroup from '../SessionGroup/SessionGroup';
 import SessionLoading from '../SessionLoading/SessionLoading';
-import {SessionState, setUserName} from '../../redux/reducers/session';
+import {SessionState, setSessionCode, setUserName} from '../../redux/reducers/session';
+import SessionHub from '../SessionHub/SessionHub';
 
 class SessionScreen extends Component {
 
   props: {
-    setUserName(userName: string): void,
+    match: any,
+    setSessionCode(sessionCode: string): void,
   };
 
-  state: {
-    loadedSession: boolean,
-    userJoined: boolean,
-  };
+  state: {};
 
   constructor(props) {
     super(props);
-    this.state = {
-      loadedSession: false,
-      userJoined: false,
-    };
-    this.setJoined = this.setJoined.bind(this);
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        loadedSession: true,
-      });
-    }, 2000);
-  }
-
-  setJoined(userName: string) {
-    const {setUserName} = this.props;
-    setUserName(userName);
-    this.setState({
-      userJoined: true,
-    });
+    this.state = {};
+    const {match, setSessionCode} = props;
+    setSessionCode(match.params.id);
   }
 
   render() {
-    const {loadedSession, userJoined} = this.state;
     return (
       <div className='SessionScreen'>
         <UserHeader/>
-        {
-          !loadedSession ? (
-              <SessionLoading/>
-            ) :
-            userJoined ? (
-              <SessionGroup/>
-            ) : (
-              <SessionJoin setJoined={this.setJoined}/>
-            )
-        }
+        <Route key='/session/:id/join' path='/session/:id/join' component={SessionJoin}/>
+        <Route key='/session/:id/loading' path='/session/:id/loading' component={SessionLoading}/>
+        <Route key='/session/:id' path='/session/:id' exact={true} component={SessionHub}/>
       </div>
     );
   }
@@ -69,7 +45,7 @@ const mapStateToProps = (state: SessionState) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserName: (userName: string) => dispatch(setUserName(userName)),
+    setSessionCode: (sessionCode: string) => dispatch(setSessionCode(sessionCode)),
   };
 };
 
