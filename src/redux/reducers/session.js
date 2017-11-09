@@ -1,7 +1,9 @@
 import {Player} from '../../models/player';
 import {CURRENT_PLAYER, PLAYERS} from '../../data/dummy';
+import {DRAW_DUO} from '../../games/DrawDuo/config';
 
 export interface SessionState {
+  currentGame: string,
   gameInPlay: boolean,
   joined: boolean,
   sessionCode: string,
@@ -11,8 +13,9 @@ export interface SessionState {
 }
 
 const initialSessionState: SessionState = {
+  currentGame: DRAW_DUO,
   gameInPlay: false,
-  joined: false,
+  joined: true,
   sessionCode: 'SILLYCATS',
   userName: 'Simon',
   user: CURRENT_PLAYER,

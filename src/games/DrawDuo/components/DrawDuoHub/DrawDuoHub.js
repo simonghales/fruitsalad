@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import './DrawDuo.css';
+import './DrawDuoHub.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState} from '../../../../redux/reducers/session';
 
-class DrawDuo extends Component {
+class DrawDuoHub extends Component {
 
   props: {};
 
@@ -28,4 +28,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawDuo);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoHub);

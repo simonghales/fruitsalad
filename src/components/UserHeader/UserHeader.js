@@ -1,14 +1,18 @@
 import React, {Component} from 'react';
 import './UserHeader.css';
+import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {
   withRouter,
 } from 'react-router-dom';
 import {SessionState} from '../../redux/reducers/session';
+import {GameConfig, getGameConfig} from '../../games/config';
 
 class UserHeader extends Component {
 
   props: {
+    gameConfig?: GameConfig,
+    gameInPlay: boolean,
     history: any,
     sessionCode: string,
     userName: string,
@@ -25,9 +29,14 @@ class UserHeader extends Component {
   }
 
   render() {
-    const {sessionCode, userName} = this.props;
+    const {gameConfig, gameInPlay, sessionCode, userName} = this.props;
     return (
-      <header className='UserHeader'>
+      <header className={classNames([
+        'UserHeader',
+        {
+          'UserHeader--hidden': (gameInPlay && gameConfig && !gameConfig.userHeaderDisplayed),
+        }
+      ])}>
         <div className='UserHeader__thumbWrapper'>
           <div className='UserHeader__thumb'></div>
         </div>
@@ -43,6 +52,8 @@ class UserHeader extends Component {
 
 const mapStateToProps = (state: SessionState) => {
   return {
+    gameConfig: getGameConfig(state.currentGame),
+    gameInPlay: state.gameInPlay,
     sessionCode: state.sessionCode,
     userName: state.userName,
   };

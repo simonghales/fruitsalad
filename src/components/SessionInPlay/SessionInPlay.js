@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './SessionInPlay.css';
 import {connect} from 'react-redux';
 import {SessionState} from '../../redux/reducers/session';
-import DrawDuo from '../../games/DrawDuo/DrawDuo';
+import DrawDuoHub from '../../games/DrawDuo/components/DrawDuoHub/DrawDuoHub';
 
 class SessionInPlay extends Component {
 
@@ -18,7 +18,7 @@ class SessionInPlay extends Component {
   render() {
     return (
       <div className='SessionInPlay'>
-        <DrawDuo/>
+        <DrawDuoHub/>
       </div>
     )
   }

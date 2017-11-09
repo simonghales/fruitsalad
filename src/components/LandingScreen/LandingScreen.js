@@ -5,12 +5,16 @@ import {connect} from 'react-redux';
 import classNames from 'classnames';
 import FaClose from 'react-icons/lib/fa/close';
 import {
+  Link,
   withRouter,
 } from 'react-router-dom';
 import PlainInput from '../PlainInput/PlainInput';
 import MainButton from '../MainButton/MainButton';
 import {SessionState, setSessionCode} from '../../redux/reducers/session';
 import HostSession from '../HostSession/HostSession';
+import MainLayout from '../MainLayout/MainLayout';
+import MainLayoutContent from '../MainLayoutContent/MainLayoutContent';
+import MainLayoutBottom from '../MainLayoutBottom/MainLayoutBottom';
 
 class LandingScreen extends Component {
 
@@ -89,46 +93,34 @@ class LandingScreen extends Component {
   render() {
     const {hostSessionModalOpen, sessionCode} = this.state;
     return (
-      <div className='LandingScreen'>
-        <div className='LandingScreen__intro'>
-          <h2 className='LandingScreen__intro__title'>fruit salad</h2>
-        </div>
-        <div className='LandingScreen__blurb'>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aperiam aut cumque debitis ducimus.
-          </p>
-          <p>
-            Reiciendis tempora temporibus! Laboriosam omnis.
-          </p>
-        </div>
-        <div className={classNames([
-          'LandingScreen__options',
-          {
-            'LandingScreen__options--joinable': this.sessionCodeIsValid(),
-          }
-        ])}>
-          <div className='LandingScreen__joinInputWrapper'>
-            <PlainInput align='center'>
-              <input type='text' className='LandingScreen__option LandingScreen__option--input'
-                     value={sessionCode} onChange={this.handleSessionCodeInputChange}
-                     placeholder='Enter session code'/>
-            </PlainInput>
-            <button className='LandingScreen__joinInput__clearButton' onClick={this.clearSessionCode}>
-              <FaClose/>
-            </button>
-            <div className='LandingScreen__joinButtonWrapper'>
-              <MainButton fullWidth={true}>
-                <button className='LandingScreen__joinButton' onClick={this.joinSession}>Join Session</button>
-              </MainButton>
+      <div className={classNames([
+        'LandingScreen',
+        {
+          'LandingScreen--joinable': this.sessionCodeIsValid(),
+        }
+      ])}>
+        <MainLayout>
+          <MainLayoutContent>
+            <div className='LandingScreen__intro'>
+              <div className='LandingScreen__intro__icon'></div>
+              <h2 className='LandingScreen__intro__title'>fruit salad</h2>
+              <p className='LandingScreen__intro__slogan'>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              </p>
             </div>
-          </div>
-          <div className='LandingScreen__options__divider'>or</div>
-          <div className='LandingScreen__option LandingScreen__option--action' onClick={this.hostSession}>
-            <MainButton fullWidth={true}>
-              <button>Host Session</button>
-            </MainButton>
-          </div>
-        </div>
+          </MainLayoutContent>
+          <MainLayoutBottom>
+            <div className='LandingScreen__bottom'>
+              <div className='LandingScreen__bottom__side'>othe</div>
+              <div className='LandingScreen__bottom__input'>
+                <input type='text' placeholder='Enter session code'/>
+              </div>
+              <div className='LandingScreen__bottom__side'>
+                <Link to='/session/kittens'>join</Link>
+              </div>
+            </div>
+          </MainLayoutBottom>
+        </MainLayout>
         <TransitionGroup>
           {
             hostSessionModalOpen ? (

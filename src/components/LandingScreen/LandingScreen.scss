@@ -5,7 +5,7 @@
 @mixin joinable
 {
 
-  .LandingScreen__options--joinable &
+  .LandingScreen--joinable &
   {
     @content;
   }
@@ -18,129 +18,89 @@
 
 .LandingScreen__intro
 {
-  display:          flex;
-  align-items:      center;
-  justify-content:  center;
-  height:           33vh;
-  background-color: #F0F0F0;
+  display:         flex;
+  justify-content: center;
+  flex-direction:  column;
+  height:          100%;
+  padding:         20px;
+}
+
+.LandingScreen__intro__icon
+{
+  width:            100px;
+  height:           100px;
+  background-color: #FFFFFF;
+  border-radius:    50%;
+  margin:           -10px auto 10px auto;
+  box-shadow:       0 1px 1px rgba(0, 0, 0, 0.1), 0 4px 18px rgba(0, 0, 0, 0.1);
 }
 
 .LandingScreen__intro__title
 {
-  font-size:   32px;
-  line-height: 36px;
-  font-weight: 500;
+  font-size:     48px;
+  line-height:   52px;
+  font-weight:   500;
+  text-align:    center;
+  margin-bottom: 10px;
 }
 
-.LandingScreen__blurb
+.LandingScreen__intro__slogan
 {
-  @include sideMargin;
-  @include topMargin;
-  font-size: 14px;
+  @include smallFaintText;
+  text-align:  center;
+  margin:      0 20px;
+  line-height: 20px;
+}
 
-  p
+.LandingScreen__bottom
+{
+  height:  100%;
+  display: flex;
+}
+
+.LandingScreen__bottom__side
+{
+  width:           90px;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  text-transform:  uppercase;
+  font-weight:     500;
+  font-size:       14px;
+
+  &:first-of-type
   {
-    margin-top: 10px;
+    margin-right: 10px;
+  }
 
-    &:first-of-type
+  &:last-of-type
+  {
+    margin-left: 10px;
+  }
+
+}
+
+.LandingScreen__bottom__input
+{
+  flex:            1;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+
+  input
+  {
+    border-bottom: 1px solid #D0D0D0;
+    padding:       3px 0;
+    width:         100%;
+    color:         #000000;
+    font-weight:   700;
+    font-size:     14px;
+
+    @include placeholder
     {
-      margin-top: 0;
+      color: #000000;
     }
 
-  }
-
-}
-
-.LandingScreen__joinInputWrapper
-{
-  position: relative;
-}
-
-.LandingScreen__joinInput__clearButton
-{
-  @include clearButton;
-  position:   absolute;
-  top:        18px;
-  right:      0;
-
-  transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
-  transform:  translateY(100%);
-  opacity:    0;
-  visibility: hidden;
-
-  @include joinable
-  {
-    transform:        translateY(0);
-    opacity:          1;
-    visibility:       visible;
-    transition-delay: 0s;
-  }
-
-}
-
-.LandingScreen__joinButtonWrapper
-{
-  position:   absolute;
-  top:        100%;
-  left:       0;
-  right:      0;
-  margin-top: 20px;
-
-  transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
-  transform:  translateY(100%);
-  opacity:    0;
-  visibility: hidden;
-
-  @include joinable
-  {
-    transform:        translateY(0);
-    opacity:          1;
-    visibility:       visible;
-    transition-delay: 0s;
-  }
-
-}
-
-.LandingScreen__options
-{
-  margin-bottom: 20px;
-  position:      fixed;
-  left:          20px;
-  right:         20px;
-  bottom:        0;
-}
-
-.LandingScreen__options__divider
-{
-  margin:     20px 0;
-  font-style: italic;
-  text-align: center;
-}
-
-.LandingScreen__option
-{
-
-  &.LandingScreen__option--input
-  {
-  }
-
-  &.LandingScreen__option--action
-  {
-  }
-
-}
-
-.LandingScreen__options__divider,
-.LandingScreen__option--action
-{
-  transition: opacity 300ms ease, transform 300ms ease;
-
-  @include joinable
-  {
-    transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
-    transform:  translateY(100%);
-    opacity:    0;
-    visibility: hidden;
   }
 
 }
