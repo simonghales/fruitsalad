@@ -65,17 +65,59 @@
   align-items:     center;
   justify-content: center;
   text-transform:  uppercase;
-  font-weight:     500;
+  font-weight:     700;
   font-size:       14px;
+  position:        relative;
+  overflow:        hidden;
 
-  &:first-of-type
+  &.LandingScreen__bottom__side--left
   {
-    margin-right: 10px;
+
   }
 
-  &:last-of-type
+  &.LandingScreen__bottom__side--right
   {
-    margin-left: 10px;
+
+  }
+
+}
+
+.LandingScreen__bottom__side__text
+{
+  position:        absolute;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  transition:      transform 300ms cubic-bezier(0.46, 0.03, 0.52, 0.96), opacity 300ms ease;
+
+  &:first-child
+  {
+
+    .LandingScreen__bottom__side--active &,
+    .LandingScreen__bottom__side--inactive &
+    {
+      transform: translateY(-20px);
+      opacity:   0;
+    }
+
+  }
+
+  &:last-child
+  {
+    transform: translateY(20px);
+    opacity:   0;
+
+    .LandingScreen__bottom__side--active &,
+    .LandingScreen__bottom__side--inactive &
+    {
+      transform: translateY(0);
+      opacity:   1;
+    }
+
   }
 
 }
@@ -86,21 +128,53 @@
   display:         flex;
   align-items:     center;
   justify-content: center;
+  position:        relative;
+  height:          100%;
+  transition:      opacity 300ms ease, transform 300ms cubic-bezier(0.46, 0.03, 0.52, 0.96);
+  opacity:         0;
+  transform:       translateY(20px);
 
-  input
+  &.LandingScreen__bottom__input--active
   {
-    border-bottom: 1px solid #D0D0D0;
-    padding:       3px 0;
-    width:         100%;
-    color:         #000000;
-    font-weight:   700;
-    font-size:     14px;
+    opacity:   1;
+    transform: translateY(0);
+  }
 
-    @include placeholder
-    {
-      color: #000000;
-    }
+}
 
+.LandingScreen__bottom__input__label
+{
+  position:    absolute;
+  top:         50%;
+  margin-top:  -10px;
+  left:        0;
+  right:       0;
+  font-weight: 700;
+  font-size:   14px;
+  transition:  color 300ms ease, transform 300ms ease, font 300ms ease;
+
+  .LandingScreen__bottom__input--sessionCodeInput &
+  {
+    color:       #909090;
+    font-weight: 500;
+    transform:   translate(-10px, -20px) scale(0.9);
+  }
+
+}
+
+.LandingScreen__bottom__input__input
+{
+  border-bottom: 1px solid #D0D0D0;
+  padding:       3px 0;
+  width:         100%;
+  color:         #000000;
+  font-weight:   700;
+  font-size:     14px;
+  position:      relative;
+
+  @include placeholder
+  {
+    color: transparent;
   }
 
 }
