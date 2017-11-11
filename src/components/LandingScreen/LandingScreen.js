@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import classNames from 'classnames';
 import FaClose from 'react-icons/lib/fa/close';
 import {
-  Link,
   withRouter,
 } from 'react-router-dom';
 import PlainInput from '../PlainInput/PlainInput';
@@ -15,6 +14,9 @@ import HostSession from '../HostSession/HostSession';
 import MainLayout from '../MainLayout/MainLayout';
 import MainLayoutContent from '../MainLayoutContent/MainLayoutContent';
 import MainLayoutBottom from '../MainLayoutBottom/MainLayoutBottom';
+import BottomSide from '../BottomSide/BottomSide';
+import BottomFlex from '../BottomFlex/BottomFlex';
+import BottomMiddle from '../BottomMiddle/BottomMiddle';
 
 class LandingScreen extends Component {
 
@@ -79,8 +81,11 @@ class LandingScreen extends Component {
   }
 
   createSession() {
-    const {history} = this.props;
-    history.push('/session');
+    const {history, setSessionCode} = this.props;
+    const {sessionCode} = this.state;
+    if (!sessionCode) return;
+    setSessionCode(sessionCode);
+    history.push(`/session/${sessionCode}/host`);
   }
 
   joinSession() {
@@ -132,6 +137,7 @@ class LandingScreen extends Component {
     this.setState({
       joinActive: false,
       hostActive: false,
+      sessionCode: '',
     });
   }
 
@@ -144,7 +150,17 @@ class LandingScreen extends Component {
   setHostActive() {
     this.setState({
       hostActive: true,
+      sessionCode: 'SILLYKITTENS',
     });
+  }
+
+  getSessionCodeInputLabel() {
+    const {hostActive} = this.state;
+    if (hostActive) {
+      return 'Your session code will be';
+    } else {
+      return 'Enter session code';
+    }
   }
 
   render() {
@@ -171,71 +187,66 @@ class LandingScreen extends Component {
             </div>
           </MainLayoutContent>
           <MainLayoutBottom>
-            <div className='LandingScreen__bottom'>
-              <div className={classNames([
-                'LandingScreen__bottom__side',
-                'LandingScreen__bottom__side--left',
-                {
-                  'LandingScreen__bottom__side--active': hostActive,
-                  'LandingScreen__bottom__side--inactive': joinActive && !hostActive,
-                }
-              ])} onClick={this.handleLeftClick}>
-                <div className='LandingScreen__bottom__side__text'>
-                  host
+            <BottomFlex>
+              <BottomSide>
+                <div className={classNames([
+                  'LandingScreen__bottom__side',
+                  'LandingScreen__bottom__side--left',
+                  {
+                    'LandingScreen__bottom__side--active': hostActive,
+                    'LandingScreen__bottom__side--inactive': joinActive && !hostActive,
+                  }
+                ])} onClick={this.handleLeftClick}>
+                  <div className='LandingScreen__bottom__side__text'>
+                    host
+                  </div>
+                  <div className='LandingScreen__bottom__side__text'>
+                    back
+                  </div>
                 </div>
-                <div className='LandingScreen__bottom__side__text'>
-                  back
+              </BottomSide>
+              <BottomMiddle>
+                <div className={classNames([
+                  'LandingScreen__bottom__input',
+                  {
+                    'LandingScreen__bottom__input--active': hostActive || joinActive,
+                    'LandingScreen__bottom__input--sessionCodeInput': sessionCode !== '',
+                  }
+                ])}>
+                  <div className='LandingScreen__bottom__input__label'>{this.getSessionCodeInputLabel()}</div>
+                  <input className='LandingScreen__bottom__input__input' value={sessionCode}
+                         ref={(element) => {
+                           if (!this.sessionCodeInputElement) {
+                             this.sessionCodeInputElement = element;
+                           }
+                         }}
+                         onChange={this.handleSessionCodeInputChange}
+                         type='text'/>
                 </div>
-              </div>
-              <div className={classNames([
-                'LandingScreen__bottom__input',
-                {
-                  'LandingScreen__bottom__input--active': hostActive || joinActive,
-                  'LandingScreen__bottom__input--sessionCodeInput': sessionCode !== '',
-                }
-              ])}>
-                <div className='LandingScreen__bottom__input__label'>Enter session code</div>
-                <input className='LandingScreen__bottom__input__input' value={sessionCode}
-                       ref={(element) => {
-                         if (!this.sessionCodeInputElement) {
-                           this.sessionCodeInputElement = element;
-                         }
-                       }}
-                       onChange={this.handleSessionCodeInputChange}
-                       type='text'/>
-              </div>
-              <div className={classNames([
-                'LandingScreen__bottom__side',
-                'LandingScreen__bottom__side--right',
-                {
-                  'LandingScreen__bottom__side--active': joinActive,
-                  'LandingScreen__bottom__side--inactive': hostActive && !joinActive,
-                }
-              ])} onClick={this.handleRightClick}>
-                <div className='LandingScreen__bottom__side__text'>
-                  join
+              </BottomMiddle>
+              <BottomSide>
+                <div className={classNames([
+                  'LandingScreen__bottom__side',
+                  'LandingScreen__bottom__side--right',
+                  {
+                    'LandingScreen__bottom__side--active': joinActive,
+                    'LandingScreen__bottom__side--inactive': hostActive && !joinActive,
+                  }
+                ])} onClick={this.handleRightClick}>
+                  <div className='LandingScreen__bottom__side__text'>
+                    join
+                  </div>
+                  <div className='LandingScreen__bottom__side__text'>
+                    done
+                  </div>
                 </div>
-                <div className='LandingScreen__bottom__side__text'>
-                  done
-                </div>
-              </div>
-            </div>
+              </BottomSide>
+            </BottomFlex>
           </MainLayoutBottom>
         </MainLayout>
-        <TransitionGroup>
-          {
-            hostSessionModalOpen ? (
-              <CSSTransition
-                timeout={350}
-                classNames='fade'
-                key='hostSession'>
-                <HostSession close={this.closeHostSessionModal} createSession={this.createSession}/>
-              </CSSTransition>
-            ) : null
-          }
-        </TransitionGroup>
       </div>
-    );
+    )
+      ;
   }
 }
 

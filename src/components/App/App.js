@@ -16,7 +16,7 @@ class App extends Component {
     return (
       <div className='App'>
         <Route key='/' exact path='/' component={LandingScreen}/>
-        <Route key='/session' path='/session' component={SessionScreen}/>
+        <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
         {/*<Route key='/session/:id' path='/session/:id' component={SessionScreen}/>*/}
       </div>
     );

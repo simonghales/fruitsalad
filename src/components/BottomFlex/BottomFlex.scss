@@ -3,11 +3,9 @@
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
-.MainLayoutContent
+.BottomFlex
 {
-  position: absolute;
-  top:      0;
-  left:     0;
-  right:    0;
-  bottom:   72px;
+  height:   100%;
+  display:  flex;
+  overflow: hidden;
 }

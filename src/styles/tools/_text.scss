@@ -25,6 +25,11 @@
   }
 }
 
+@mixin increasedLetterSpacing
+{
+  letter-spacing: 0.25px;
+}
+
 @mixin smallSizeFont
 {
   font-size:   13px;

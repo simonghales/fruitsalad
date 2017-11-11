@@ -1,0 +1,167 @@
+@import "../../styles/settings/colors";
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+@mixin fadeEnter
+{
+
+  .fade-enter &
+  {
+    @content;
+  }
+
+}
+
+@mixin fadeEnterActive
+{
+
+  .fade-enter.fade-enter-active &
+  {
+    @content;
+  }
+
+}
+
+@mixin fadeExit
+{
+
+  .fade-exit &
+  {
+    @content;
+  }
+
+}
+
+@mixin fadeExitActive
+{
+
+  .fade-exit.fade-exit-active &
+  {
+    @content;
+  }
+
+}
+
+.QuitSession
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     flex-end;
+  justify-content: center;
+  padding:         10px;
+}
+
+.QuitSession__background
+{
+  position:         absolute;
+  top:              0;
+  left:             0;
+  right:            0;
+  bottom:           0;
+  background-color: rgba(0, 0, 0, 0.25);
+
+  @include fadeEnter
+  {
+    opacity: 0.01;
+  }
+
+  @include fadeEnterActive
+  {
+    opacity:    1;
+    transition: opacity 350ms ease;
+  }
+
+  @include fadeExit
+  {
+    opacity: 1;
+  }
+
+  @include fadeExitActive
+  {
+    opacity:    0.01;
+    transition: opacity 350ms ease;
+  }
+
+}
+
+.QuitSession__content
+{
+  position:         relative;
+  background-color: $color-background;
+  border-radius:    4px;
+  box-shadow:       0 1px 1px rgba(0, 0, 0, 0.1);
+  display:          block;
+  width:            100%;
+  padding:          20px;
+
+  @include fadeEnter
+  {
+    opacity:   0.01;
+    transform: translateY(150px);
+  }
+
+  @include fadeEnterActive
+  {
+    opacity:    1;
+    transform:  translateY(0);
+    transition: opacity 250ms ease-in, transform 250ms cubic-bezier(0.47, 0, 0.75, 0.72)
+  }
+
+  @include fadeExit
+  {
+    transform: translateY(0);
+    opacity:   1;
+  }
+
+  @include fadeExitActive
+  {
+    transform:  translateY(150px);
+    opacity:    0.01;
+    transition: opacity 250ms ease-in, transform 250ms cubic-bezier(0.47, 0, 0.75, 0.72)
+  }
+
+}
+
+.QuitSession__sessionCode
+{
+  margin-top: 20px;
+}
+
+.QuitSession__sessionCode__label
+{
+  @include smallFaintText;
+  margin-bottom: 13px;
+  text-align:    center;
+}
+
+.QuitSession__sessionCode__code
+{
+  @include mediumSizeFont;
+  text-align: center;
+}
+
+.QuitSession__create
+{
+  margin-top: 20px;
+}
+
+.QuitSession__create__button
+{
+
+}
+
+.QuitSession__close
+{
+  @include smallSizeFont;
+  color:           $color-faint;
+  margin-top:      20px;
+  text-align:      center;
+  text-decoration: underline;
+}

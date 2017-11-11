@@ -10,6 +10,7 @@ export interface SessionState {
   userName: string,
   user: Player,
   players: Player[],
+  quitModalOpen: boolean,
 }
 
 const initialSessionState: SessionState = {
@@ -20,12 +21,41 @@ const initialSessionState: SessionState = {
   userName: 'Simon',
   user: CURRENT_PLAYER,
   players: PLAYERS,
+  quitModalOpen: false,
 };
 
 const SET_GAME_IN_PLAY = 'SET_GAME_IN_PLAY';
 const SET_JOINED = 'SET_JOINED';
 const SET_SESSION_CODE = 'SET_SESSION_CODE';
 const SET_USER_NAME = 'SET_USER_NAME';
+const OPEN_QUIT_MODAL = 'OPEN_QUIT_MODAL';
+const CLOSE_QUIT_MODAL = 'CLOSE_QUIT_MODAL';
+
+export function openQuitModal() {
+  return {
+    type: OPEN_QUIT_MODAL,
+  }
+}
+
+function handleOpenQuitModal(state): SessionState {
+  return {
+    ...state,
+    quitModalOpen: true,
+  }
+}
+
+export function closeQuitModal() {
+  return {
+    type: CLOSE_QUIT_MODAL,
+  }
+}
+
+function handleCloseQuitModal(state): SessionState {
+  return {
+    ...state,
+    quitModalOpen: false,
+  }
+}
 
 export function setGameInPlay() {
   return {
@@ -86,6 +116,8 @@ function handleSetUserName(state, {userName}: { userName: string }): SessionStat
 }
 
 const ACTION_HANDLERS = {
+  [OPEN_QUIT_MODAL]: handleOpenQuitModal,
+  [CLOSE_QUIT_MODAL]: handleCloseQuitModal,
   [SET_GAME_IN_PLAY]: handleSetGameInPlay,
   [SET_JOINED]: handleSetJoined,
   [SET_SESSION_CODE]: handleSetSessionCode,

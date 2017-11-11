@@ -23,24 +23,3 @@ class SessionScreenJoin extends Component {
 
 export default SessionScreenJoin;
 
-export class SessionScreenJoinBottom extends Component {
-
-  props: {};
-
-  state: {};
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <div className='SessionScreenJoinBottom'>
-        BOTTOM BOTTOM BOTTOM
-      </div>
-    );
-  }
-
-}
-

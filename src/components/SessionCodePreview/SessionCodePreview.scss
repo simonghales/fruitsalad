@@ -1,0 +1,28 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.SessionCodePreview
+{
+  width:           100%;
+  height:          100%;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+  align-items:     center;
+}
+
+.SessionCodePreview__label
+{
+  @include smallFaintText;
+  margin-bottom:  2px;
+  text-transform: uppercase;
+}
+
+.SessionCodePreview__code
+{
+  @include increasedLetterSpacing;
+  font-weight: 500;
+}
