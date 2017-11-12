@@ -3,6 +3,8 @@ import './DrawDuoDrawing.css';
 import {connect} from 'react-redux';
 import {SessionState} from '../../../../redux/reducers/session/reducer';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
+import {AppState} from '../../../../redux/index';
+import {setCurrentScreen} from '../../../../redux/reducers/drawDuo/reducer';
 
 class DrawDuoDrawing extends Component {
 
@@ -10,6 +12,11 @@ class DrawDuoDrawing extends Component {
 
   constructor(props) {
     super(props);
+    this.submitDrawing = this.submitDrawing.bind(this);
+  }
+
+  submitDrawing() {
+
   }
 
   render() {
@@ -22,7 +29,7 @@ class DrawDuoDrawing extends Component {
 
         </div>
         <div className='DrawDuoDrawing__options'>
-          <ArtyButton>Submit drawing</ArtyButton>
+          <ArtyButton onClick={this.submitDrawing}>Submit drawing</ArtyButton>
         </div>
       </div>
     )
@@ -34,7 +41,9 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    // setCurrentScreen: (screen: string) => dispatch(setCurrentScreen(screen)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoDrawing);

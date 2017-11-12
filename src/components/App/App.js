@@ -19,6 +19,9 @@ class App extends Component {
         <Route key='/' exact path='/' component={LandingScreen}/>
         <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
         <Route key='/games' path='/games' component={GamesScreen}/>
+        <Route key='/test' path='/test' component={() => (
+          <div>test</div>
+        )}/>
         {/*<Route key='/session/:id' path='/session/:id' component={SessionScreen}/>*/}
       </div>
     );

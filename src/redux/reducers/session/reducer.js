@@ -15,7 +15,7 @@ export interface SessionState {
   quitModalOpen: boolean,
 }
 
-const initialSessionState: SessionState = {
+export const initialSessionState: SessionState = {
   currentGame: DRAW_DUO,
   gameInPlay: false,
   joined: false,
