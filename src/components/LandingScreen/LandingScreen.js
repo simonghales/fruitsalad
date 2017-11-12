@@ -17,6 +17,7 @@ import MainLayoutBottom from '../MainLayoutBottom/MainLayoutBottom';
 import BottomSide from '../BottomSide/BottomSide';
 import BottomFlex from '../BottomFlex/BottomFlex';
 import BottomMiddle from '../BottomMiddle/BottomMiddle';
+import {AppState} from '../../redux/index';
 
 class LandingScreen extends Component {
 
