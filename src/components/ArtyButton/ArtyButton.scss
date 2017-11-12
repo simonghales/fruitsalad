@@ -1,8 +1,9 @@
+@import "../../styles/settings/sizes";
 @import "../../styles/tools/buttons";
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
-.SessionScreenJoin
+.ArtyButton
 {
-  height: 100%;
+  @include mainButton;
 }

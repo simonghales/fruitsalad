@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './SessionJoin.css';
+import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {
   withRouter,
@@ -11,9 +12,7 @@ import {SessionState, setJoined, setUserName} from '../../redux/reducers/session
 class SessionJoin extends Component {
 
   props: {
-    history: any,
-    match: any,
-    setJoined(): void,
+    userName: string,
     setUserName(userName: string): void,
   };
 
@@ -24,46 +23,43 @@ class SessionJoin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      name: props.userName,
     };
     this.handleNameInputChange = this.handleNameInputChange.bind(this);
-    this.handleSetJoined = this.handleSetJoined.bind(this);
   }
 
   handleNameInputChange(event) {
+    const {setUserName} = this.props;
+    const name = event.target.value;
     this.setState({
-      name: event.target.value,
+      name,
     });
-  }
-
-  handleSetJoined() {
-    const {history, match, setJoined, setUserName} = this.props;
-    const {name} = this.state;
     setUserName(name);
-    setJoined();
-    history.push(`/session/${match.params.id}`);
   }
 
   render() {
     const {name} = this.state;
     return (
       <div className='SessionJoin'>
-        <div>
-          <PlainInput reducedPadding={true}>
-            <input type='text' className='SessionJoin__nameInput'
-                   value={name} onChange={this.handleNameInputChange}
-                   placeholder='Enter your name'/>
-          </PlainInput>
+        <div className='SessionJoin__title'>
+          <div>Who are You?</div>
         </div>
         <div className='SessionJoin__drawingContainer'>
           <div className='SessionJoin__drawing'>
-            <div className='SessionJoin__drawing__message'>draw yourself</div>
+            <div className='SessionJoin__drawing__message'>Draw Yourself</div>
           </div>
         </div>
-        <div className='SessionJoin__bottomControls'>
-          <MainButton fullWidth={true}>
-            <button onClick={this.handleSetJoined}>Done</button>
-          </MainButton>
+        <div className={classNames([
+          'SessionJoin__nameInput',
+          {
+            'SessionJoin__nameInput--active': name !== '',
+          }
+        ])}>
+          <div className='SessionJoin__nameInput__label'>Enter your name</div>
+          <PlainInput reducedPadding={true}>
+            <input type='text' className='SessionJoin__nameInput__input'
+                   value={name} onChange={this.handleNameInputChange}/>
+          </PlainInput>
         </div>
       </div>
     );
@@ -71,7 +67,9 @@ class SessionJoin extends Component {
 }
 
 const mapStateToProps = (state: SessionState) => {
-  return {};
+  return {
+    userName: state.userName,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

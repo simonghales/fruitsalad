@@ -5,13 +5,11 @@
 
 .SessionGroup
 {
-  margin-top: $header-height;
-  min-height: 100vh;
 }
 
 .SessionGroup__gameSelector
 {
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 .SessionGroup__playersList
@@ -19,14 +17,5 @@
   @include sideMargin;
   display:       flex;
   flex-wrap:     wrap;
-  margin-bottom: 100px;
-}
-
-.SessionGroup__controls
-{
-  margin-bottom: 20px;
-  position:      fixed;
-  left:          20px;
-  right:         20px;
-  bottom:        0;
+  margin-bottom: 40px;
 }

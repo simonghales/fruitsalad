@@ -1,0 +1,37 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoArtwork
+{
+}
+
+.DrawDuoArtwork__users
+{
+  display:         flex;
+  margin-bottom:   5px;
+  justify-content: center;
+  align-items:     center;
+}
+
+.DrawDuoArtwork__users__text
+{
+  @include smallFaintText;
+  margin: 0 10px;
+}
+
+.DrawDuoArtwork__users__label
+{
+  @include smallFaintText;
+  margin-left: 10px;
+}
+
+.DrawDuoArtwork__drawing
+{
+  margin:           20px 0;
+  height:           calc(100vw - 40px);
+  background-color: #FFFFFF;
+  border:           1px solid #F0F0F0;
+}

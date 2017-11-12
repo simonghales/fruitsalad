@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './SessionScreenJoin.css';
+import SessionJoin from '../../components/SessionJoin/SessionJoin';
 
 class SessionScreenJoin extends Component {
 
@@ -15,7 +16,7 @@ class SessionScreenJoin extends Component {
   render() {
     return (
       <div className='SessionScreenJoin'>
-        JOIN JOIN JOIN
+        <SessionJoin/>
       </div>
     );
   }

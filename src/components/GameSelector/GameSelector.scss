@@ -39,11 +39,10 @@
 
 .GameSelector__game__name
 {
-  font-weight: 500;
+  @include mediumHeading;
 }
 
 .GameSelector__game__recommendedPlayers
 {
   @include smallFaintText;
-  margin-top: 3px;
 }

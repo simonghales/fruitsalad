@@ -4,5 +4,19 @@
 
 .SessionScreenHub
 {
+  display:        flex;
+  flex-direction: column;
+  height:         100%;
+}
 
+.SessionScreenHub__gameSelector
+{
+  position: relative;
+}
+
+.SessionScreenHub__group
+{
+  padding-top: 20px;
+  flex:        1;
+  overflow-y:  auto;
 }

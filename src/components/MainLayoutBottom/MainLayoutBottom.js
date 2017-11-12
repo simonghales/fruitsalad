@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './MainLayoutBottom.css';
+import classNames from 'classnames';
 
 class MainLayoutBottom extends Component {
 
@@ -12,9 +13,15 @@ class MainLayoutBottom extends Component {
   }
 
   render() {
+    const {children, hide} = this.props;
     return (
-      <div className='MainLayoutBottom'>
-        {this.props.children}
+      <div className={classNames([
+        'MainLayoutBottom',
+        {
+          'MainLayoutBottom--hidden': hide,
+        }
+      ])}>
+        {children}
       </div>
     )
   }

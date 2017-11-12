@@ -3,12 +3,14 @@
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
-.PlainInput
+.ChoiceButton
 {
+  @include mainButton;
 
-  > input
+  &.ChoiceButton--fullWidth
   {
-    @include plainInput;
+    display: block;
+    width:   100%;
   }
 
 }

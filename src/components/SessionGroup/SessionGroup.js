@@ -29,24 +29,21 @@ class SessionGroup extends Component {
 
     return (
       <div className='SessionGroup'>
-        <div className='SessionGroup__gameSelector'>
-          <GameSelector/>
-        </div>
         <div className='SessionGroup__playersList'>
           {players.map((player, index) => (
             <PlayerCard player={player} key={index}/>
           ))}
         </div>
-        <div className='SessionGroup__controls'>
-          <div className='SessionGroup__controls__startWrapper'>
-            <MainButton fullWidth={true} setHeight={true}>
-              <button className='SessionGroup__controls__start' onClick={this.startGame}>
-                <div className='MainButton__title'>Start the Game</div>
-                <div className='MainButton__subtitle'>5 players</div>
-              </button>
-            </MainButton>
-          </div>
-        </div>
+        {/*<div className='SessionGroup__controls'>*/}
+          {/*<div className='SessionGroup__controls__startWrapper'>*/}
+            {/*<MainButton fullWidth={true} setHeight={true}>*/}
+              {/*<button className='SessionGroup__controls__start' onClick={this.startGame}>*/}
+                {/*<div className='MainButton__title'>Start the Game</div>*/}
+                {/*<div className='MainButton__subtitle'>5 players</div>*/}
+              {/*</button>*/}
+            {/*</MainButton>*/}
+          {/*</div>*/}
+        {/*</div>*/}
       </div>
     );
   }

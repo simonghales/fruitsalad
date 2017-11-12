@@ -9,14 +9,14 @@ import BottomSide from '../../components/BottomSide/BottomSide';
 import SimpleButton from '../../components/SimpleButton/SimpleButton';
 import SessionCodePreview from '../../components/SessionCodePreview/SessionCodePreview';
 import SessionQuitButton from '../../components/SessionQuitButton/SessionQuitButton';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState, setGameInPlay} from '../../redux/reducers/session';
 
-class SessionScreenHostBottom extends Component {
+class SessionScreenHubBottom extends Component {
 
   props: {
     history: any,
     match: any,
-    sessionCreated: boolean,
+    setGameInPlay(): void,
   };
 
   state: {};
@@ -24,29 +24,27 @@ class SessionScreenHostBottom extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.goToJoin = this.goToJoin.bind(this);
+    this.start = this.start.bind(this);
   }
 
-  goToJoin() {
-    const {sessionCreated} = this.props;
-    if (!sessionCreated) return;
-    const {history, match} = this.props;
-    history.push(`/session/${match.params.id}/join`);
+  start() {
+    const {history, match, setGameInPlay} = this.props;
+    setGameInPlay();
+    history.push(`/session/${match.params.id}`);
   }
 
   render() {
-    const {sessionCreated} = this.props;
     return (
-      <BottomFlex classes={['SessionScreenHostBottom']}>
+      <BottomFlex classes={['SessionScreenHubBottom']}>
         <BottomSide>
-          <SessionQuitButton disabled={!sessionCreated}/>
+          <SessionQuitButton/>
         </BottomSide>
         <BottomMiddle>
           <SessionCodePreview/>
         </BottomMiddle>
         <BottomSide>
-          <SimpleButton onClick={this.goToJoin} disabled={!sessionCreated}>
-            Next
+          <SimpleButton onClick={this.start}>
+            Start
           </SimpleButton>
         </BottomSide>
       </BottomFlex>
@@ -62,7 +60,9 @@ const mapStateToProps = (state: SessionState) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setGameInPlay: () => dispatch(setGameInPlay()),
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHostBottom));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHubBottom));

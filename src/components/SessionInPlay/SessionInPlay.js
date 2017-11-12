@@ -17,9 +17,7 @@ class SessionInPlay extends Component {
 
   render() {
     return (
-      <div className='SessionInPlay'>
-        <DrawDuoHub/>
-      </div>
+      <DrawDuoHub/>
     )
   }
 }

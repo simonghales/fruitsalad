@@ -1,9 +1,11 @@
 import React from 'react';
 import SessionScreenJoin from '../screens/SessionScreenJoin/SessionScreenJoin';
-import SessionScreenHub, {SessionScreenHubBottom} from '../screens/SessionScreenHub/SessionScreenHub';
+import SessionScreenHub from '../screens/SessionScreenHub/SessionScreenHub';
 import SessionScreenHost from '../screens/SessionScreenHost/SessionScreenHost';
 import SessionScreenHostBottom from '../screens/SessionScreenHost/SessionScreenHostBottom';
 import SessionScreenJoinBottom from '../screens/SessionScreenJoin/SessionScreenJoinBottom';
+import SessionScreenHubBottom from '../screens/SessionScreenHub/SessionScreenHubBottom';
+import SessionScreenDefault from '../screens/SessionScreenDefault/SessionScreenDefault';
 
 export interface RouteInterface {
   path: string,
@@ -16,8 +18,8 @@ export const sessionRoutes: RouteInterface[] = [
   {
     path: '/session/:id',
     exact: true,
-    main: () => <SessionScreenJoin/>,
-    bottom: () => <SessionScreenJoinBottom/>,
+    main: () => <SessionScreenDefault/>,
+    bottom: null,
   },
   {
     path: '/session/:id/host',
@@ -27,11 +29,13 @@ export const sessionRoutes: RouteInterface[] = [
   },
   {
     path: '/session/:id/join',
+    exact: true,
     main: () => <SessionScreenJoin/>,
     bottom: () => <SessionScreenJoinBottom/>,
   },
   {
     path: '/session/:id/hub',
+    exact: true,
     main: () => <SessionScreenHub/>,
     bottom: () => <SessionScreenHubBottom/>,
   }

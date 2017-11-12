@@ -1,30 +1,26 @@
 import React, {Component} from 'react';
 import './SessionScreenHost.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState, setSessionCreated} from '../../redux/reducers/session';
 
 class SessionScreenHost extends Component {
 
   props: {
     sessionCode: string,
+    sessionCreated: boolean,
+    setSessionCreated(): void,
   };
 
-  state: {
-    sessionCreated: boolean,
-  };
+  state: {};
 
   constructor(props) {
     super(props);
-    this.state = {
-      sessionCreated: false,
-    };
+    this.state = {};
   }
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState({
-        sessionCreated: true,
-      });
+      this.props.setSessionCreated();
     }, 1000);
   }
 
@@ -44,11 +40,14 @@ class SessionScreenHost extends Component {
 const mapStateToProps = (state: SessionState) => {
   return {
     sessionCode: state.sessionCode,
+    sessionCreated: state.sessionCreated,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setSessionCreated: () => dispatch(setSessionCreated()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SessionScreenHost);

@@ -1,0 +1,47 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoGuess
+{
+  height:     100%;
+  //display:         flex;
+  //flex-direction:  column;
+  //justify-content: center;
+  //text-align:      center;
+  overflow-y: auto;
+  padding:    0 20px;
+}
+
+.DrawDuoGuess__content
+{
+  position: relative;
+  margin:   20px 0;
+}
+
+.DrawDuoGuess__input
+{
+  height:           100px;
+  background-color: #FFFFFF;
+  border:           1px solid #F0F0F0;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+}
+
+.DrawDuoGuess__options
+{
+  margin-top: 20px;
+  text-align: center;
+}
+
+.DrawDuoGuess__hint
+{
+  @include smallFaintText;
+  margin-top: 20px;
+  text-align: center;
+  //position:   absolute;
+  //top:        100%;
+}

@@ -10,6 +10,7 @@ class QuitSession extends Component {
   props: {
     sessionCode: string,
     close(): void,
+    quit(): void,
   };
 
   constructor(props) {
@@ -23,7 +24,7 @@ class QuitSession extends Component {
   }
 
   render() {
-    const {sessionCode} = this.props;
+    const {sessionCode, quit} = this.props;
     return (
       <Modal>
         <div className='QuitSession'>
@@ -35,8 +36,7 @@ class QuitSession extends Component {
             </div>
             <div className='QuitSession__create'>
               <MainButton fullWidth={true}>
-                <button className='QuitSession__create__button' onClick={() => {
-                }}>
+                <button className='QuitSession__create__button' onClick={quit}>
                   Quit Session
                 </button>
               </MainButton>

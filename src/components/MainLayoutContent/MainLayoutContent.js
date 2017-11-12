@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import classNames from 'classnames';
 import './MainLayoutContent.css';
 
 class MainLayoutContent extends Component {
@@ -12,9 +13,15 @@ class MainLayoutContent extends Component {
   }
 
   render() {
+    const {children, noBottom} = this.props;
     return (
-      <div className='MainLayoutContent'>
-        {this.props.children}
+      <div className={classNames([
+        'MainLayoutContent',
+        {
+          'MainLayoutContent--noBottom': noBottom,
+        }
+      ])}>
+        {children}
       </div>
     )
   }

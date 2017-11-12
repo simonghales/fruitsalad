@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import './SessionScreen.css';
+import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {
-  Link,
+  matchPath,
   Route,
 } from 'react-router-dom';
 import {sessionRoutes, RouteInterface} from '../../routes/session';
@@ -17,6 +18,8 @@ class SessionScreen extends Component {
 
   props: {
     match: any,
+    history: any,
+    showSessionBottom: boolean,
     quitModalOpen: boolean,
     closeQuitModal(): void,
     setSessionCode(sessionCode: string): void,
@@ -29,14 +32,21 @@ class SessionScreen extends Component {
     const {match, setSessionCode} = props;
     setSessionCode(match.params.id);
     this.state = {};
+    this.quitSession = this.quitSession.bind(this);
+  }
+
+  quitSession() {
+    const {closeQuitModal, history} = this.props;
+    closeQuitModal();
+    history.push('/');
   }
 
   render() {
-    const {closeQuitModal, quitModalOpen} = this.props;
+    const {closeQuitModal, showSessionBottom, quitModalOpen} = this.props;
     return (
       <div className='SessionScreen'>
         <MainLayout>
-          <MainLayoutContent>
+          <MainLayoutContent noBottom={!showSessionBottom}>
             {
               sessionRoutes.map((route: RouteInterface, index) => (
                 <Route key={index}
@@ -46,12 +56,7 @@ class SessionScreen extends Component {
               ))
             }
           </MainLayoutContent>
-          <MainLayoutBottom>
-            {/*<div>*/}
-            {/*<Link to='/session/thing'>home</Link>*/}
-            {/*<Link to='/session/thing/join'>name</Link>*/}
-            {/*<Link to='/session/thing/hub'>image</Link>*/}
-            {/*</div>*/}
+          <MainLayoutBottom hide={!showSessionBottom}>
             {
               sessionRoutes.map((route: RouteInterface, index) => (
                 <Route key={index}
@@ -69,7 +74,7 @@ class SessionScreen extends Component {
                 timeout={350}
                 classNames='fade'
                 key='quitSession'>
-                <QuitSession close={closeQuitModal}/>
+                <QuitSession close={closeQuitModal} quit={this.quitSession}/>
               </CSSTransition>
             ) : null
           }
@@ -81,6 +86,7 @@ class SessionScreen extends Component {
 
 const mapStateToProps = (state: SessionState) => {
   return {
+    showSessionBottom: state.showSessionBottom,
     quitModalOpen: state.quitModalOpen,
   };
 };

@@ -7,6 +7,8 @@ export interface SessionState {
   gameInPlay: boolean,
   joined: boolean,
   sessionCode: string,
+  sessionCreated: boolean,
+  showSessionBottom: boolean,
   userName: string,
   user: Player,
   players: Player[],
@@ -16,20 +18,40 @@ export interface SessionState {
 const initialSessionState: SessionState = {
   currentGame: DRAW_DUO,
   gameInPlay: false,
-  joined: true,
+  joined: false,
   sessionCode: 'SILLYCATS',
+  sessionCreated: false,
+  showSessionBottom: true,
   userName: 'Simon',
   user: CURRENT_PLAYER,
   players: PLAYERS,
   quitModalOpen: false,
 };
 
+const SET_SHOW_SESSION_BOTTOM = 'SET_SHOW_SESSION_BOTTOM';
 const SET_GAME_IN_PLAY = 'SET_GAME_IN_PLAY';
 const SET_JOINED = 'SET_JOINED';
 const SET_SESSION_CODE = 'SET_SESSION_CODE';
+const SET_SESSION_CREATED = 'SET_SESSION_CREATED';
 const SET_USER_NAME = 'SET_USER_NAME';
 const OPEN_QUIT_MODAL = 'OPEN_QUIT_MODAL';
 const CLOSE_QUIT_MODAL = 'CLOSE_QUIT_MODAL';
+
+export function setShowSessionBottom(show: boolean) {
+  return {
+    type: SET_SHOW_SESSION_BOTTOM,
+    payload: {
+      show,
+    },
+  }
+}
+
+function handleSetShowSessionBottom(state, {show}): SessionState {
+  return {
+    ...state,
+    showSessionBottom: show,
+  }
+}
 
 export function openQuitModal() {
   return {
@@ -83,6 +105,19 @@ function handleSetJoined(state): SessionState {
   }
 }
 
+export function setSessionCreated() {
+  return {
+    type: SET_SESSION_CREATED,
+  };
+}
+
+function handleSetSessionCreated(state): SessionState {
+  return {
+    ...state,
+    sessionCreated: true,
+  }
+}
+
 export function setSessionCode(sessionCode: string) {
   return {
     type: SET_SESSION_CODE,
@@ -116,11 +151,13 @@ function handleSetUserName(state, {userName}: { userName: string }): SessionStat
 }
 
 const ACTION_HANDLERS = {
+  [SET_SHOW_SESSION_BOTTOM]: handleSetShowSessionBottom,
   [OPEN_QUIT_MODAL]: handleOpenQuitModal,
   [CLOSE_QUIT_MODAL]: handleCloseQuitModal,
   [SET_GAME_IN_PLAY]: handleSetGameInPlay,
   [SET_JOINED]: handleSetJoined,
   [SET_SESSION_CODE]: handleSetSessionCode,
+  [SET_SESSION_CREATED]: handleSetSessionCreated,
   [SET_USER_NAME]: handleSetUserName,
 };
 

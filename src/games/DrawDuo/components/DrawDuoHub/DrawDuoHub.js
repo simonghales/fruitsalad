@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import './DrawDuoHub.css';
 import {connect} from 'react-redux';
 import {SessionState} from '../../../../redux/reducers/session';
+import DrawDuoDrawing from '../DrawDuoDrawing/DrawDuoDrawing';
+import DrawDuoGuess from '../DrawDuoGuess/DrawDuoGuess';
+import DrawDuoVote from '../DrawDuoVote/DrawDuoVote';
 
 class DrawDuoHub extends Component {
 
@@ -13,8 +16,10 @@ class DrawDuoHub extends Component {
 
   render() {
     return (
-      <div className='DrawDuo'>
-        DrawDuo
+      <div className='DrawDuoHub'>
+        {/*<DrawDuoDrawing/>*/}
+        {/*<DrawDuoGuess/>*/}
+        <DrawDuoVote/>
       </div>
     )
   }
