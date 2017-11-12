@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import PlainInput from '../PlainInput/PlainInput';
 import MainButton from '../MainButton/MainButton';
-import {SessionState, setSessionCode} from '../../redux/reducers/session';
+import {SessionState, setSessionCode} from '../../redux/reducers/session/reducer';
 import HostSession from '../HostSession/HostSession';
 import MainLayout from '../MainLayout/MainLayout';
 import MainLayoutContent from '../MainLayoutContent/MainLayoutContent';
@@ -250,9 +250,9 @@ class LandingScreen extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCode: state.sessionCode,
+    sessionCode: state.session.sessionCode,
   };
 };
 

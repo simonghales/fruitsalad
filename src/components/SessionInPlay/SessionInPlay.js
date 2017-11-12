@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './SessionInPlay.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState} from '../../redux/reducers/session/reducer';
 import DrawDuoHub from '../../games/DrawDuo/components/DrawDuoHub/DrawDuoHub';
 
 class SessionInPlay extends Component {
@@ -22,9 +22,9 @@ class SessionInPlay extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    gameInPlay: state.gameInPlay,
+    gameInPlay: state.session.gameInPlay,
   };
 };
 

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {SessionState, setShowSessionBottom} from '../../redux/reducers/session';
+import {SessionState, setShowSessionBottom} from '../../redux/reducers/session/reducer';
+import {AppState} from '../../redux/index';
 
 class GoFullScreen extends Component {
 
@@ -10,7 +11,6 @@ class GoFullScreen extends Component {
   };
 
   componentDidMount() {
-    console.log('mounted...');
     const {setShowBottom} = this.props;
     setShowBottom(false);
   }
@@ -26,7 +26,7 @@ class GoFullScreen extends Component {
 
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 

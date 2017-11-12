@@ -1,6 +1,6 @@
-import {Player} from '../../models/player';
-import {CURRENT_PLAYER, PLAYERS} from '../../data/dummy';
-import {DRAW_DUO} from '../../games/DrawDuo/config';
+import {Player} from '../../../models/player';
+import {CURRENT_PLAYER, PLAYERS} from '../../../data/dummy';
+import {DRAW_DUO} from '../../../games/DrawDuo/config';
 
 export interface SessionState {
   currentGame: string,

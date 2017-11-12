@@ -3,7 +3,7 @@ import './QuitSession.css';
 import {connect} from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import MainButton from '../../components/MainButton/MainButton';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState} from '../../redux/reducers/session/reducer';
 
 class QuitSession extends Component {
 
@@ -51,9 +51,9 @@ class QuitSession extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCode: state.sessionCode,
+    sessionCode: state.session.sessionCode,
   };
 };
 

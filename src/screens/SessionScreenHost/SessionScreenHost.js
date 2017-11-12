@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './SessionScreenHost.css';
 import {connect} from 'react-redux';
-import {SessionState, setSessionCreated} from '../../redux/reducers/session';
+import {SessionState, setSessionCreated} from '../../redux/reducers/session/reducer';
+import {AppState} from '../../redux/index';
 
 class SessionScreenHost extends Component {
 
@@ -37,10 +38,10 @@ class SessionScreenHost extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCode: state.sessionCode,
-    sessionCreated: state.sessionCreated,
+    sessionCode: state.session.sessionCode,
+    sessionCreated: state.session.sessionCreated,
   };
 };
 

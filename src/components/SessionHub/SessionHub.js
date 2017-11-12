@@ -3,7 +3,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import {connect} from 'react-redux';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState} from '../../redux/reducers/session/reducer';
 import SessionGroup from '../SessionGroup/SessionGroup';
 import SessionInPlay from '../SessionInPlay/SessionInPlay';
 
@@ -37,10 +37,10 @@ class SessionHub extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    gameInPlay: state.gameInPlay,
-    joined: state.joined,
+    gameInPlay: state.session.gameInPlay,
+    joined: state.session.joined,
   };
 };
 

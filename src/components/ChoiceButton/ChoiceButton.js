@@ -4,8 +4,14 @@ import classNames from 'classnames';
 
 const ChoiceButton = (props) => {
   const {fullWidth = false} = props;
+  let buttonSafeProps = {
+    ...props
+  };
+  if (buttonSafeProps['fullWidth']) {
+    delete buttonSafeProps['fullWidth'];
+  }
   return (
-    <button {...props} className={classNames([
+    <button {...buttonSafeProps} className={classNames([
       'ChoiceButton',
       {
         'ChoiceButton--fullWidth': fullWidth,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './DrawDuoGuess.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../../../redux/reducers/session';
+import {SessionState} from '../../../../redux/reducers/session/reducer';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
 import UserImage from '../../../../components/UserImage/UserImage';
 import DrawDuoArtwork from '../DrawDuoArtwork/DrawDuoArtwork';
@@ -32,7 +32,7 @@ class DrawDuoGuess extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 

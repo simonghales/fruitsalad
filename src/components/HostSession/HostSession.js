@@ -48,9 +48,9 @@ class HostSession extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCode: state.sessionCode,
+    sessionCode: state.session.sessionCode,
   };
 };
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './SessionCodePreview.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState} from '../../redux/reducers/session/reducer';
 
 const SessionCodePreview = ({sessionCode}) => {
   return (
@@ -12,9 +12,9 @@ const SessionCodePreview = ({sessionCode}) => {
   );
 };
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCode: state.sessionCode,
+    sessionCode: state.session.sessionCode,
   };
 };
 

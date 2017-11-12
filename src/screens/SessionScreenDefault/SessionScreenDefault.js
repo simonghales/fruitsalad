@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import {connect} from 'react-redux';
 import './SessionScreenDefault.css';
-import {SessionState, setShowSessionBottom} from '../../redux/reducers/session';
+import {SessionState, setShowSessionBottom} from '../../redux/reducers/session/reducer';
 import SessionInPlay from '../../components/SessionInPlay/SessionInPlay';
 import GoFullScreen from '../../components/GoFullScreen/GoFullScreen';
 
@@ -53,10 +53,10 @@ class SessionScreenDefault extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    gameInPlay: state.gameInPlay,
-    joined: state.joined,
+    gameInPlay: state.session.gameInPlay,
+    joined: state.session.joined,
   };
 };
 

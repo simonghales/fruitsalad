@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './DrawDuoHub.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../../../redux/reducers/session';
+import {SessionState} from '../../../../redux/reducers/session/reducer';
 import DrawDuoDrawing from '../DrawDuoDrawing/DrawDuoDrawing';
 import DrawDuoGuess from '../DrawDuoGuess/DrawDuoGuess';
 import DrawDuoVote from '../DrawDuoVote/DrawDuoVote';
@@ -25,7 +25,7 @@ class DrawDuoHub extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 

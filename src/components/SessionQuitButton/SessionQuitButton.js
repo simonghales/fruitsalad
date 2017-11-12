@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import SimpleButton from '../SimpleButton/SimpleButton';
-import {openQuitModal, SessionState} from '../../redux/reducers/session';
+import {openQuitModal, SessionState} from '../../redux/reducers/session/reducer';
 
 const SessionQuitButton = ({openQuitModal, disabled}) => {
   return (
@@ -13,7 +13,7 @@ const SessionQuitButton = ({openQuitModal, disabled}) => {
   );
 };
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 

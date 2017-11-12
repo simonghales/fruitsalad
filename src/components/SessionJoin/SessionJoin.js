@@ -7,7 +7,9 @@ import {
 } from 'react-router-dom';
 import PlainInput from '../PlainInput/PlainInput';
 import MainButton from '../MainButton/MainButton';
-import {SessionState, setJoined, setUserName} from '../../redux/reducers/session';
+import {SessionState, setJoined, setUserName} from '../../redux/reducers/session/reducer';
+import {getUserName} from '../../redux/reducers/session/state';
+import {AppState} from '../../redux/index';
 
 class SessionJoin extends Component {
 
@@ -66,9 +68,9 @@ class SessionJoin extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    userName: state.userName,
+    userName: getUserName(state),
   };
 };
 

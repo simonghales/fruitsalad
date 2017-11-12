@@ -3,7 +3,7 @@ import './SessionGroup.css';
 import {connect} from 'react-redux';
 import MainButton from '../MainButton/MainButton';
 import PlayerCard from '../PlayerCard/PlayerCard';
-import {SessionState, setGameInPlay} from '../../redux/reducers/session';
+import {SessionState, setGameInPlay} from '../../redux/reducers/session/reducer';
 import {Player} from '../../models/player';
 import GameSelector from '../GameSelector/GameSelector';
 
@@ -49,9 +49,9 @@ class SessionGroup extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    players: state.players,
+    players: state.session.players,
   };
 };
 

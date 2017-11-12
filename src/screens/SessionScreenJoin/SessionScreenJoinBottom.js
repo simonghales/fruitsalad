@@ -9,7 +9,9 @@ import SessionQuitButton from '../../components/SessionQuitButton/SessionQuitBut
 import BottomMiddle from '../../components/BottomMiddle/BottomMiddle';
 import SessionCodePreview from '../../components/SessionCodePreview/SessionCodePreview';
 import SimpleButton from '../../components/SimpleButton/SimpleButton';
-import {SessionState, setJoined} from '../../redux/reducers/session';
+import {SessionState, setJoined} from '../../redux/reducers/session/reducer';
+import {AppState} from '../../redux/index';
+import {getUserName} from '../../redux/reducers/session/state';
 
 class SessionScreenJoinBottom extends Component {
 
@@ -58,9 +60,9 @@ class SessionScreenJoinBottom extends Component {
 
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    userName: state.userName,
+    userName: getUserName(state),
   };
 };
 

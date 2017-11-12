@@ -9,7 +9,8 @@ import BottomSide from '../../components/BottomSide/BottomSide';
 import SimpleButton from '../../components/SimpleButton/SimpleButton';
 import SessionCodePreview from '../../components/SessionCodePreview/SessionCodePreview';
 import SessionQuitButton from '../../components/SessionQuitButton/SessionQuitButton';
-import {SessionState, setGameInPlay} from '../../redux/reducers/session';
+import {SessionState, setGameInPlay} from '../../redux/reducers/session/reducer';
+import {AppState} from '../../redux/index';
 
 class SessionScreenHubBottom extends Component {
 
@@ -53,9 +54,9 @@ class SessionScreenHubBottom extends Component {
 
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCreated: state.sessionCreated,
+    sessionCreated: state.session.sessionCreated,
   };
 };
 

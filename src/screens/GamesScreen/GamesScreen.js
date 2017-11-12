@@ -12,7 +12,7 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import QuitSession from '../../modals/QuitSession/QuitSession';
-import {closeQuitModal, SessionState, setSessionCode} from '../../redux/reducers/session';
+import {closeQuitModal, SessionState, setSessionCode} from '../../redux/reducers/session/reducer';
 import SessionInPlay from '../../components/SessionInPlay/SessionInPlay';
 
 class GamesScreen extends Component {
@@ -37,7 +37,7 @@ class GamesScreen extends Component {
 
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 

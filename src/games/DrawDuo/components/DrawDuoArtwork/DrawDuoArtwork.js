@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './DrawDuoArtwork.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../../../redux/reducers/session';
+import {SessionState} from '../../../../redux/reducers/session/reducer';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
 import UserImage from '../../../../components/UserImage/UserImage';
 

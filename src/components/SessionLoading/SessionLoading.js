@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './SessionLoading.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../redux/reducers/session';
+import {SessionState} from '../../redux/reducers/session/reducer';
 
 class SessionLoading extends Component {
 
@@ -26,9 +26,9 @@ class SessionLoading extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    sessionCode: state.sessionCode,
+    sessionCode: state.session.sessionCode,
   };
 };
 

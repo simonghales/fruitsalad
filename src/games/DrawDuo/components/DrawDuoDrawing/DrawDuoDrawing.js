@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './DrawDuoDrawing.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../../../redux/reducers/session';
+import {SessionState} from '../../../../redux/reducers/session/reducer';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
 
 class DrawDuoDrawing extends Component {
@@ -29,7 +29,7 @@ class DrawDuoDrawing extends Component {
   }
 }
 
-const mapStateToProps = (state: SessionState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 
