@@ -4,10 +4,14 @@ import {connect} from 'react-redux';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
 import {setCurrentScreen} from '../../../../redux/reducers/drawDuo/reducer';
 import {AppState} from '../../../../redux/index';
+import {SCREEN_GUESS} from '../../constants';
 
 class DrawDuoDrawing extends Component {
 
-  props: {};
+  props: {
+
+
+  };
 
   constructor(props) {
     super(props);
@@ -15,7 +19,8 @@ class DrawDuoDrawing extends Component {
   }
 
   submitDrawing() {
-
+    const {setCurrentScreen} = this.props;
+    setCurrentScreen(SCREEN_GUESS);
   }
 
   render() {
@@ -41,7 +46,7 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // setCurrentScreen: (screen: string) => dispatch(setCurrentScreen(screen)),
+    setCurrentScreen: (screen: string) => dispatch(setCurrentScreen(screen)),
   };
 };
 
