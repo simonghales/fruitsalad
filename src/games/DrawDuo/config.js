@@ -1,10 +1,6 @@
 import React from 'react';
 import DrawDuoDrawing from './components/DrawDuoDrawing/DrawDuoDrawing';
-
-export const DRAW_DUO = 'DRAW_DUO';
-export const SCREEN_DRAWING = 'SCREEN_DRAWING';
-export const SCREEN_GUESS = 'SCREEN_GUESS';
-export const SCREEN_VOTE = 'SCREEN_VOTE';
+import {SCREEN_DRAWING, SCREEN_GUESS, SCREEN_VOTE} from './constants';
 
 export const DRAW_DUO_CONFIG = {
   userHeaderDisplayed: true,

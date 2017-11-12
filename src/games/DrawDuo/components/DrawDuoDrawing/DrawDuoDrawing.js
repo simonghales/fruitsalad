@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import './DrawDuoDrawing.css';
 import {connect} from 'react-redux';
-import {SessionState} from '../../../../redux/reducers/session/reducer';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
-import {AppState} from '../../../../redux/index';
 import {setCurrentScreen} from '../../../../redux/reducers/drawDuo/reducer';
+import {AppState} from '../../../../redux/index';
 
 class DrawDuoDrawing extends Component {
 

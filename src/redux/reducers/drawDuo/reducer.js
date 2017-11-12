@@ -1,6 +1,6 @@
 import {Player} from '../../../models/player';
 import {CURRENT_PLAYER, PLAYERS} from '../../../data/dummy';
-import {DRAW_DUO, SCREEN_DRAWING} from '../../../games/DrawDuo/config';
+import {SCREEN_DRAWING} from '../../../games/DrawDuo/constants';
 
 export interface DrawDuoState {
   currentScreen: string,
