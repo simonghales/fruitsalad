@@ -1,4 +1,6 @@
 export const DRAW_DUO = 'DRAW_DUO';
+export const SCREEN_PENDING = 'SCREEN_PENDING';
 export const SCREEN_DRAWING = 'SCREEN_DRAWING';
 export const SCREEN_GUESS = 'SCREEN_GUESS';
 export const SCREEN_VOTE = 'SCREEN_VOTE';
+export const SCREEN_RESULTS = 'SCREEN_RESULTS';

@@ -1,16 +1,46 @@
 import {Player} from '../../../models/player';
 import {CURRENT_PLAYER, PLAYERS} from '../../../data/dummy';
-import {SCREEN_DRAWING} from '../../../games/DrawDuo/constants';
+import {SCREEN_DRAWING, SCREEN_PENDING} from '../../../games/DrawDuo/constants';
 
 export interface DrawDuoState {
   currentScreen: string,
+  pending: boolean,
 }
 
 export const initialDrawDuoState: DrawDuoState = {
   currentScreen: SCREEN_DRAWING,
+  pending: true,
 };
 
+const SET_PENDING = 'SET_PENDING';
+const SET_NOT_PENDING = 'SET_NOT_PENDING';
 const SET_CURRENT_SCREEN = 'SET_CURRENT_SCREEN';
+
+export function setPending() {
+  return {
+    type: SET_PENDING,
+  };
+}
+
+function handleSetPending(state): DrawDuoState {
+  return {
+    ...state,
+    pending: true,
+  }
+}
+
+export function setNotPending() {
+  return {
+    type: SET_NOT_PENDING,
+  };
+}
+
+function handleSetNotPending(state): DrawDuoState {
+  return {
+    ...state,
+    pending: false,
+  }
+}
 
 export function setCurrentScreen(screen: string) {
   return {
@@ -29,6 +59,8 @@ function handleSetCurrentScreen(state, {screen}: { screen: string }): DrawDuoSta
 }
 
 const ACTION_HANDLERS = {
+  [SET_PENDING]: handleSetPending,
+  [SET_NOT_PENDING]: handleSetNotPending,
   [SET_CURRENT_SCREEN]: handleSetCurrentScreen,
 };
 

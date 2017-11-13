@@ -1,0 +1,29 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoPending
+{
+  height:          100%;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+}
+
+.DrawDuoPending__content
+{
+  text-align: center;
+}
+
+.DrawDuoPending__title
+{
+  @include mediumHeading;
+}
+
+.DrawDuoPending__subtitle
+{
+  @include smallFaintText;
+  margin-top: 5px;
+}
