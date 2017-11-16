@@ -18,9 +18,11 @@ export interface SessionState {
 export const initialSessionState: SessionState = {
   currentGame: DRAW_DUO,
   gameInPlay: false,
-  joined: false,
+  // joined: false,
+  joined: true,
   sessionCode: 'SILLYCATS',
-  sessionCreated: false,
+  // sessionCreated: false,
+  sessionCreated: true,
   showSessionBottom: true,
   userName: 'Simon',
   user: CURRENT_PLAYER,

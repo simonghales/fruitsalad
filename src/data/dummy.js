@@ -9,12 +9,6 @@ export const CURRENT_PLAYER = {
 
 export const PLAYERS: Player = [
   {
-    id: '1',
-    name: 'Chiao',
-    image: '',
-    host: false,
-  },
-  {
     id: '2',
     name: 'Karen',
     image: '',
@@ -38,5 +32,4 @@ export const PLAYERS: Player = [
     image: '',
     host: false,
   },
-  CURRENT_PLAYER,
 ];

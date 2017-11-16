@@ -39,6 +39,7 @@ const rootReducer = combineReducers({
 export interface AppState {
   drawDuo: DrawDuoState,
   session: SessionState,
+  firebase: {},
 }
 
 export const store = createStoreWithFirebase(rootReducer, {
