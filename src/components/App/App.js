@@ -25,12 +25,12 @@ class App extends Component {
 
   componentDidMount() {
     console.log('props?', this.props);
-    // this.props.firebase.auth().signInAnonymously()
-    //   .then((data) => {
-    //     console.log('signed in...', data);
-    //   }, () => {
-    //     console.warn('failed to sign in anonymously');
-    //   });
+    this.props.firebase.auth().signInAnonymously()
+      .then((data) => {
+        console.log('signed in...', data);
+      }, () => {
+        console.warn('failed to sign in anonymously');
+      });
   }
 
   render() {

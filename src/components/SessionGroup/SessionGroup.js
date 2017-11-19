@@ -106,7 +106,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedSessionGroup = firebaseConnect((props) => {
-  console.log('firebaseConnect props', props);
   return [
     {
       path: '/sessions',
