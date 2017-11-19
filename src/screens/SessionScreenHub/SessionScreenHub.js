@@ -8,7 +8,11 @@ import {Redirect, withRouter} from 'react-router';
 
 class SessionScreenHub extends Component {
 
-  props: {};
+  props: {
+    gameInPlay: boolean,
+    joined: boolean,
+    match: any,
+  };
 
   state: {};
 

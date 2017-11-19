@@ -14,6 +14,7 @@ import QuitSession from '../../modals/QuitSession/QuitSession';
 import {closeQuitModal, SessionState, setSessionCode} from '../../redux/reducers/session/reducer';
 import {AppState} from '../../redux/index';
 import SessionScreenRoutes from '../SessionScreenRoutes/SessionScreenRoutes';
+import SessionNotFound from '../../modals/SessionNotFound/SessionNotFound';
 
 class SessionScreen extends Component {
 
@@ -22,6 +23,7 @@ class SessionScreen extends Component {
     history: any,
     showSessionBottom: boolean,
     quitModalOpen: boolean,
+    invalidSession: boolean,
     closeQuitModal(): void,
     setSessionCode(sessionCode: string): void,
   };
@@ -46,7 +48,7 @@ class SessionScreen extends Component {
   }
 
   render() {
-    const {closeQuitModal, showSessionBottom, quitModalOpen} = this.props;
+    const {closeQuitModal, showSessionBottom, quitModalOpen, invalidSession} = this.props;
     return (
       <div className='SessionScreen'>
         <MainLayout>
@@ -69,6 +71,18 @@ class SessionScreen extends Component {
             ) : null
           }
         </TransitionGroup>
+        <TransitionGroup>
+          {
+            invalidSession ? (
+              <CSSTransition
+                timeout={350}
+                classNames='fade'
+                key='quitSession'>
+                <SessionNotFound/>
+              </CSSTransition>
+            ) : null
+          }
+        </TransitionGroup>
       </div>
     );
   }
@@ -78,6 +92,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
+    invalidSession: state.session.invalidSession,
   };
 };
 

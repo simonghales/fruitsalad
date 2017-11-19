@@ -13,6 +13,7 @@ export interface SessionState {
   user: Player,
   players: Player[],
   quitModalOpen: boolean,
+  invalidSession: boolean,
 }
 
 export const initialSessionState: SessionState = {
@@ -26,6 +27,7 @@ export const initialSessionState: SessionState = {
   user: CURRENT_PLAYER,
   players: PLAYERS,
   quitModalOpen: false,
+  invalidSession: false,
 };
 
 const SET_SHOW_SESSION_BOTTOM = 'SET_SHOW_SESSION_BOTTOM';
@@ -36,6 +38,23 @@ const SET_SESSION_CREATED = 'SET_SESSION_CREATED';
 const SET_USER_NAME = 'SET_USER_NAME';
 const OPEN_QUIT_MODAL = 'OPEN_QUIT_MODAL';
 const CLOSE_QUIT_MODAL = 'CLOSE_QUIT_MODAL';
+const SET_INVALID_SESSION = 'SET_INVALID_SESSION';
+
+export function setInvalidSession(invalidSession: boolean) {
+  return {
+    type: SET_INVALID_SESSION,
+    payload: {
+      invalidSession,
+    },
+  }
+}
+
+function handleSetInvalidSession(state, {invalidSession}): SessionState {
+  return {
+    ...state,
+    invalidSession,
+  }
+}
 
 export function setShowSessionBottom(show: boolean) {
   return {
@@ -159,6 +178,7 @@ const ACTION_HANDLERS = {
   [SET_SESSION_CODE]: handleSetSessionCode,
   [SET_SESSION_CREATED]: handleSetSessionCreated,
   [SET_USER_NAME]: handleSetUserName,
+  [SET_INVALID_SESSION]: handleSetInvalidSession,
 };
 
 export default function sessionReducer(state: SessionState = initialSessionState, action) {
