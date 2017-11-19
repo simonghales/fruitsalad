@@ -4,8 +4,7 @@ import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {
-  matchPath,
-  Route,
+  withRouter,
 } from 'react-router-dom';
 import {sessionRoutes, RouteInterface} from '../../routes/session';
 import MainLayout from '../../components/MainLayout/MainLayout';
@@ -13,6 +12,8 @@ import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutCont
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import QuitSession from '../../modals/QuitSession/QuitSession';
 import {closeQuitModal, SessionState, setSessionCode} from '../../redux/reducers/session/reducer';
+import {AppState} from '../../redux/index';
+import SessionScreenRoutes from '../SessionScreenRoutes/SessionScreenRoutes';
 
 class SessionScreen extends Component {
 
@@ -29,10 +30,13 @@ class SessionScreen extends Component {
 
   constructor(props) {
     super(props);
-    const {match, setSessionCode} = props;
-    setSessionCode(match.params.id);
     this.state = {};
     this.quitSession = this.quitSession.bind(this);
+  }
+
+  componentDidMount() {
+    const {match, setSessionCode} = this.props;
+    setSessionCode(match.params.id);
   }
 
   quitSession() {
@@ -47,24 +51,10 @@ class SessionScreen extends Component {
       <div className='SessionScreen'>
         <MainLayout>
           <MainLayoutContent noBottom={!showSessionBottom}>
-            {
-              sessionRoutes.map((route: RouteInterface, index) => (
-                <Route key={index}
-                       path={route.path}
-                       exact={route.exact}
-                       component={route.main}/>
-              ))
-            }
+            <SessionScreenRoutes top={true}/>
           </MainLayoutContent>
           <MainLayoutBottom hide={!showSessionBottom}>
-            {
-              sessionRoutes.map((route: RouteInterface, index) => (
-                <Route key={index}
-                       path={route.path}
-                       exact={route.exact}
-                       component={route.bottom}/>
-              ))
-            }
+            <SessionScreenRoutes top={false}/>
           </MainLayoutBottom>
         </MainLayout>
         <TransitionGroup>
@@ -98,5 +88,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SessionScreen);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SessionScreen));
 

@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {SessionState} from '../../redux/reducers/session/reducer';
 import SessionGroup from '../SessionGroup/SessionGroup';
 import SessionInPlay from '../SessionInPlay/SessionInPlay';
+import {AppState} from '../../redux/index';
 
 class SessionHub extends Component {
 

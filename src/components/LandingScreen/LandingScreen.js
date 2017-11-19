@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './LandingScreen.css';
+import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
@@ -24,6 +25,7 @@ class LandingScreen extends Component {
   sessionCodeInputElement;
 
   props: {
+    firebase: any,
     history: any,
     setSessionCode(sessionCode: string): void,
   };
@@ -82,9 +84,12 @@ class LandingScreen extends Component {
   }
 
   createSession() {
-    const {history, setSessionCode} = this.props;
+    const {firebase, history, setSessionCode} = this.props;
     const {sessionCode} = this.state;
     if (!sessionCode) return;
+    firebase.push('/sessions', {
+      id: sessionCode,
+    });
     setSessionCode(sessionCode);
     history.push(`/session/${sessionCode}/host`);
   }
@@ -253,6 +258,7 @@ class LandingScreen extends Component {
 
 const mapStateToProps = (state: AppState) => {
   return {
+    firebase: state.firebase,
     sessionCode: state.session.sessionCode,
   };
 };
@@ -263,5 +269,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LandingScreen));
+const wrappedLandingScreen = firebaseConnect()(LandingScreen);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedLandingScreen));
 

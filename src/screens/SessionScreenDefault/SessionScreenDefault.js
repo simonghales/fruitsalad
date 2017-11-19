@@ -37,6 +37,7 @@ class SessionScreenDefault extends Component {
     }
 
     if (!gameInPlay) {
+      console.log('redirecting to hub...');
       return (
         <Redirect to={{
           pathname: `/session/${match.params.id}/hub`,
