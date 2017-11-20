@@ -45,7 +45,7 @@
 
 }
 
-.QuitSession
+.SessionNotFound
 {
   position:        fixed;
   top:             0;
@@ -53,12 +53,12 @@
   right:           0;
   bottom:          0;
   display:         flex;
-  align-items:     flex-end;
+  align-items:     center;
   justify-content: center;
   padding:         10px;
 }
 
-.QuitSession__background
+.SessionNotFound__background
 {
   position:         absolute;
   top:              0;
@@ -91,7 +91,7 @@
 
 }
 
-.QuitSession__content
+.SessionNotFound__content
 {
   position:         relative;
   background-color: $color-background;
@@ -129,35 +129,35 @@
 
 }
 
-.QuitSession__sessionCode
+.SessionNotFound__sessionCode
 {
   margin-top: 20px;
 }
 
-.QuitSession__sessionCode__label
+.SessionNotFound__sessionCode__label
 {
   @include smallFaintText;
   margin-bottom: 13px;
   text-align:    center;
 }
 
-.QuitSession__sessionCode__code
+.SessionNotFound__sessionCode__code
 {
   @include mediumSizeFont;
   text-align: center;
 }
 
-.QuitSession__create
+.SessionNotFound__create
 {
   margin-top: 20px;
 }
 
-.QuitSession__create__button
+.SessionNotFound__create__button
 {
 
 }
 
-.QuitSession__close
+.SessionNotFound__close
 {
   @include smallSizeFont;
   color:           $color-faint;

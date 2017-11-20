@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import './SessionNotFound.css';
 import {connect} from 'react-redux';
+import {
+  withRouter,
+} from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import MainButton from '../../components/MainButton/MainButton';
 import {SessionState} from '../../redux/reducers/session/reducer';
@@ -9,48 +12,37 @@ import {AppState} from '../../redux/index';
 class SessionNotFound extends Component {
 
   props: {
+    history: {},
     sessionCode: string,
   };
 
   constructor(props) {
     super(props);
-    this.createSession = this.createSession.bind(this);
-    this.joinOtherSession = this.joinOtherSession.bind(this);
+    this.returnToHome = this.returnToHome.bind(this);
   }
 
-  createSession() {
-  }
-
-  joinOtherSession() {
+  returnToHome() {
+    const {history} = this.props;
+    history.push(`/`);
   }
 
   render() {
     const {sessionCode} = this.props;
     return (
       <Modal>
-        <div className='QuitSession'>
-          <div className='QuitSession__background'></div>
-          <div className='QuitSession__content'>
-            <div className='QuitSession__sessionCode'>
-              <div className='QuitSession__sessionCode__label'>Hmm, we couldn't find this session</div>
-              <div className='QuitSession__sessionCode__code'>{sessionCode}</div>
+        <div className='SessionNotFound'>
+          <div className='SessionNotFound__background'></div>
+          <div className='SessionNotFound__content'>
+            <div className='SessionNotFound__sessionCode'>
+              <div className='SessionNotFound__sessionCode__label'>Hmm, we couldn't find this session</div>
+              <div className='SessionNotFound__sessionCode__code'>{sessionCode}</div>
             </div>
-            <div className='QuitSession__create'>
+            <div className='SessionNotFound__create'>
               <MainButton fullWidth={true}>
-                <button className='QuitSession__create__button' onClick={this.createSession}>
-                  Host Session
+                <button className='SessionNotFound__create__button' onClick={this.returnToHome}>
+                  Return to home screen
                 </button>
               </MainButton>
-            </div>
-            <div className='QuitSession__create'>
-              <MainButton fullWidth={true}>
-                <button className='QuitSession__create__button' onClick={this.joinOtherSession}>
-                  Join other Session
-                </button>
-              </MainButton>
-            </div>
-            <div className='QuitSession__close'>
-              Return to home screen
             </div>
           </div>
         </div>
@@ -59,14 +51,14 @@ class SessionNotFound extends Component {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    sessionCode: state.session.sessionCode,
-  };
-};
+// const mapStateToProps = (state: AppState) => {
+//   return {};
+// };
+//
+// const mapDispatchToProps = (dispatch) => {
+//   return {};
+// };
+//
+// export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionNotFound));
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SessionNotFound);
+export default withRouter(SessionNotFound);

@@ -6,6 +6,7 @@ import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {
   withRouter,
 } from 'react-router-dom';
+import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {sessionRoutes, RouteInterface} from '../../routes/session';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
@@ -48,7 +49,8 @@ class SessionScreen extends Component {
   }
 
   render() {
-    const {closeQuitModal, showSessionBottom, quitModalOpen, invalidSession} = this.props;
+    const {closeQuitModal, match, showSessionBottom, quitModalOpen, invalidSession} = this.props;
+    const sessionCode = match.params.id;
     return (
       <div className='SessionScreen'>
         <MainLayout>
@@ -66,7 +68,7 @@ class SessionScreen extends Component {
                 timeout={350}
                 classNames='fade'
                 key='quitSession'>
-                <QuitSession close={closeQuitModal} quit={this.quitSession}/>
+                <QuitSession close={closeQuitModal} sessionCode={sessionCode} quit={this.quitSession}/>
               </CSSTransition>
             ) : null
           }
@@ -78,7 +80,7 @@ class SessionScreen extends Component {
                 timeout={350}
                 classNames='fade'
                 key='quitSession'>
-                <SessionNotFound/>
+                <SessionNotFound sessionCode={sessionCode}/>
               </CSSTransition>
             ) : null
           }
@@ -89,10 +91,11 @@ class SessionScreen extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const sessions = state.firebase.data.sessions;
   return {
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
-    invalidSession: state.session.invalidSession,
+    invalidSession: isLoaded(sessions) && isEmpty(sessions),
   };
 };
 
@@ -103,5 +106,14 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SessionScreen));
+const wrappedSessionScreen = firebaseConnect((props) => {
+  return [
+    {
+      path: '/sessions',
+      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
+    },
+  ];
+})(SessionScreen);
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(wrappedSessionScreen));
 

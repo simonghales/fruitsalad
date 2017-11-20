@@ -11,17 +11,12 @@ import {AppState} from '../../redux/index';
 class SessionGroup extends Component {
 
   props: {
-    firebase: any,
-    players: Player[],
-    sessions: {},
     setGameInPlay(): void,
   };
 
   constructor(props) {
     super(props);
     this.startGame = this.startGame.bind(this);
-    this.updateSession = this.updateSession.bind(this);
-    this.updateUsers = this.updateUsers.bind(this);
   }
 
   startGame() {
@@ -29,37 +24,8 @@ class SessionGroup extends Component {
     setGameInPlay();
   }
 
-  updateSession() {
-    const {firebase, sessions} = this.props;
-    const sessionKey = Object.keys(sessions)[0];
-    console.log(`update: ${sessionKey}`);
-    firebase.update(`/sessions/${sessionKey}`, {
-      id: 'SILLYKITTENS',
-      host: '',
-      users: {},
-    });
-  }
-
-  updateUsers() {
-    const {firebase, sessions} = this.props;
-    const sessionKey = Object.keys(sessions)[0];
-    console.log(`update: ${sessionKey}`);
-    firebase.push(`/sessions/${sessionKey}/users`, {
-      id: 'something',
-      image: 'something',
-      name: 'Mila',
-    });
-    firebase.push(`/sessions/${sessionKey}/users`, {
-      id: 'something',
-      image: 'something',
-      name: 'Jeremy',
-    });
-  }
-
   render() {
-    const {players} = this.props;
-    const {users, session} = this.props;
-    console.log('props', this.props);
+    const {session} = this.props;
     return (
       <div className='SessionGroup'>
         {/*<div onClick={this.updateSession}>*/}
@@ -91,12 +57,7 @@ class SessionGroup extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  return {
-    players: state.session.players,
-    sessions: state.firebase.data.sessions,
-    session: (state.firebase.data.sessions) ? state.firebase.data.sessions[Object.keys(state.firebase.data.sessions)[0]] : null,
-    firebase: state.firebase,
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -105,13 +66,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const wrappedSessionGroup = firebaseConnect((props) => {
-  return [
-    {
-      path: '/sessions',
-      queryParams: ['orderByChild=id', 'equalTo=SILLYKITTENS', 'limitToFirst=1'],
-    },
-  ];
-})(SessionGroup);
-
-export default connect(mapStateToProps, mapDispatchToProps)(wrappedSessionGroup);
+export default connect(mapStateToProps, mapDispatchToProps)(SessionGroup);

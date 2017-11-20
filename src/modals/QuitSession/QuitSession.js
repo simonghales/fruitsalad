@@ -51,14 +51,4 @@ class QuitSession extends Component {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    sessionCode: state.session.sessionCode,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuitSession);
+export default QuitSession;

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './SessionScreenHub.css';
+import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {connect} from 'react-redux';
 import SessionGroup from '../../components/SessionGroup/SessionGroup';
 import GameSelector from '../../components/GameSelector/GameSelector';
@@ -12,6 +13,7 @@ class SessionScreenHub extends Component {
     gameInPlay: boolean,
     joined: boolean,
     match: any,
+    session: {},
   };
 
   state: {};
@@ -23,7 +25,9 @@ class SessionScreenHub extends Component {
 
   render() {
 
-    const {gameInPlay, joined, match} = this.props;
+    const {gameInPlay, joined, match, session} = this.props;
+
+    console.log('session?', session);
 
     if (!joined) {
       return (
@@ -47,7 +51,7 @@ class SessionScreenHub extends Component {
           <GameSelector/>
         </div>
         <div className='SessionScreenHub__group'>
-          <SessionGroup/>
+          <SessionGroup session={session}/>
         </div>
       </div>
     );
@@ -55,9 +59,12 @@ class SessionScreenHub extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const sessions = state.firebase.data.sessions;
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
+    session: (sessions) ? sessions[Object.keys(sessions)[0]] : null,
+    sessions: sessions,
   };
 };
 
@@ -65,4 +72,14 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHub));
+const wrappedSessionScreenHub = firebaseConnect((props) => {
+  console.log('load the session...');
+  return [
+    {
+      path: '/sessions',
+      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
+    },
+  ];
+})(SessionScreenHub);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedSessionScreenHub));
