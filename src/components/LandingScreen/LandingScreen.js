@@ -58,6 +58,17 @@ class LandingScreen extends Component {
     this.setHostActive = this.setHostActive.bind(this);
     this.closeJoinHost = this.closeJoinHost.bind(this);
     this.focusSessionCodeInput = this.focusSessionCodeInput.bind(this);
+    this.submitSessionCode = this.submitSessionCode.bind(this);
+  }
+
+  submitSessionCode(event) {
+    const {joinActive} = this.state;
+    event.preventDefault();
+    if (joinActive) {
+      this.handleRightClick();
+    } else {
+      this.handleLeftClick();
+    }
   }
 
   handleSessionCodeInputChange(event) {
@@ -212,7 +223,7 @@ class LandingScreen extends Component {
                 </div>
               </BottomSide>
               <BottomMiddle>
-                <div className={classNames([
+                <form onSubmit={this.submitSessionCode} className={classNames([
                   'LandingScreen__bottom__input',
                   {
                     'LandingScreen__bottom__input--active': hostActive || joinActive,
@@ -228,7 +239,7 @@ class LandingScreen extends Component {
                          }}
                          onChange={this.handleSessionCodeInputChange}
                          type='text'/>
-                </div>
+                </form>
               </BottomMiddle>
               <BottomSide>
                 <div className={classNames([
