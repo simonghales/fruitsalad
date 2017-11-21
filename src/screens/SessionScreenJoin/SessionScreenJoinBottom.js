@@ -16,10 +16,7 @@ import {getUserName} from '../../redux/reducers/session/state';
 class SessionScreenJoinBottom extends Component {
 
   props: {
-    history: any,
-    match: any,
-    userName: string,
-    setJoined(): void,
+    joinSession(): void,
   };
 
   state: {};
@@ -31,13 +28,8 @@ class SessionScreenJoinBottom extends Component {
   }
 
   next() {
-    const {userName} = this.props;
-    if (userName === '') {
-      return;
-    }
-    const {history, match, setJoined} = this.props;
-    setJoined();
-    history.push(`/session/${match.params.id}/hub`);
+    const {joinSession} = this.props;
+    joinSession();
   }
 
   render() {
@@ -60,16 +52,17 @@ class SessionScreenJoinBottom extends Component {
 
 }
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    userName: getUserName(state),
-  };
-};
+export default SessionScreenJoinBottom;
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setJoined: () => dispatch(setJoined()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenJoinBottom));
+// const mapStateToProps = (state: AppState) => {
+//   return {
+//   };
+// };
+//
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     setJoined: () => dispatch(setJoined()),
+//   };
+// };
+//
+// export default connect(mapStateToProps, mapDispatchToProps)(SessionScreenJoinBottom);

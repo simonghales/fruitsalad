@@ -54,14 +54,7 @@ class SessionScreen extends Component {
     const sessionCode = match.params.id;
     return (
       <div className='SessionScreen'>
-        <MainLayout>
-          <MainLayoutContent noBottom={!showSessionBottom}>
-            <SessionScreenRoutes top={true}/>
-          </MainLayoutContent>
-          <MainLayoutBottom hide={!showSessionBottom}>
-            <SessionScreenRoutes top={false}/>
-          </MainLayoutBottom>
-        </MainLayout>
+        <SessionScreenRoutes top={true}/>
         <TransitionGroup>
           {
             quitModalOpen ? (

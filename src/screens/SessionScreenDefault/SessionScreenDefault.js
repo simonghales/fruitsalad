@@ -8,6 +8,9 @@ import './SessionScreenDefault.css';
 import {SessionState, setInvalidSessionEnforced, setShowSessionBottom} from '../../redux/reducers/session/reducer';
 import SessionInPlay from '../../components/SessionInPlay/SessionInPlay';
 import GoFullScreen from '../../components/GoFullScreen/GoFullScreen';
+import MainLayout from '../../components/MainLayout/MainLayout';
+import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
+import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 
 class SessionScreenDefault extends Component {
 
@@ -52,10 +55,14 @@ class SessionScreenDefault extends Component {
     }
 
     return (
-      <div className='SessionScreenDefault'>
-        <GoFullScreen/>
-        <SessionInPlay/>
-      </div>
+      <MainLayout>
+        <MainLayoutContent>
+          <div className='SessionScreenDefault'>
+            <GoFullScreen/>
+            <SessionInPlay/>
+          </div>
+        </MainLayoutContent>
+      </MainLayout>
     );
   }
 }

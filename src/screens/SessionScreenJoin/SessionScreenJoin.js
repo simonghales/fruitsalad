@@ -1,27 +1,45 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router';
 import './SessionScreenJoin.css';
 import SessionJoin from '../../components/SessionJoin/SessionJoin';
 import {AppState} from '../../redux/index';
-import {setInvalidSessionEnforced} from '../../redux/reducers/session/reducer';
+import {setInvalidSessionEnforced, setJoined} from '../../redux/reducers/session/reducer';
+import MainLayout from '../../components/MainLayout/MainLayout';
+import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
+import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
+import SessionScreenJoinBottom from './SessionScreenJoinBottom';
+import {generateNewUser} from '../../models/user';
 
 class SessionScreenJoin extends Component {
+
+  static contextTypes = {
+    store: PropTypes.object
+  };
 
   props: {
     gameInPlay: boolean,
     joined: boolean,
     match: any,
     session: {},
+    sessionKey: string,
+    setJoined(): void,
     setInvalidSessionEnforced(): void,
   };
 
-  state: {};
+  state: {
+    userName: string,
+  };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      userName: '',
+    };
+    this.joinSession = this.joinSession.bind(this);
+    this.setUserName = this.setUserName.bind(this);
   }
 
   componentDidMount() {
@@ -29,9 +47,33 @@ class SessionScreenJoin extends Component {
     setInvalidSessionEnforced();
   }
 
+  joinSession() {
+    const {userName} = this.state;
+    const {history, match, session, sessionKey} = this.props;
+    if (!session) {
+      console.warn('no session???', session, sessionKey);
+      return;
+    } // todo - have a delay whilst session is loading...}
+    this.context.store.firebase
+      .push(`/sessions/${sessionKey}/users`, generateNewUser({
+        name: userName,
+      }))
+      .then(() => {
+        this.props.setJoined();
+        history.push(`/session/${match.params.id}/hub`);
+      });
+  }
+
+  setUserName(userName: string) {
+    this.setState({
+      userName,
+    });
+  }
+
   render() {
 
     const {gameInPlay, joined, match} = this.props;
+    const {userName} = this.state;
 
     if (joined && gameInPlay) {
       return (
@@ -50,35 +92,37 @@ class SessionScreenJoin extends Component {
     }
 
     return (
-      <div className='SessionScreenJoin'>
-        <SessionJoin/>
-      </div>
+      <MainLayout>
+        <MainLayoutContent>
+          <div className='SessionScreenJoin'>
+            <SessionJoin userName={userName} setUserName={this.setUserName}/>
+          </div>
+        </MainLayoutContent>
+        <MainLayoutBottom>
+          <SessionScreenJoinBottom joinSession={this.joinSession}/>
+        </MainLayoutBottom>
+      </MainLayout>
     );
   }
 }
 
 const mapStateToProps = (state: AppState) => {
   const sessions = state.firebase.data.sessions;
+  const sessionKey = (sessions) ? Object.keys(sessions)[0] : null;
+  const session = (sessions) ? sessions[sessionKey] : null;
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
-    session: (sessions) ? sessions[Object.keys(sessions)[0]] : null,
+    session: session,
+    sessionKey: sessionKey,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setJoined: () => dispatch(setJoined()),
     setInvalidSessionEnforced: () => dispatch(setInvalidSessionEnforced(true)),
   };
 };
 
-const wrappedSessionScreenJoin = firebaseConnect((props) => {
-  return [
-    {
-      path: '/sessions',
-      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
-    },
-  ];
-})(SessionScreenJoin);
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedSessionScreenJoin));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenJoin));

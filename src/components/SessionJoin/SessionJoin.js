@@ -69,16 +69,11 @@ class SessionJoin extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  return {
-    userName: getUserName(state),
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setJoined: () => dispatch(setJoined()),
-    setUserName: (userName: string) => dispatch(setUserName(userName)),
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionJoin));

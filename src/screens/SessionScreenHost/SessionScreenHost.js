@@ -9,6 +9,11 @@ import {connect} from 'react-redux';
 import {SessionState, setInvalidSessionEnforced, setSessionCreated} from '../../redux/reducers/session/reducer';
 import {AppState} from '../../redux/index';
 import {generateNewSession} from '../../models/session';
+import MainLayout from '../../components/MainLayout/MainLayout';
+import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
+import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
+import SessionScreenJoinBottom from '../SessionScreenJoin/SessionScreenJoinBottom';
+import SessionScreenHostBottom from './SessionScreenHostBottom';
 
 class SessionScreenHost extends Component {
 
@@ -88,12 +93,19 @@ class SessionScreenHost extends Component {
     }
 
     return (
-      <div className='SessionScreenHost'>
-        <div className='SessionScreenHost__message'>
-          <div className='SessionScreenHost__message__label'>Creating Session</div>
-          <div className='SessionScreenHost__message__code'>{sessionCode}</div>
-        </div>
-      </div>
+      <MainLayout>
+        <MainLayoutContent>
+          <div className='SessionScreenHost'>
+            <div className='SessionScreenHost__message'>
+              <div className='SessionScreenHost__message__label'>Creating Session</div>
+              <div className='SessionScreenHost__message__code'>{sessionCode}</div>
+            </div>
+          </div>
+        </MainLayoutContent>
+        <MainLayoutBottom>
+          <SessionScreenHostBottom/>
+        </MainLayoutBottom>
+      </MainLayout>
     );
   }
 }

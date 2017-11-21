@@ -7,6 +7,10 @@ import GameSelector from '../../components/GameSelector/GameSelector';
 import {AppState} from '../../redux/index';
 import {Redirect, withRouter} from 'react-router';
 import {setInvalidSessionEnforced} from '../../redux/reducers/session/reducer';
+import MainLayout from '../../components/MainLayout/MainLayout';
+import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
+import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
+import SessionScreenHubBottom from './SessionScreenHubBottom';
 
 class SessionScreenHub extends Component {
 
@@ -53,14 +57,21 @@ class SessionScreenHub extends Component {
     }
 
     return (
-      <div className='SessionScreenHub'>
-        <div className='SessionScreenHub__gameSelector'>
-          <GameSelector/>
-        </div>
-        <div className='SessionScreenHub__group'>
-          <SessionGroup session={session}/>
-        </div>
-      </div>
+      <MainLayout>
+        <MainLayoutContent>
+          <div className='SessionScreenHub'>
+            <div className='SessionScreenHub__gameSelector'>
+              <GameSelector/>
+            </div>
+            <div className='SessionScreenHub__group'>
+              <SessionGroup session={session}/>
+            </div>
+          </div>
+        </MainLayoutContent>
+        <MainLayoutBottom>
+          <SessionScreenHubBottom/>
+        </MainLayoutBottom>
+      </MainLayout>
     );
   }
 }
@@ -81,14 +92,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const wrappedSessionScreenHub = firebaseConnect((props) => {
-  console.log('load the session...');
-  return [
-    {
-      path: '/sessions',
-      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
-    },
-  ];
-})(SessionScreenHub);
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedSessionScreenHub));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHub));
