@@ -5,7 +5,7 @@ import {Redirect, withRouter} from 'react-router';
 import './SessionScreenJoin.css';
 import SessionJoin from '../../components/SessionJoin/SessionJoin';
 import {AppState} from '../../redux/index';
-import {setInvalidSession} from '../../redux/reducers/session/reducer';
+import {setInvalidSessionEnforced} from '../../redux/reducers/session/reducer';
 
 class SessionScreenJoin extends Component {
 
@@ -14,6 +14,7 @@ class SessionScreenJoin extends Component {
     joined: boolean,
     match: any,
     session: {},
+    setInvalidSessionEnforced(): void,
   };
 
   state: {};
@@ -21,6 +22,11 @@ class SessionScreenJoin extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    const {setInvalidSessionEnforced} = this.props;
+    setInvalidSessionEnforced();
   }
 
   render() {
@@ -52,23 +58,27 @@ class SessionScreenJoin extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const sessions = state.firebase.data.sessions;
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
+    session: (sessions) ? sessions[Object.keys(sessions)[0]] : null,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setInvalidSessionEnforced: () => dispatch(setInvalidSessionEnforced(true)),
+  };
 };
 
-// const wrappedSessionScreenJoin = firebaseConnect((props) => {
-//   return [
-//     {
-//       path: '/sessions',
-//       queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
-//     },
-//   ];
-// })(SessionScreenJoin);
+const wrappedSessionScreenJoin = firebaseConnect((props) => {
+  return [
+    {
+      path: '/sessions',
+      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
+    },
+  ];
+})(SessionScreenJoin);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenJoin));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedSessionScreenJoin));

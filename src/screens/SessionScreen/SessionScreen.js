@@ -25,6 +25,7 @@ class SessionScreen extends Component {
     showSessionBottom: boolean,
     quitModalOpen: boolean,
     invalidSession: boolean,
+    invalidSessionEnforced: boolean,
     closeQuitModal(): void,
     setSessionCode(sessionCode: string): void,
   };
@@ -49,7 +50,7 @@ class SessionScreen extends Component {
   }
 
   render() {
-    const {closeQuitModal, match, showSessionBottom, quitModalOpen, invalidSession} = this.props;
+    const {closeQuitModal, match, showSessionBottom, quitModalOpen, invalidSession, invalidSessionEnforced} = this.props;
     const sessionCode = match.params.id;
     return (
       <div className='SessionScreen'>
@@ -75,7 +76,7 @@ class SessionScreen extends Component {
         </TransitionGroup>
         <TransitionGroup>
           {
-            invalidSession ? (
+            (invalidSession && invalidSessionEnforced) ? (
               <CSSTransition
                 timeout={350}
                 classNames='fade'
@@ -96,6 +97,7 @@ const mapStateToProps = (state: AppState) => {
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
     invalidSession: isLoaded(sessions) && isEmpty(sessions),
+    invalidSessionEnforced: state.session.invalidSessionEnforced,
   };
 };
 

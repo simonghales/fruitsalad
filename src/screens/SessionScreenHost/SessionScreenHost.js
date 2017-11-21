@@ -1,32 +1,92 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import './SessionScreenHost.css';
+import {
+  Redirect,
+  withRouter,
+} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {SessionState, setSessionCreated} from '../../redux/reducers/session/reducer';
+import {SessionState, setInvalidSessionEnforced, setSessionCreated} from '../../redux/reducers/session/reducer';
 import {AppState} from '../../redux/index';
+import {generateNewSession} from '../../models/session';
 
 class SessionScreenHost extends Component {
 
-  props: {
-    sessionCode: string,
-    sessionCreated: boolean,
-    setSessionCreated(): void,
+  static contextTypes = {
+    store: PropTypes.object
   };
 
-  state: {};
+  props: {
+    match: any,
+    sessionCode: string,
+    sessionCreated: boolean,
+    setInvalidSessionEnforced(): void,
+  };
+
+  state: {
+    sessionAlreadyCreated: boolean,
+    sessionCreated: boolean,
+  };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      sessionAlreadyCreated: false,
+      sessionCreated: false,
+    };
+    this.checkAndCreateSession = this.checkAndCreateSession.bind(this);
+    this.createSession = this.createSession.bind(this);
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.props.setSessionCreated();
-    }, 1000);
+    const {setInvalidSessionEnforced} = this.props;
+    setInvalidSessionEnforced();
+    this.checkAndCreateSession();
+  }
+
+  checkAndCreateSession() {
+    const {match} = this.props;
+
+    this.context.store.firebase.ref('/sessions').orderByChild('id')
+      .equalTo(match.params.id).limitToFirst(1).once('value', snapshot => {
+      const sessionData = snapshot.val();
+      if (!sessionData) {
+        this.createSession();
+      } else {
+        this.setState({
+          sessionAlreadyCreated: true,
+        });
+      }
+    });
+
+  }
+
+  createSession() {
+    const {match} = this.props;
+
+    this.context.store.firebase
+      .push('sessions', generateNewSession({
+        id: match.params.id,
+      }))
+      .then(() => {
+        this.setState({
+          sessionCreated: true,
+        })
+      })
   }
 
   render() {
-    const {sessionCode} = this.props;
+    const {sessionAlreadyCreated, sessionCreated} = this.state;
+    const {match, sessionCode} = this.props;
+
+    if (sessionAlreadyCreated || sessionCreated) {
+      return (
+        <Redirect to={{
+          pathname: `/session/${match.params.id}/join`,
+        }}/>
+      );
+    }
+
     return (
       <div className='SessionScreenHost'>
         <div className='SessionScreenHost__message'>
@@ -47,10 +107,10 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSessionCreated: () => dispatch(setSessionCreated()),
+    setInvalidSessionEnforced: () => dispatch(setInvalidSessionEnforced(false)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SessionScreenHost);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHost));
 
 

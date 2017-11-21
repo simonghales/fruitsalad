@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import {connect} from 'react-redux';
 import './SessionScreenDefault.css';
-import {SessionState, setShowSessionBottom} from '../../redux/reducers/session/reducer';
+import {SessionState, setInvalidSessionEnforced, setShowSessionBottom} from '../../redux/reducers/session/reducer';
 import SessionInPlay from '../../components/SessionInPlay/SessionInPlay';
 import GoFullScreen from '../../components/GoFullScreen/GoFullScreen';
 
@@ -15,6 +15,7 @@ class SessionScreenDefault extends Component {
     gameInPlay: boolean,
     joined: boolean,
     match: any,
+    setInvalidSessionEnforced(): void,
   };
 
   state: {};
@@ -22,6 +23,11 @@ class SessionScreenDefault extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    const {setInvalidSessionEnforced} = this.props;
+    setInvalidSessionEnforced();
   }
 
   render() {
@@ -62,7 +68,9 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setInvalidSessionEnforced: () => dispatch(setInvalidSessionEnforced(true)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenDefault));

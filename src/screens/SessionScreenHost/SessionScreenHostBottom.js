@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   withRouter,
 } from 'react-router-dom';
+import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {connect} from 'react-redux';
 import BottomFlex from '../../components/BottomFlex/BottomFlex';
 import BottomMiddle from '../../components/BottomMiddle/BottomMiddle';
@@ -18,6 +19,7 @@ class SessionScreenHostBottom extends Component {
     history: any,
     match: any,
     sessionCreated: boolean,
+    validSession: boolean,
   };
 
   state: {};
@@ -37,6 +39,7 @@ class SessionScreenHostBottom extends Component {
 
   render() {
     const {sessionCreated} = this.props;
+    console.log('validSession?', this.props.validSession);
     return (
       <BottomFlex classes={['SessionScreenHostBottom']}>
         <BottomSide>
@@ -46,9 +49,9 @@ class SessionScreenHostBottom extends Component {
           <SessionCodePreview/>
         </BottomMiddle>
         <BottomSide>
-          <SimpleButton onClick={this.goToJoin} disabled={!sessionCreated}>
-            Next
-          </SimpleButton>
+          {/*<SimpleButton onClick={this.goToJoin} disabled={!sessionCreated}>*/}
+          {/*Next*/}
+          {/*</SimpleButton>*/}
         </BottomSide>
       </BottomFlex>
     );
@@ -57,8 +60,10 @@ class SessionScreenHostBottom extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const sessions = state.firebase.data.sessions;
   return {
     sessionCreated: state.session.sessionCreated,
+    validSession: isLoaded(sessions) && !isEmpty(sessions),
   };
 };
 
@@ -66,4 +71,13 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHostBottom));
+const wrappedFirebaseConnect = firebaseConnect((props) => {
+  return [
+    {
+      path: '/sessions',
+      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
+    },
+  ];
+})(SessionScreenHostBottom);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedFirebaseConnect));

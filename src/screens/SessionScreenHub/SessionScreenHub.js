@@ -6,6 +6,7 @@ import SessionGroup from '../../components/SessionGroup/SessionGroup';
 import GameSelector from '../../components/GameSelector/GameSelector';
 import {AppState} from '../../redux/index';
 import {Redirect, withRouter} from 'react-router';
+import {setInvalidSessionEnforced} from '../../redux/reducers/session/reducer';
 
 class SessionScreenHub extends Component {
 
@@ -14,6 +15,7 @@ class SessionScreenHub extends Component {
     joined: boolean,
     match: any,
     session: {},
+    setInvalidSessionEnforced(): void,
   };
 
   state: {};
@@ -21,6 +23,11 @@ class SessionScreenHub extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    const {setInvalidSessionEnforced} = this.props;
+    setInvalidSessionEnforced();
   }
 
   render() {
@@ -69,7 +76,9 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setInvalidSessionEnforced: () => dispatch(setInvalidSessionEnforced(true)),
+  };
 };
 
 const wrappedSessionScreenHub = firebaseConnect((props) => {
