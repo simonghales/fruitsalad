@@ -12,12 +12,9 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import SessionScreenHubBottom from './SessionScreenHubBottom';
+import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
 
 class SessionScreenHub extends Component {
-
-  static contextTypes = {
-    store: PropTypes.object
-  };
 
   props: {
     loadedSession: boolean,
@@ -40,42 +37,9 @@ class SessionScreenHub extends Component {
     setInvalidSessionEnforced();
   }
 
-  notJoined() {
-    const {loadedSession, session} = this.props;
-    if (!loadedSession) return false;
-
-    const firebase = this.context.store.firebase;
-
-    if (getVal(firebase, 'isInitializing') === true ||
-      getVal(firebase, 'auth') === undefined) {
-      return false;
-    }
-
-    const currentUser = firebase.auth().currentUser;
-
-    for (let key in session.users) {
-      if (session.users[key].id === currentUser.uid) {
-        return false;
-      }
-    }
-
-    return true;
-
-  }
-
   render() {
 
     const {gameInPlay, joined, match, session} = this.props;
-
-    console.log('session?', session);
-
-    if (this.notJoined()) {
-      return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}/join`,
-        }}/>
-      );
-    }
 
     if (gameInPlay) {
       return (
@@ -87,6 +51,11 @@ class SessionScreenHub extends Component {
 
     return (
       <MainLayout>
+        <SessionJoinedChecker joinedOnly={false}>
+          <Redirect to={{
+            pathname: `/session/${match.params.id}/join`,
+          }}/>
+        </SessionJoinedChecker>
         <MainLayoutContent>
           <div className='SessionScreenHub'>
             <div className='SessionScreenHub__gameSelector'>

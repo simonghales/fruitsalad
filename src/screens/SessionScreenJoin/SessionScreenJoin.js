@@ -12,6 +12,7 @@ import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutCont
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import SessionScreenJoinBottom from './SessionScreenJoinBottom';
 import {generateNewUser} from '../../models/user';
+import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
 
 class SessionScreenJoin extends Component {
 
@@ -102,16 +103,13 @@ class SessionScreenJoin extends Component {
       );
     }
 
-    if (joined) {
-      return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}/hub`,
-        }}/>
-      );
-    }
-
     return (
       <MainLayout>
+        <SessionJoinedChecker>
+          <Redirect to={{
+            pathname: `/session/${match.params.id}/hub`,
+          }}/>
+        </SessionJoinedChecker>
         <MainLayoutContent>
           <div className='SessionScreenJoin'>
             <SessionJoin userName={userName} setUserName={this.setUserName}/>
