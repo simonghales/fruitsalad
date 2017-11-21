@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
+import {firebaseConnect, isLoaded, isEmpty, getVal} from 'react-redux-firebase';
 import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router';
 import './SessionScreenJoin.css';
@@ -50,12 +50,27 @@ class SessionScreenJoin extends Component {
   joinSession() {
     const {userName} = this.state;
     const {history, match, session, sessionKey} = this.props;
+
+    const firebase = this.context.store.firebase;
+
+    console.log('firebase', firebase);
+
+    if (getVal(firebase, 'isInitializing') === true ||
+      getVal(firebase, 'auth') === undefined) {
+      console.warn('not authenticated???');
+      return;
+    } // todo - have a delay whilst auth is loading...
+
     if (!session) {
       console.warn('no session???', session, sessionKey);
       return;
-    } // todo - have a delay whilst session is loading...}
+    } // todo - have a delay whilst session is loading...
+
+    const currentUser = firebase.auth().currentUser;
+
     this.context.store.firebase
       .push(`/sessions/${sessionKey}/users`, generateNewUser({
+        id: currentUser.uid,
         name: userName,
       }))
       .then(() => {
@@ -71,6 +86,10 @@ class SessionScreenJoin extends Component {
   }
 
   render() {
+
+    const firebase = this.context.store.firebase;
+
+    console.log('firebase', firebase);
 
     const {gameInPlay, joined, match} = this.props;
     const {userName} = this.state;

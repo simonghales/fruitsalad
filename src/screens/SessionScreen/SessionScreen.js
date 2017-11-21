@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
 import './SessionScreen.css';
-import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {
   withRouter,
 } from 'react-router-dom';
 import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
-import {sessionRoutes, RouteInterface} from '../../routes/session';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
-import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import QuitSession from '../../modals/QuitSession/QuitSession';
 import {closeQuitModal, SessionState, setSessionCode} from '../../redux/reducers/session/reducer';
 import {AppState} from '../../redux/index';
@@ -24,6 +19,7 @@ class SessionScreen extends Component {
     history: any,
     showSessionBottom: boolean,
     quitModalOpen: boolean,
+    loadedSession: boolean,
     invalidSession: boolean,
     invalidSessionEnforced: boolean,
     closeQuitModal(): void,
@@ -89,6 +85,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
+    loadedSession: isLoaded(sessions),
     invalidSession: isLoaded(sessions) && isEmpty(sessions),
     invalidSessionEnforced: state.session.invalidSessionEnforced,
   };
