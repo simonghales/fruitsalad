@@ -62,13 +62,8 @@ class LandingScreen extends Component {
   }
 
   submitSessionCode(event) {
-    const {joinActive} = this.state;
     event.preventDefault();
-    if (joinActive) {
-      this.handleRightClick();
-    } else {
-      this.handleLeftClick();
-    }
+    this.handleRightClick();
   }
 
   handleSessionCodeInputChange(event) {

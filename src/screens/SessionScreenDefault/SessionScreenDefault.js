@@ -11,6 +11,7 @@ import GoFullScreen from '../../components/GoFullScreen/GoFullScreen';
 import MainLayout from '../../components/MainLayout/MainLayout';
 import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
+import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
 
 class SessionScreenDefault extends Component {
 
@@ -37,14 +38,6 @@ class SessionScreenDefault extends Component {
 
     const {gameInPlay, joined, match} = this.props;
 
-    if (!joined) {
-      return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}/join`,
-        }}/>
-      );
-    }
-
     if (!gameInPlay) {
       console.log('redirecting to hub...');
       return (
@@ -56,6 +49,11 @@ class SessionScreenDefault extends Component {
 
     return (
       <MainLayout>
+        <SessionJoinedChecker joinedOnly={false}>
+          <Redirect to={{
+            pathname: `/session/${match.params.id}/join`,
+          }}/>
+        </SessionJoinedChecker>
         <MainLayoutContent>
           <div className='SessionScreenDefault'>
             <GoFullScreen/>
