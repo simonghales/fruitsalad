@@ -100,21 +100,16 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedSessionScreen = firebaseConnect((props, store) => {
-  const state = store.getState();
-  const sessions = state.firebase.data.sessions;
-  const sessionKey = (sessions) ? Object.keys(sessions)[0] : null;
+  const sessionKey = props.match.params.id;
   let queries = [
     {
-      path: '/sessions',
-      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
-    }
-  ];
-  if (sessionKey) {
-    queries.push({
+      path: `/sessions/${sessionKey}`,
+    },
+    {
       path: `/sessions/${sessionKey}/users`,
       storeAs: 'sessionUsers',
-    });
-  }
+    }
+  ];
   return queries;
 })(SessionScreen);
 

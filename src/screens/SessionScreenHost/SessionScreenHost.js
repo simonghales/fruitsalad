@@ -54,9 +54,9 @@ class SessionScreenHost extends Component {
 
   checkAndCreateSession() {
     const {match} = this.props;
+    const sessionKey = match.params.id;
 
-    this.context.store.firebase.ref('/sessions').orderByChild('id')
-      .equalTo(match.params.id).limitToFirst(1).once('value', snapshot => {
+    this.context.store.firebase.ref(`/sessions/${sessionKey}`).once('value', snapshot => {
       const sessionData = snapshot.val();
       if (!sessionData) {
         this.createSession();
@@ -75,22 +75,22 @@ class SessionScreenHost extends Component {
 
     const firebase = this.context.store.firebase;
     const currentUser = firebase.auth().currentUser;
+    const sessionKey = match.params.id;
 
-    this.context.store.firebase
-      .push('sessions', generateNewSession({
-        id: match.params.id,
-        users: {
-          [currentUser.uid]: generateNewUser({
-            id: currentUser.uid,
-            name: 'The Host',
-          })
-        }
-      }))
+    firebase.set(`/sessions/${sessionKey}`, generateNewSession({
+      id: match.params.id,
+      users: {
+        [currentUser.uid]: generateNewUser({
+          id: currentUser.uid,
+          name: 'The Host',
+        })
+      }
+    }))
       .then((response) => {
         this.setState({
           sessionCreated: true,
         });
-      })
+      });
   }
 
   render() {
