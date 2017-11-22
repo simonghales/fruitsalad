@@ -25,7 +25,6 @@ class SessionScreenJoin extends Component {
     joined: boolean,
     match: any,
     session: {},
-    sessionKey: string,
     setJoined(): void,
     setInvalidSessionEnforced(): void,
   };
@@ -50,7 +49,8 @@ class SessionScreenJoin extends Component {
 
   joinSession() {
     const {userName} = this.state;
-    const {history, match, session, sessionKey} = this.props;
+    const {history, match, session} = this.props;
+    const sessionKey = match.params.id;
 
     const firebase = this.context.store.firebase;
 
@@ -86,10 +86,6 @@ class SessionScreenJoin extends Component {
 
   render() {
 
-    const firebase = this.context.store.firebase;
-
-    console.log('firebase', firebase);
-
     const {gameInPlay, joined, match} = this.props;
     const {userName} = this.state;
 
@@ -105,7 +101,7 @@ class SessionScreenJoin extends Component {
       <MainLayout>
         <MainLayoutContent>
           <div className='SessionScreenJoin'>
-            <SessionJoin userName={userName} setUserName={this.setUserName}/>
+            <SessionJoin userName={userName} setUserName={this.setUserName} joinSession={this.joinSession}/>
           </div>
         </MainLayoutContent>
         <MainLayoutBottom>
@@ -117,14 +113,11 @@ class SessionScreenJoin extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  const sessions = state.firebase.data.sessions;
-  const sessionKey = (sessions) ? Object.keys(sessions)[0] : null;
-  const session = (sessions) ? sessions[sessionKey] : null;
+  const session = state.firebase.data.session;
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
     session: session,
-    sessionKey: sessionKey,
   };
 };
 

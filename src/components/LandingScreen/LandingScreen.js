@@ -157,7 +157,7 @@ class LandingScreen extends Component {
   setHostActive() {
     this.setState({
       hostActive: true,
-      sessionCode: 'SILLYKITTENS',
+      sessionCode: '',
     });
   }
 

@@ -28,11 +28,7 @@ class SessionJoinedChecker extends Component {
     if (getVal(firebase, 'isInitializing') !== true &&
       getVal(firebase, 'auth') !== undefined) {
       const currentUser = firebase.auth().currentUser;
-      for (let key in sessionUsers) {
-        if (sessionUsers[key].id === currentUser.uid) {
-          return true;
-        }
-      }
+      return (sessionUsers && sessionUsers[currentUser.uid]) ? true : false;
     }
     return false;
   }
@@ -52,15 +48,12 @@ class SessionJoinedChecker extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  const sessions = state.firebase.data.sessions;
+  const session = state.firebase.data.session;
   const sessionUsers = state.firebase.data.sessionUsers;
-  const sessionKey = (sessions) ? Object.keys(sessions)[0] : null;
-  const session = (sessions) ? sessions[sessionKey] : null;
 
   return {
     loadedSession: isLoaded(sessionUsers),
     session: session,
-    sessions: sessions,
     sessionUsers: sessionUsers,
   };
 };

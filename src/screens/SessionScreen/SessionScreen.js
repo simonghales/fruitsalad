@@ -81,13 +81,12 @@ class SessionScreen extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  const sessions = state.firebase.data.sessions;
-  console.log('sessions?', sessions);
+  const session = state.firebase.data.session;
   return {
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
-    loadedSession: isLoaded(sessions),
-    invalidSession: isLoaded(sessions) && isEmpty(sessions),
+    loadedSession: isLoaded(session),
+    invalidSession: isLoaded(session) && isEmpty(session),
     invalidSessionEnforced: state.session.invalidSessionEnforced,
   };
 };
@@ -104,6 +103,7 @@ const wrappedSessionScreen = firebaseConnect((props, store) => {
   let queries = [
     {
       path: `/sessions/${sessionKey}`,
+      storeAs: 'session',
     },
     {
       path: `/sessions/${sessionKey}/users`,

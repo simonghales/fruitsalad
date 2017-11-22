@@ -79,6 +79,7 @@ class SessionScreenHost extends Component {
 
     firebase.set(`/sessions/${sessionKey}`, generateNewSession({
       id: match.params.id,
+      host: currentUser.uid,
       users: {
         [currentUser.uid]: generateNewUser({
           id: currentUser.uid,
@@ -125,9 +126,9 @@ class SessionScreenHost extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  const sessions = state.firebase.data.sessions;
+  const session = state.firebase.data.session;
   return {
-    loadedSession: isLoaded(sessions) && !isEmpty(sessions),
+    loadedSession: isLoaded(session) && !isEmpty(session),
     sessionCode: state.session.sessionCode,
     sessionCreated: state.session.sessionCreated,
   };

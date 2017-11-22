@@ -60,10 +60,10 @@ class SessionScreenHostBottom extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  const sessions = state.firebase.data.sessions;
+  const session = state.firebase.data.session;
   return {
     sessionCreated: state.session.sessionCreated,
-    validSession: isLoaded(sessions) && !isEmpty(sessions),
+    validSession: isLoaded(session) && !isEmpty(session),
   };
 };
 

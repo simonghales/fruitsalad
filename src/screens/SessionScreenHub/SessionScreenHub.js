@@ -76,14 +76,13 @@ class SessionScreenHub extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  const sessions = state.firebase.data.sessions;
+  const session = state.firebase.data.session;
   const sessionUsers = state.firebase.data.sessionUsers;
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
-    loadedSession: isLoaded(sessions),
-    session: (sessions) ? sessions[Object.keys(sessions)[0]] : null,
-    sessions: sessions,
+    loadedSession: isLoaded(session),
+    session: session,
     sessionUsers: sessionUsers,
   };
 };

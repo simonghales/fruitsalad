@@ -15,6 +15,7 @@ class SessionJoin extends Component {
 
   props: {
     userName: string,
+    joinSession(): void,
     setUserName(userName: string): void,
   };
 
@@ -28,6 +29,7 @@ class SessionJoin extends Component {
       name: props.userName,
     };
     this.handleNameInputChange = this.handleNameInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleNameInputChange(event) {
@@ -39,10 +41,16 @@ class SessionJoin extends Component {
     setUserName(name);
   }
 
+  handleSubmit(event) {
+    const {joinSession} = this.props;
+    event.preventDefault();
+    joinSession();
+  }
+
   render() {
     const {name} = this.state;
     return (
-      <div className='SessionJoin'>
+      <form className='SessionJoin' onSubmit={this.handleSubmit}>
         <div className='SessionJoin__title'>
           <div>Who are You?</div>
         </div>
@@ -63,7 +71,7 @@ class SessionJoin extends Component {
                    value={name} onChange={this.handleNameInputChange}/>
           </PlainInput>
         </div>
-      </div>
+      </form>
     );
   }
 }
