@@ -5,5 +5,17 @@
 
 .MainLayoutContent
 {
-  flex: 1;
+  position:   absolute;
+  top:        0;
+  left:       0;
+  right:      0;
+  bottom:     72px;
+  overflow:   hidden;
+  transition: bottom 300ms ease;
+
+  &.MainLayoutContent--noBottom
+  {
+    bottom: 0;
+  }
+
 }
