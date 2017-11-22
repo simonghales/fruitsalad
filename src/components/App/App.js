@@ -12,6 +12,7 @@ import GamesScreen from '../../screens/GamesScreen/GamesScreen';
 import DrawDuoGuessDisplay from '../../games/DrawDuo/screens/DrawDuoGuessDisplay/DrawDuoGuessDisplay';
 import {AppState} from '../../redux/index';
 import {UserIsAuthenticated} from '../../auth/UserIsAuthenticated/UserIsAuthenticated';
+import {Redirect, Switch} from 'react-router';
 
 class App extends Component {
 
@@ -39,12 +40,14 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <Route key='/' exact path='/' component={LandingScreen}/>
-        <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
-        <Route key='/games' path='/games' component={DrawDuoGuessDisplay}/>
-        <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
-          <div>test</div>
-        ))}/>
+        <Switch>
+          <Route key='/' exact path='/' component={LandingScreen}/>
+          <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
+          <Route key='/games' path='/games' component={DrawDuoGuessDisplay}/>
+          <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
+            <div>test</div>
+          ))}/>
+        </Switch>
         {/*<Route key='/session/:id' path='/session/:id' component={SessionScreen}/>*/}
       </div>
     );

@@ -25,7 +25,22 @@ class SessionScreenHubBottom extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.share = this.share.bind(this);
     this.start = this.start.bind(this);
+  }
+
+  share() {
+    const {match} = this.props;
+    const sessionCode = match.params.id;
+    if (navigator.share) {
+      navigator.share({
+        title: `Fruit Salad - ${sessionCode}`,
+        text: 'Come play with me!',
+        url: `https://fruitsalad.herokuapp.com/session/${sessionCode}`,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    }
   }
 
   start() {
@@ -38,7 +53,9 @@ class SessionScreenHubBottom extends Component {
     return (
       <BottomFlex classes={['SessionScreenHubBottom']}>
         <BottomSide>
-          <SessionQuitButton/>
+          <SimpleButton onClick={this.share}>
+            Share
+          </SimpleButton>
         </BottomSide>
         <BottomMiddle>
           <SessionCodePreview/>
