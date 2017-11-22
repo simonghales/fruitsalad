@@ -23,7 +23,6 @@ class SessionScreen extends Component {
     invalidSession: boolean,
     invalidSessionEnforced: boolean,
     closeQuitModal(): void,
-    setSessionCode(sessionCode: string): void,
   };
 
   state: {};
@@ -35,8 +34,6 @@ class SessionScreen extends Component {
   }
 
   componentDidMount() {
-    const {match, setSessionCode} = this.props;
-    setSessionCode(match.params.id);
   }
 
   quitSession() {
@@ -82,6 +79,7 @@ class SessionScreen extends Component {
 
 const mapStateToProps = (state: AppState) => {
   const sessions = state.firebase.data.sessions;
+  console.log('sessions?', sessions);
   return {
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
@@ -94,17 +92,26 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     closeQuitModal: () => dispatch(closeQuitModal()),
-    setSessionCode: (sessionCode: string) => dispatch(setSessionCode(sessionCode)),
   };
 };
 
-const wrappedSessionScreen = firebaseConnect((props) => {
-  return [
+const wrappedSessionScreen = firebaseConnect((props, store) => {
+  const state = store.getState();
+  const sessions = state.firebase.data.sessions;
+  const sessionKey = (sessions) ? Object.keys(sessions)[0] : null;
+  let queries = [
     {
       path: '/sessions',
       queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
-    },
+    }
   ];
+  if (sessionKey) {
+    queries.push({
+      path: `/sessions/${sessionKey}/users`,
+      storeAs: 'sessionUsers',
+    });
+  }
+  return queries;
 })(SessionScreen);
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(wrappedSessionScreen));

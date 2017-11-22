@@ -14,6 +14,8 @@ import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutCont
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import SessionScreenJoinBottom from '../SessionScreenJoin/SessionScreenJoinBottom';
 import SessionScreenHostBottom from './SessionScreenHostBottom';
+import {generateNewUser} from '../../models/user';
+import {isEmpty, isLoaded} from 'react-redux-firebase';
 
 class SessionScreenHost extends Component {
 
@@ -22,6 +24,7 @@ class SessionScreenHost extends Component {
   };
 
   props: {
+    loadedSession: boolean,
     match: any,
     sessionCode: string,
     sessionCreated: boolean,
@@ -58,6 +61,7 @@ class SessionScreenHost extends Component {
       if (!sessionData) {
         this.createSession();
       } else {
+        console.log('already created...', sessionData);
         this.setState({
           sessionAlreadyCreated: true,
         });
@@ -69,22 +73,32 @@ class SessionScreenHost extends Component {
   createSession() {
     const {match} = this.props;
 
+    const firebase = this.context.store.firebase;
+    const currentUser = firebase.auth().currentUser;
+
     this.context.store.firebase
       .push('sessions', generateNewSession({
         id: match.params.id,
+        users: {
+          [currentUser.uid]: generateNewUser({
+            id: currentUser.uid,
+            name: 'The Host',
+          })
+        }
       }))
-      .then(() => {
+      .then((response) => {
         this.setState({
           sessionCreated: true,
-        })
+        });
       })
   }
 
   render() {
     const {sessionAlreadyCreated, sessionCreated} = this.state;
-    const {match, sessionCode} = this.props;
+    const {loadedSession, match, sessionCode} = this.props;
 
-    if (sessionAlreadyCreated || sessionCreated) {
+    if ((loadedSession && sessionAlreadyCreated) || (sessionCreated && loadedSession)) {
+      console.log('redirecting to join???');
       return (
         <Redirect to={{
           pathname: `/session/${match.params.id}/join`,
@@ -111,7 +125,9 @@ class SessionScreenHost extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const sessions = state.firebase.data.sessions;
   return {
+    loadedSession: isLoaded(sessions) && !isEmpty(sessions),
     sessionCode: state.session.sessionCode,
     sessionCreated: state.session.sessionCreated,
   };

@@ -22,6 +22,7 @@ class SessionScreenHub extends Component {
     joined: boolean,
     match: any,
     session: {},
+    sessionUsers: {},
     setInvalidSessionEnforced(): void,
   };
 
@@ -39,7 +40,7 @@ class SessionScreenHub extends Component {
 
   render() {
 
-    const {gameInPlay, joined, match, session} = this.props;
+    const {gameInPlay, joined, match, session, sessionUsers} = this.props;
 
     if (gameInPlay) {
       return (
@@ -62,7 +63,7 @@ class SessionScreenHub extends Component {
               <GameSelector/>
             </div>
             <div className='SessionScreenHub__group'>
-              <SessionGroup session={session}/>
+              <SessionGroup sessionUsers={sessionUsers}/>
             </div>
           </div>
         </MainLayoutContent>
@@ -76,12 +77,14 @@ class SessionScreenHub extends Component {
 
 const mapStateToProps = (state: AppState) => {
   const sessions = state.firebase.data.sessions;
+  const sessionUsers = state.firebase.data.sessionUsers;
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
     loadedSession: isLoaded(sessions),
     session: (sessions) ? sessions[Object.keys(sessions)[0]] : null,
     sessions: sessions,
+    sessionUsers: sessionUsers,
   };
 };
 

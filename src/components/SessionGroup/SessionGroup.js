@@ -11,6 +11,7 @@ import {AppState} from '../../redux/index';
 class SessionGroup extends Component {
 
   props: {
+    sessionUsers: {},
     setGameInPlay(): void,
   };
 
@@ -25,13 +26,14 @@ class SessionGroup extends Component {
   }
 
   render() {
-    const {session} = this.props;
+    const {sessionUsers} = this.props;
+    console.log('sessionUsers', sessionUsers);
     return (
       <div className='SessionGroup'>
         <div className='SessionGroup__playersList'>
           {
-            session && Object.keys(session.users).map((key, id) => (
-              <PlayerCard player={session.users[key]} key={key}/>
+            sessionUsers && Object.keys(sessionUsers).map((key, id) => (
+              <PlayerCard player={sessionUsers[key]} key={key}/>
             ))
           }
         </div>

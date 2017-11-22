@@ -69,13 +69,11 @@ class SessionScreenJoin extends Component {
 
     const currentUser = firebase.auth().currentUser;
 
-    this.context.store.firebase
-      .push(`/sessions/${sessionKey}/users`, generateNewUser({
-        id: currentUser.uid,
-        name: userName,
-      }))
-      .then(() => {
-        this.props.setJoined();
+    firebase.set(`/sessions/${sessionKey}/users/${currentUser.uid}`, generateNewUser({
+      id: currentUser.uid,
+      name: userName,
+    }))
+      .then((response) => {
         history.push(`/session/${match.params.id}/hub`);
       });
   }
@@ -105,11 +103,6 @@ class SessionScreenJoin extends Component {
 
     return (
       <MainLayout>
-        <SessionJoinedChecker>
-          <Redirect to={{
-            pathname: `/session/${match.params.id}/hub`,
-          }}/>
-        </SessionJoinedChecker>
         <MainLayoutContent>
           <div className='SessionScreenJoin'>
             <SessionJoin userName={userName} setUserName={this.setUserName}/>

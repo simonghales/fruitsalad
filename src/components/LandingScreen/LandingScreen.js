@@ -90,13 +90,8 @@ class LandingScreen extends Component {
   }
 
   createSession() {
-    const {firebase, history, setSessionCode} = this.props;
+    const {history} = this.props;
     const {sessionCode} = this.state;
-    if (!sessionCode) return;
-    firebase.push('/sessions', {
-      id: sessionCode,
-    });
-    setSessionCode(sessionCode);
     history.push(`/session/${sessionCode}/host`);
   }
 
