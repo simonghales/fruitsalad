@@ -23,6 +23,7 @@ class SessionScreen extends Component {
     invalidSession: boolean,
     invalidSessionEnforced: boolean,
     closeQuitModal(): void,
+    setSessionCode(sessionCode: string): void,
   };
 
   state: {};
@@ -34,6 +35,8 @@ class SessionScreen extends Component {
   }
 
   componentDidMount() {
+    const {match, setSessionCode} = this.props;
+    setSessionCode(match.params.id);
   }
 
   quitSession() {
@@ -92,6 +95,7 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     closeQuitModal: () => dispatch(closeQuitModal()),
+    setSessionCode: (sessionCode: string) => dispatch(setSessionCode(sessionCode)),
   };
 };
 
