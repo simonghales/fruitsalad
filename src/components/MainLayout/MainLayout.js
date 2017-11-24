@@ -7,10 +7,6 @@ class MainLayout extends Component {
     children?: any,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className='MainLayout'>

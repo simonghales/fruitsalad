@@ -8,6 +8,7 @@ import DrawDuoVote from '../DrawDuoVote/DrawDuoVote';
 import {AppState} from '../../../../redux/index';
 import {getCurrentScreen} from '../../../../redux/reducers/drawDuo/state';
 import {getComponentFromCurrentScreen} from '../../config';
+import DrawDuoGameHost from '../DrawDuoGameHost/DrawDuoGameHost';
 
 class DrawDuoHub extends Component {
 
@@ -23,6 +24,7 @@ class DrawDuoHub extends Component {
     const {currentScreen} = this.props;
     return (
       <div className='DrawDuoHub'>
+        <DrawDuoGameHost/>
         {
           getComponentFromCurrentScreen(currentScreen)
         }

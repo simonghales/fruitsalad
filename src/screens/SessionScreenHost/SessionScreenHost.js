@@ -56,7 +56,10 @@ class SessionScreenHost extends Component {
     const {match} = this.props;
     const sessionKey = match.params.id;
 
-    this.context.store.firebase.ref(`/sessions/${sessionKey}`).once('value', snapshot => {
+    const sessionRef = this.context.store.firebase.ref(`/sessions/${sessionKey}`)
+
+    sessionRef.once('value', snapshot => {
+      console.log('sessionRef', sessionRef);
       const sessionData = snapshot.val();
       if (!sessionData) {
         this.createSession();
