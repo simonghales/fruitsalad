@@ -1,0 +1,44 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoDisplayGuess
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.DrawDuoDisplayGuess__content
+{
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.DrawDuoDisplayGuess__answers
+{
+
+}
+
+.DrawDuoDisplayGuess__answers__answer
+{
+  margin: 20px 0;
+}
+
+.DrawDuoDisplayGuess__drawingContainer
+{
+  margin: 0 50px;
+}
+
+.DrawDuoDisplayGuess__drawing__label
+{
+  text-align: center;
+}

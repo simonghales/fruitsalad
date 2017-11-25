@@ -29,9 +29,12 @@ class DrawDuoArtwork extends Component {
           <UserImage size='small'/>
           <div className='DrawDuoArtwork__users__text'>&</div>
           <UserImage size='small'/>
-          <div className='DrawDuoArtwork__users__label'>drew this</div>
+          <div className='DrawDuoArtwork__users__label'>drew these...</div>
         </div>
-        <div className='DrawDuoArtwork__drawing'></div>
+        <div className='DrawDuoArtwork__drawings'>
+          <div className='DrawDuoArtwork__drawing'></div>
+          <div className='DrawDuoArtwork__drawing'></div>
+        </div>
       </div>
     )
   }

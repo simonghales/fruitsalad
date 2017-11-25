@@ -9,6 +9,13 @@ import DrawDuoVote from './components/DrawDuoVote/DrawDuoVote';
 import DrawDuoPending from './components/DrawDuoPending/DrawDuoPending';
 
 export const DRAW_DUO_CONFIG = {
+  defaults: {
+    numberOfRounds: 2,
+    drawingTimer: (5 * 1000),
+    guessTimer: (2 * 1000),
+    voteTimer: (2 * 1000),
+    revealTimer: (2 * 1000),
+  },
   userHeaderDisplayed: true,
   screens: {
     [SCREEN_PENDING]: () => <DrawDuoPending title='Hang on a sec' subtitle='Watch the TV for instructions'/>,

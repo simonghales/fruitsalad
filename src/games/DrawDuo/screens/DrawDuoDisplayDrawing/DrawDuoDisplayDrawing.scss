@@ -4,7 +4,7 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
-.DrawDuoGuessDisplay
+.DrawDuoDisplayDrawing
 {
   position:        fixed;
   top:             0;
@@ -16,29 +16,7 @@
   justify-content: center;
 }
 
-.DrawDuoGuessDisplay__content
+.DrawDuoDisplayDrawing__label
 {
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-}
-
-.DrawDuoGuessDisplay__answers
-{
-
-}
-
-.DrawDuoGuessDisplay__answers__answer
-{
-  margin: 20px 0;
-}
-
-.DrawDuoGuessDisplay__drawingContainer
-{
-  margin: 0 50px;
-}
-
-.DrawDuoGuessDisplay__drawing__label
-{
-  text-align: center;
+  @include mediumDrawDuoHeading;
 }

@@ -3,6 +3,7 @@ import './SessionInPlay.css';
 import {connect} from 'react-redux';
 import {SessionState} from '../../redux/reducers/session/reducer';
 import DrawDuoHub from '../../games/DrawDuo/components/DrawDuoHub/DrawDuoHub';
+import {AppState} from '../../redux/index';
 
 class SessionInPlay extends Component {
 

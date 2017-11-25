@@ -1,0 +1,67 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+@mixin displayAnswers
+{
+
+  .DrawDuoDisplayVoting--displayAnswers &
+  {
+    @content;
+  }
+
+}
+
+.DrawDuoDisplayVoting
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.DrawDuoDisplayVoting__content
+{
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.DrawDuoDisplayVoting__answers
+{
+  opacity:    0;
+  transition: opacity 300ms ease;
+
+  @include displayAnswers
+  {
+    opacity: 1;
+  }
+
+}
+
+.DrawDuoDisplayVoting__answers__answer
+{
+  margin: 20px 0;
+}
+
+.DrawDuoDisplayVoting__drawingContainer
+{
+  position: relative;
+}
+
+.DrawDuoDisplayVoting__drawing__label
+{
+  @include largeDrawDuoHeading;
+  position:   absolute;
+  left:       0;
+  right:      0;
+  top:        100%;
+  text-align: center;
+  margin-top: 30px;
+}

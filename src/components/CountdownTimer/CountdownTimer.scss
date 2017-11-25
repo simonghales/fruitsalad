@@ -1,0 +1,13 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.CountdownTimer
+{
+  @include headingFont;
+  font-size:   120px;
+  line-height: 140px;
+  text-align:  center;
+}

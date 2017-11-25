@@ -3,7 +3,18 @@ import {connect} from 'react-redux';
 import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {AppState} from '../../../../redux/index';
 import {withRouter} from 'react-router';
-import {generateEntry, generateRound} from '../../../../models/drawDuo';
+import {
+  DRAW_DUO_CURRENT_STATE_COMPLETED,
+  DRAW_DUO_CURRENT_STATE_PLAYING, DRAW_DUO_ENTRY_CURRENT_STATE_COMPLETED, DRAW_DUO_ENTRY_CURRENT_STATE_GUESSING,
+  DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS,
+  DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
+  DRAW_DUO_ROUND_CURRENT_STATE_COMPLETED,
+  DRAW_DUO_ROUND_CURRENT_STATE_DRAWING,
+  DRAW_DUO_ROUND_CURRENT_STATE_VOTING,
+  generateEntry, generateInitialGameState,
+  generateRound
+} from '../../../../models/drawDuo';
+import {DRAW_DUO_CONFIG} from '../../config';
 
 class DrawDuoGameHost extends Component {
 
@@ -23,7 +34,7 @@ class DrawDuoGameHost extends Component {
 
   attemptToStart() {
     const {session} = this.props;
-    if (!isLoaded(session) || this.initiated) {
+    if (!isLoaded(session) || this.initiated || !this.drawDuoSnapshot) {
       return;
     }
     this.initiated = true;
@@ -43,7 +54,7 @@ class DrawDuoGameHost extends Component {
     this.drawDuoRef.on('value', snapshot => {
       this.drawDuoSnapshot = snapshot.val();
 
-      if (!this.initiated) {
+      if (!this.initiated && snapshot) {
         this.attemptToStart();
       }
 
@@ -51,14 +62,7 @@ class DrawDuoGameHost extends Component {
   }
 
   initiateGame() {
-    console.log('initiate game');
-    this.drawDuoRef.update({
-      'currentState': 'initiating',
-      'currentRound': '',
-      'entries': {},
-      'pairs': {},
-      'rounds': {},
-    });
+    this.drawDuoRef.update(generateInitialGameState());
     this.generatePairs();
     this.generateRounds();
     this.nextRound();
@@ -69,8 +73,6 @@ class DrawDuoGameHost extends Component {
 
     let nextRoundKey = null;
 
-    console.log('next round?');
-
     for (let roundKey in rounds) {
       if (rounds[roundKey].currentState !== 'completed') {
         nextRoundKey = roundKey;
@@ -80,18 +82,19 @@ class DrawDuoGameHost extends Component {
 
     if (!nextRoundKey) {
       this.drawDuoRef.update({
-        currentState: 'completed',
+        completedTimestamp: 'NOW',
+        currentState: DRAW_DUO_CURRENT_STATE_COMPLETED,
         currentRound: null,
       });
       console.log('finished game', this.drawDuoSnapshot);
     } else {
       this.drawDuoRef.update({
-        currentState: 'playing',
+        currentState: DRAW_DUO_CURRENT_STATE_PLAYING,
         currentRound: nextRoundKey,
       });
       this.startRound();
-      console.log('start round');
     }
+
   }
 
   startRound() {
@@ -103,11 +106,11 @@ class DrawDuoGameHost extends Component {
     const {currentRound} = this.drawDuoSnapshot;
 
     this.drawDuoRef.child('rounds').child(currentRound).update({
-      currentState: 'drawing',
+      currentState: DRAW_DUO_ROUND_CURRENT_STATE_DRAWING,
       drawingsStartTimestamp: 'NOW',
     });
 
-    const timer = (1 * 1000);
+    const timer = DRAW_DUO_CONFIG.defaults.drawingTimer;
 
     setTimeout(() => {
       this.drawingsSubmitted();
@@ -121,13 +124,9 @@ class DrawDuoGameHost extends Component {
 
   continueRound() {
 
-    console.log('continue');
-
     const {currentRound} = this.drawDuoSnapshot;
     const currentRoundData = this.drawDuoSnapshot.rounds[currentRound];
     const {currentState} = currentRoundData;
-
-    console.log('currentState', currentState);
 
     if (currentState === 'drawing') {
       this.beginRoundVoting();
@@ -142,26 +141,20 @@ class DrawDuoGameHost extends Component {
   roundCompleted() {
     const {currentRound} = this.drawDuoSnapshot;
     this.drawDuoRef.update({
-      [`rounds/${currentRound}/currentState`]: 'completed',
+      [`rounds/${currentRound}/currentState`]: DRAW_DUO_ROUND_CURRENT_STATE_COMPLETED,
     });
     this.nextRound();
   }
 
   beginRoundVoting() {
-
-    console.log('Begin round voting');
     const {currentRound} = this.drawDuoSnapshot;
-
     this.drawDuoRef.child('rounds').child(currentRound).update({
-      currentState: 'voting',
+      currentState: DRAW_DUO_ROUND_CURRENT_STATE_VOTING,
     });
-
     this.getNextEntry();
-
   }
 
   getNextEntry() {
-    console.log('guess on entry');
     const {currentEntry, currentRound} = this.drawDuoSnapshot;
     const currentRoundData = this.drawDuoSnapshot.rounds[currentRound];
 
@@ -179,14 +172,22 @@ class DrawDuoGameHost extends Component {
     } else {
       this.drawDuoRef.update({
         ['currentEntry']: nextEntry,
-        [`entries/${nextEntry}/votingStartTimestamp`]: 'NOW',
       });
-      const timer = (1 * 1000);
-      setTimeout(() => {
-        this.guessesSubmitted();
-      }, timer);
+      this.guessOnEntry();
     }
 
+  }
+
+  guessOnEntry() {
+    const {currentEntry} = this.drawDuoSnapshot;
+    this.drawDuoRef.update({
+      [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_GUESSING,
+      [`entries/${currentEntry}/guessingStartTimestamp`]: 'NOW',
+    });
+    const timer = DRAW_DUO_CONFIG.defaults.guessTimer;
+    setTimeout(() => {
+      this.guessesSubmitted();
+    }, timer);
   }
 
   guessesSubmitted() {
@@ -194,17 +195,19 @@ class DrawDuoGameHost extends Component {
     this.drawDuoRef.update({
       [`entries/${currentEntry}/guessesSubmitted`]: true,
     });
-    console.log('guesses submitted...');
     this.voteOnEntry();
   }
 
   voteOnEntry() {
-    const timer = (1 * 1000);
-
+    const {currentEntry} = this.drawDuoSnapshot;
+    this.drawDuoRef.update({
+      [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
+      [`entries/${currentEntry}/votingStartTimestamp`]: 'NOW',
+    });
+    const timer = DRAW_DUO_CONFIG.defaults.voteTimer;
     setTimeout(() => {
       this.votesSubmitted();
     }, timer);
-
   }
 
   votesSubmitted() {
@@ -216,17 +219,20 @@ class DrawDuoGameHost extends Component {
   }
 
   revealEntryResults() {
-    const timer = (1 * 1000);
-
+    const {currentEntry} = this.drawDuoSnapshot;
+    this.drawDuoRef.update({
+      [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS,
+    });
+    const timer = DRAW_DUO_CONFIG.defaults.revealTimer;
     setTimeout(() => {
       this.answerRevealed();
     }, timer);
-
   }
 
   answerRevealed() {
     const {currentEntry, currentRound} = this.drawDuoSnapshot;
     this.drawDuoRef.update({
+      [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_COMPLETED,
       [`rounds/${currentRound}/entries/${currentEntry}/completed`]: true,
       [`entries/${currentEntry}/answerRevealed`]: true,
     });

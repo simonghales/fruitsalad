@@ -9,11 +9,11 @@ import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import LandingScreen from '../LandingScreen/LandingScreen';
 import SessionScreen from '../../screens/SessionScreen/SessionScreen';
 import GamesScreen from '../../screens/GamesScreen/GamesScreen';
-import DrawDuoGuessDisplay from '../../games/DrawDuo/screens/DrawDuoGuessDisplay/DrawDuoGuessDisplay';
 import {AppState} from '../../redux/index';
 import {UserIsAuthenticated} from '../../auth/UserIsAuthenticated/UserIsAuthenticated';
 import {Redirect, Switch} from 'react-router';
 import SessionInPlay from '../SessionInPlay/SessionInPlay';
+import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplay/DrawDuoDisplay';
 
 class App extends Component {
 
@@ -45,7 +45,7 @@ class App extends Component {
           <Route key='/' exact path='/' component={LandingScreen}/>
           <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
           <Route key='/drawDuo' path='/drawDuo' component={GamesScreen}/>
-          <Route key='/games' path='/games' component={DrawDuoGuessDisplay}/>
+          <Route key='/games' path='/games' component={DrawDuoDisplay}/>
           <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
             <div>test</div>
           ))}/>

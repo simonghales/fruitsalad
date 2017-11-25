@@ -4,8 +4,19 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin artworkDisplay
+{
+
+  .DrawDuoArtwork--display &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoArtwork
 {
+  position: relative;
 }
 
 .DrawDuoArtwork__users
@@ -14,31 +25,64 @@
   margin-bottom:   5px;
   justify-content: center;
   align-items:     center;
+
+  @include artworkDisplay
+  {
+    position:      absolute;
+    left:          0;
+    right:         0;
+    bottom:        100%;
+    margin-bottom: 20px;
+  }
+
 }
 
 .DrawDuoArtwork__users__text
 {
-  @include smallFaintText;
+  @include drawDuoFont;
   margin: 0 10px;
 }
 
 .DrawDuoArtwork__users__label
 {
-  @include smallFaintText;
+  @include drawDuoFont;
   margin-left: 10px;
+}
+
+.DrawDuoArtwork__drawings
+{
+  display:         flex;
+  justify-content: center;
+  margin:          20px 0;
+
+  @include artworkDisplay
+  {
+    margin: 0;
+  }
+
 }
 
 .DrawDuoArtwork__drawing
 {
-  margin:           20px 0;
   height:           calc(100vw - 40px);
   background-color: #FFFFFF;
   border:           1px solid #F0F0F0;
 
-  .DrawDuoArtwork--display &
+  @include artworkDisplay
   {
     width:  500px;
     height: 500px;
+
+    &:first-of-type
+    {
+      margin-right: 20px;
+    }
+
+    &:last-of-type
+    {
+      margin-left: 20px;
+    }
+
   }
 
 }
