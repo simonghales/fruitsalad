@@ -255,6 +255,7 @@ class DrawDuoGameHost extends Component {
   nextEntryAnswer() {
     revealEntryAnswer(this.drawDuoRef, this.drawDuoSnapshot);
     // return; // stop here for ENTRY_SEMI_RESULTS
+
     if (!isAnEntryAnswerRemaining(this.drawDuoSnapshot)) {
       this.answerRevealed();
     } else {

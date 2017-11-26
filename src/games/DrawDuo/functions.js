@@ -204,6 +204,7 @@ export function getSortedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame)
     const answer = {
       ...answers[answerKey],
       text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
+      key: answerKey,
     };
     sortedAnswers.push(answer);
   });
@@ -229,6 +230,7 @@ export function splitAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
     const answer = {
       ...answers[answerKey],
       text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
+      key: answerKey,
     };
     if (leftAnswers.length < halfCount) {
       leftAnswers.push(answer);

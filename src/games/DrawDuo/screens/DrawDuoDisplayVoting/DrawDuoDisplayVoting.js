@@ -28,6 +28,7 @@ class DrawDuoDisplayVoting extends Component {
     currentAnswer: FormattedAnswer,
     currentEntry: Entry,
     currentSubState: string,
+    sortedAnswers: FormattedAnswer[],
     splitAnswers: [FormattedAnswer[]],
   };
 
@@ -39,6 +40,7 @@ class DrawDuoDisplayVoting extends Component {
       currentAnswer: getCurrentAnswer(currentEntry, sortedAnswers),
       currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(props.session.drawDuo),
+      sortedAnswers: sortedAnswers,
       splitAnswers: splitAnswers(currentEntry, props.session.drawDuo),
     };
   }
@@ -50,6 +52,7 @@ class DrawDuoDisplayVoting extends Component {
       currentAnswer: getCurrentAnswer(currentEntry, sortedAnswers),
       currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(nextProps.session.drawDuo),
+      sortedAnswers: sortedAnswers,
       splitAnswers: splitAnswers(currentEntry, nextProps.session.drawDuo),
     });
   }
@@ -75,18 +78,37 @@ class DrawDuoDisplayVoting extends Component {
     return (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS);
   }
 
+  isCurrentAnswer(answerKey: string) {
+    const {currentAnswer} = this.state;
+    if (!currentAnswer) return false;
+    return (currentAnswer.key === answerKey);
+  }
+
   getResults() {
     if (!this.isResults()) return null;
-    const {currentAnswer} = this.state;
-    if (!currentAnswer) return null;
-    const key = (currentAnswer.guess) ? currentAnswer.guess : 'prompt';
+    const {sortedAnswers} = this.state;
     return (
-      <CSSTransition
-        timeout={500}
-        classNames='slide'
-        key='selectAnswer'>
-        <div className='DrawDuoDisplayVoting__drawing__label__text' key={key}>{currentAnswer.text}</div>
-      </CSSTransition>
+      <div>
+        {
+          sortedAnswers.map((answer) => {
+            const key = (answer.guess) ? answer.guess : 'prompt';
+            return (
+              <TransitionGroup>
+                {
+                  this.isCurrentAnswer(answer.key) ? (
+                    <CSSTransition
+                      timeout={500}
+                      classNames='slide'
+                      key='selectAnswer'>
+                      <div className='DrawDuoDisplayVoting__drawing__label__text' key={key}>{answer.text}</div>
+                    </CSSTransition>
+                  ) : null
+                }
+              </TransitionGroup>
+            );
+          })
+        }
+      </div>
     );
   }
 
@@ -106,7 +128,12 @@ class DrawDuoDisplayVoting extends Component {
           <div className='DrawDuoDisplayVoting__answers'>
             {
               splitAnswers.length > 0 && splitAnswers[0].map((answer, index) => (
-                <div className='DrawDuoDisplayVoting__answers__answer' key={index}>{answer.text}</div>
+                <div className={classNames([
+                  'DrawDuoDisplayVoting__answers__answer',
+                  {
+                    'DrawDuoDisplayVoting__answers__answer--current': this.isCurrentAnswer(answer.key),
+                  }
+                ])} key={index}>{answer.text}</div>
               ))
             }
           </div>

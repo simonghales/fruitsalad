@@ -38,6 +38,7 @@ export interface Answer {
 export interface FormattedAnswer {
   text: string,
   order: number,
+  key: string,
 }
 
 export interface Guess {
