@@ -21,9 +21,9 @@
   transform: translateX(100%);
 }
 
-@mixin slideInLeftAnimation
+@mixin slideInLeftAnimation($animationSpeed: 1000ms, $animationDelay: 0ms)
 {
-  animation: slideInLeft 1000ms cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards
+  animation: slideInLeft #{$animationSpeed} #{$animationDelay} cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 }
 
 @keyframes slideInRight
@@ -51,5 +51,61 @@
 
 @mixin slideInRightAnimation
 {
-  animation: slideInRight 1000ms cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards
+  animation: slideInRight 1000ms cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes slideInUp
+{
+
+  from
+  {
+    opacity:   0;
+    transform: translateY(100%);
+  }
+
+  to
+  {
+    opacity:   1;
+    transform: translateY(0);
+  }
+
+}
+
+@mixin slideInUpAnimationDefaults
+{
+  opacity:   0;
+  transform: translateY(100%);
+}
+
+@mixin slideInUpAnimation($animationSpeed: 1000ms)
+{
+  animation: slideInUp #{$animationSpeed} cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes slideInDown
+{
+
+  from
+  {
+    opacity:   0;
+    transform: translateY(-100%);
+  }
+
+  to
+  {
+    opacity:   1;
+    transform: translateY(0);
+  }
+
+}
+
+@mixin slideInDownAnimationDefaults
+{
+  opacity:   0;
+  transform: translateY(-100%);
+}
+
+@mixin slideInDownAnimation($animationSpeed: 1000ms, $animationDelay: 0ms)
+{
+  animation: slideInDown #{$animationSpeed} #{$animationDelay} cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 }

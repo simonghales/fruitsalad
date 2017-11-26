@@ -15,6 +15,7 @@ import {
   getCurrentAnswer, getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers, getVotedAnswers,
   splitAnswers
 } from '../../functions';
+import DrawDuoAnswer from '../../components/DrawDuoAnswer/DrawDuoAnswer';
 
 class DrawDuoDisplayVoting extends Component {
 
@@ -105,7 +106,9 @@ class DrawDuoDisplayVoting extends Component {
                       timeout={500}
                       classNames='slide'
                       key='selectAnswer'>
-                      <div className='DrawDuoDisplayVoting__drawing__label__text' key={key}>{answer.text}</div>
+                      <div className='DrawDuoDisplayVoting__drawing__label__text' key={key}>
+                        <DrawDuoAnswer answer={answer}/>
+                      </div>
                     </CSSTransition>
                   ) : null
                 }

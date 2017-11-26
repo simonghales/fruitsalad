@@ -35,10 +35,18 @@ export interface Answer {
   order: number,
 }
 
+export interface TalliedAnswer {
+  order: number,
+  count: number,
+  users: {},
+}
+
 export interface FormattedAnswer {
+  prompt: boolean,
   text: string,
   order: number,
   key: string,
+  users: {},
 }
 
 export interface Guess {

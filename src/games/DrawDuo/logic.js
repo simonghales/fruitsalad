@@ -6,13 +6,16 @@ export function generateRandomOrderOfAnswers(drawDuoGameState: DrawDuoGame): str
   const currentEntryData: Entry = entries[currentEntry];
   let talliedAnswers = {};
   for (let userKey in currentEntryData.votes) {
-    addVoteToAnswers(talliedAnswers, currentEntryData.votes[userKey]);
+    addVoteToAnswers(talliedAnswers, currentEntryData.votes[userKey], userKey);
   }
   const talliedCount = Object.keys(talliedAnswers).length;
+
+  const promptAnswerKey = getPromptAnswerKey(currentEntryData);
   let talliedPromptAdded = false;
   let talliedIndex = 1;
+
   for (let answerKey in talliedAnswers) {
-    if (answerKey === 'prompt') {
+    if (answerKey === promptAnswerKey) {
       talliedAnswers[answerKey].order = talliedCount;
       talliedPromptAdded = true;
     } else {
@@ -21,10 +24,10 @@ export function generateRandomOrderOfAnswers(drawDuoGameState: DrawDuoGame): str
     }
   }
   if (!talliedPromptAdded) {
-    const promptAnswerKey = getPromptAnswerKey(currentEntryData);
     talliedAnswers[promptAnswerKey] = {
       order: talliedCount + 1,
       count: 0,
+      users: {},
     };
   }
   return talliedAnswers;
@@ -45,14 +48,21 @@ function getPromptAnswerKey(currentEntryData: Entry) {
   return promptAnswerKey;
 }
 
-function addVoteToAnswers(answers, answerKey: string) {
+function addVoteToAnswers(answers, answerKey: string, userKey: string) {
   if (answers[answerKey]) {
     answers[answerKey] = {
       count: answers[answerKey].count + 1,
+      users: {
+        ...answers[answerKey].users,
+        [userKey]: true,
+      },
     };
   } else {
     answers[answerKey] = {
       count: 1,
+      users: {
+        [userKey]: true,
+      }
     }
   }
 }

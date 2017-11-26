@@ -195,23 +195,25 @@ export function getCurrentEntryData(drawDuoState: DrawDuoGame) {
 
 export function getSortedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
   if (!currentEntry) return [];
-  const {answers} = currentEntry;
+  const {answers, answersTallied} = currentEntry;
   const {guesses} = drawDuoState;
   if (!answers) return [];
   const answerKeys = getSortedAnswerKeys(answers);
   let sortedAnswers = [];
   answerKeys.forEach((answerKey) => {
-    const answer = getFormattedAnswer(answers, answerKey, guesses, currentEntry);
+    const answer = getFormattedAnswer(answers, answerKey, guesses, currentEntry, answersTallied);
     sortedAnswers.push(answer);
   });
   return sortedAnswers;
 }
 
-function getFormattedAnswer(answers, answerKey, guesses, currentEntry) {
+function getFormattedAnswer(answers, answerKey, guesses, currentEntry: Entry, answersTallied): FormattedAnswer {
+  const users = (answersTallied && answersTallied[answerKey] && answersTallied[answerKey].users) ? Object.keys(answersTallied[answerKey].users).map((userKey) => userKey) : [];
   return {
     ...answers[answerKey],
     text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
     key: answerKey,
+    users: users,
   };
 }
 
@@ -260,7 +262,7 @@ export function getVotedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) 
   if (!answers || !answersTallied) return [];
   const orderedAnswers = Object.keys(answersTallied).sort((key1, key2) => answersTallied[key1].order > answersTallied[key2].order)
     .map((answerKey) => {
-      return getFormattedAnswer(answers, answerKey, guesses, currentEntry);
+      return getFormattedAnswer(answers, answerKey, guesses, currentEntry, answersTallied);
     });
   console.log('orderedAnswers', orderedAnswers);
   return orderedAnswers;

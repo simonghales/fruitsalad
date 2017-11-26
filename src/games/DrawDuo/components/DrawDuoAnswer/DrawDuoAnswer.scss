@@ -1,0 +1,70 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoAnswer
+{
+  position:  relative;
+  min-width: 500px;
+}
+
+.DrawDuoAnswer__userVotes
+{
+  margin-bottom:   20px;
+  display:         flex;
+  justify-content: center;
+
+  // animate up
+
+  .UserImage
+  {
+    @include slideInUpAnimationDefaults;
+    @include slideInUpAnimation($animationSpeed: 500ms);
+    margin: 0 10px;
+
+    @for $i from 1 to 20
+    {
+
+      &:nth-child(#{$i})
+      {
+        animation-delay: ($i - 1) * 750ms;
+      }
+
+    }
+
+  }
+
+}
+
+.DrawDuoAnswer__text
+{
+
+}
+
+.DrawDuoAnswer__extras
+{
+  @include slideInDownAnimationDefaults;
+  @include slideInDownAnimation($animationSpeed: 500ms, $animationDelay: 2000ms);
+  @include mediumDrawDuoHeading;
+  position:        absolute;
+  left:            0;
+  right:           0;
+  top:             100%;
+  margin-top:      20px;
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+
+  // animate down
+
+}
+
+.DrawDuoAnswer__extras__label
+{
+  @include slideInLeftAnimationDefaults;
+  @include slideInLeftAnimation($animationSpeed: 500ms, $animationDelay: 3000ms);
+  margin-left: 20px;
+}
