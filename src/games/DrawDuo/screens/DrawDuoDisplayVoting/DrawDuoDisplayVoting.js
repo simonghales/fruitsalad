@@ -7,19 +7,25 @@ import {AppState} from '../../../../redux/index';
 import DrawDuoArtwork from '../../components/DrawDuoArtwork/DrawDuoArtwork';
 import {
   DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING, DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS,
-  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING, Entry, FormattedAnswer
+  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING, DrawDuoGame, Entry, FormattedAnswer
 } from '../../models';
 import SlideTransition from '../../../../components/transitions/SlideTransition/SlideTransition';
 import SessionNotFound from '../../../../modals/SessionNotFound/SessionNotFound';
-import {getCurrentEntryData, getGameVotingCurrentSubState, splitAnswers} from '../../functions';
+import {
+  getCurrentAnswer, getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers,
+  splitAnswers
+} from '../../functions';
 
 class DrawDuoDisplayVoting extends Component {
 
   props: {
-    session: {},
+    session: {
+      drawDuo: DrawDuoGame,
+    },
   };
 
   state: {
+    currentAnswer: FormattedAnswer,
     currentEntry: Entry,
     currentSubState: string,
     splitAnswers: [FormattedAnswer[]],
@@ -28,7 +34,9 @@ class DrawDuoDisplayVoting extends Component {
   constructor(props) {
     super(props);
     const currentEntry = getCurrentEntryData(props.session.drawDuo);
+    const sortedAnswers = getSortedAnswers(currentEntry, props.session.drawDuo);
     this.state = {
+      currentAnswer: getCurrentAnswer(currentEntry, sortedAnswers),
       currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(props.session.drawDuo),
       splitAnswers: splitAnswers(currentEntry, props.session.drawDuo),
@@ -37,7 +45,9 @@ class DrawDuoDisplayVoting extends Component {
 
   componentWillReceiveProps(nextProps) {
     const currentEntry = getCurrentEntryData(nextProps.session.drawDuo);
+    const sortedAnswers = getSortedAnswers(currentEntry, nextProps.session.drawDuo);
     this.setState({
+      currentAnswer: getCurrentAnswer(currentEntry, sortedAnswers),
       currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(nextProps.session.drawDuo),
       splitAnswers: splitAnswers(currentEntry, nextProps.session.drawDuo),
@@ -65,6 +75,21 @@ class DrawDuoDisplayVoting extends Component {
     return (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS);
   }
 
+  getResults() {
+    if (!this.isResults()) return null;
+    const {currentAnswer} = this.state;
+    if (!currentAnswer) return null;
+    const key = (currentAnswer.guess) ? currentAnswer.guess : 'prompt';
+    return (
+      <CSSTransition
+        timeout={500}
+        classNames='slide'
+        key='selectAnswer'>
+        <div className='DrawDuoDisplayVoting__drawing__label__text' key={key}>{currentAnswer.text}</div>
+      </CSSTransition>
+    );
+  }
+
   render() {
     const {session} = this.props;
     const {splitAnswers} = this.state;
@@ -80,8 +105,8 @@ class DrawDuoDisplayVoting extends Component {
         <div className='DrawDuoDisplayVoting__content'>
           <div className='DrawDuoDisplayVoting__answers'>
             {
-              splitAnswers[0].map((answer) => (
-                <div className='DrawDuoDisplayVoting__answers__answer'>{answer.text}</div>
+              splitAnswers.length > 0 && splitAnswers[0].map((answer, index) => (
+                <div className='DrawDuoDisplayVoting__answers__answer' key={index}>{answer.text}</div>
               ))
             }
           </div>
@@ -112,12 +137,15 @@ class DrawDuoDisplayVoting extends Component {
                   ) : null
                 }
               </TransitionGroup>
+              <TransitionGroup>
+                {this.getResults()}
+              </TransitionGroup>
             </div>
           </div>
           <div className='DrawDuoDisplayVoting__answers'>
             {
-              splitAnswers[1].map((answer) => (
-                <div className='DrawDuoDisplayVoting__answers__answer'>{answer.text}</div>
+              splitAnswers.length > 0 && splitAnswers[1].map((answer, index) => (
+                <div className='DrawDuoDisplayVoting__answers__answer' key={index}>{answer.text}</div>
               ))
             }
           </div>

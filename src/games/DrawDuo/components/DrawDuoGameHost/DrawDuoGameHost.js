@@ -10,11 +10,14 @@ import {
   DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
   DRAW_DUO_ROUND_CURRENT_STATE_COMPLETED,
   DRAW_DUO_ROUND_CURRENT_STATE_DRAWING,
-  DRAW_DUO_ROUND_CURRENT_STATE_VOTING, DrawDuoGame
+  DRAW_DUO_ROUND_CURRENT_STATE_VOTING, DrawDuoGame, Entry
 } from '../../models';
 import {DRAW_DUO_CONFIG} from '../../config';
 import {generateEntry, generateInitialGameState, generateRound} from '../../functions';
-import {generateAnswers, generateRandomOrderOfAnswers, pushGuesses, pushVotes} from '../../logic';
+import {
+  generateAnswers, generateRandomOrderOfAnswers, isAnEntryAnswerRemaining, pushGuesses, pushVotes,
+  revealEntryAnswer
+} from '../../logic';
 
 class DrawDuoGameHost extends Component {
 
@@ -50,7 +53,7 @@ class DrawDuoGameHost extends Component {
   componentDidMount() {
     const {firebase} = this.props;
     const sessionKey = 'HALES';
-    // const sessionKey = 'ENTRY_VOTING';
+    // const sessionKey = 'ENTRY_SEMI_RESULTS';
     this.drawDuoRef = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
     this.drawDuoRef.on('value', snapshot => {
       this.drawDuoSnapshot = snapshot.val();
@@ -217,7 +220,7 @@ class DrawDuoGameHost extends Component {
       [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
       [`entries/${currentEntry}/votingStartTimestamp`]: 'NOW',
     });
-    return; // stop here for ENTRY_VOTING
+    // return; // stop here for ENTRY_VOTING
     const timer = DRAW_DUO_CONFIG.defaults.voteTimer;
     pushVotes(this.drawDuoRef, this.drawDuoSnapshot);
     setTimeout(() => {
@@ -243,15 +246,23 @@ class DrawDuoGameHost extends Component {
       [`entries/${currentEntry}/answersTallied`]: talliedAnswers,
       [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS,
     });
-    const timer = DRAW_DUO_CONFIG.defaults.revealTimer;
+    const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
     setTimeout(() => {
-      this.answerRevealed();
+      this.nextEntryAnswer();
     }, timer);
   }
 
   nextEntryAnswer() {
-    const {currentEntry} = this.drawDuoSnapshot;
-    const currentEntryData = this.drawDuoSnapshot.entries[currentEntry];
+    revealEntryAnswer(this.drawDuoRef, this.drawDuoSnapshot);
+    // return; // stop here for ENTRY_SEMI_RESULTS
+    if (!isAnEntryAnswerRemaining(this.drawDuoSnapshot)) {
+      this.answerRevealed();
+    } else {
+      const timer = DRAW_DUO_CONFIG.defaults.revealAnswerTimer;
+      setTimeout(() => {
+        this.nextEntryAnswer();
+      }, timer);
+    }
   }
 
   answerRevealed() {

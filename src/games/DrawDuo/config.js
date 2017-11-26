@@ -15,6 +15,7 @@ export const DRAW_DUO_CONFIG = {
     guessTimer: (2 * 1000),
     voteTimer: (2 * 1000),
     revealTimer: (2 * 1000),
+    revealAnswerTimer: (1.5 * 1000),
     sleepTimer: (1 * 1000),
   },
   userHeaderDisplayed: true,

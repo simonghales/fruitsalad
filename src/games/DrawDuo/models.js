@@ -47,6 +47,7 @@ export interface Guess {
 
 export interface Entry {
   currentState: string,
+  currentRevealedAnswerIndex: number,
   guessingStartTimestamp: string,
   votingStartTimestamp: string,
   drawingsSubmitted: boolean,
@@ -83,6 +84,7 @@ export interface DrawDuoGame {
   guessTimer: number,
   voteTimer: number,
   revealTimer: number,
+  revealAnswerTimer: number,
   sleepTimer: number,
   pairs: {},
   rounds: {},

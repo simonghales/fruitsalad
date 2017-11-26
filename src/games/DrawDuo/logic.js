@@ -102,3 +102,20 @@ export function generateAnswers(drawDuoRef, drawDuoGameState: DrawDuoGame) {
 
   drawDuoRef.update(answers);
 }
+
+export function revealEntryAnswer(drawDuoRef, drawDuoGameState: DrawDuoGame) {
+  const {currentEntry} = drawDuoGameState;
+  const currentEntryData: Entry = drawDuoGameState.entries[currentEntry];
+  const {currentRevealedAnswerIndex} = currentEntryData;
+  drawDuoRef.update({
+    [`/entries/${currentEntry}/currentRevealedAnswerIndex`]: currentRevealedAnswerIndex + 1,
+  });
+}
+
+export function isAnEntryAnswerRemaining(drawDuoGameState: DrawDuoGame): boolean {
+  const {currentEntry} = drawDuoGameState;
+  const currentEntryData: Entry = drawDuoGameState.entries[currentEntry];
+  const {answers, currentRevealedAnswerIndex} = currentEntryData;
+  const answerKeys = Object.keys(answers);
+  return (currentRevealedAnswerIndex < answerKeys.length);
+}

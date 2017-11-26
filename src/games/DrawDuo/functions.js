@@ -19,7 +19,7 @@ import {
   DRAW_DUO_ROUND_CURRENT_STATE_PENDING,
   DRAW_DUO_ROUND_CURRENT_STATE_VOTING,
   DrawDuoGame,
-  Entry
+  Entry, FormattedAnswer
 } from './models';
 import DrawDuoDisplayCompleted from './screens/DrawDuoDisplayCompleted/DrawDuoDisplayCompleted';
 import DrawDuoDisplayInitiating from './screens/DrawDuoDisplayInitiating/DrawDuoDisplayInitiating';
@@ -37,6 +37,7 @@ export function generateInitialGameState(): DrawDuoGame {
     guessTimer: DRAW_DUO_CONFIG.defaults.guessTimer,
     voteTimer: DRAW_DUO_CONFIG.defaults.voteTimer,
     revealTimer: DRAW_DUO_CONFIG.defaults.revealTimer,
+    revealAnswerTimer: DRAW_DUO_CONFIG.defaults.revealAnswerTimer,
     sleepTimer: DRAW_DUO_CONFIG.defaults.sleepTimer,
     entries: {},
     pairs: {},
@@ -56,6 +57,7 @@ export function generateRound(entries) {
 export function generateEntry(pairId) {
   return {
     currentState: DRAW_DUO_ENTRY_CURRENT_STATE_PENDING,
+    currentRevealedAnswerIndex: 0,
     guessingStartTimestamp: '',
     votingStartTimestamp: '',
     guessesSubmitted: false,
@@ -191,15 +193,35 @@ export function getCurrentEntryData(drawDuoState: DrawDuoGame) {
   return drawDuoState.entries[drawDuoState.currentEntry];
 }
 
-export function splitAnswers(currentEntry, drawDuoState: DrawDuoGame) {
+export function getSortedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
   if (!currentEntry) return [];
   const {answers} = currentEntry;
   const {guesses} = drawDuoState;
   if (!answers) return [];
-  let answerKeys = Object.keys(answers);
-  answerKeys.sort((key1, key2) => {
-    return answers[key1].order > answers[key2].order;
+  const answerKeys = getSortedAnswerKeys(answers);
+  let sortedAnswers = [];
+  answerKeys.forEach((answerKey) => {
+    const answer = {
+      ...answers[answerKey],
+      text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
+    };
+    sortedAnswers.push(answer);
   });
+  return sortedAnswers;
+}
+
+function getSortedAnswerKeys(answers) {
+  return Object.keys(answers).sort((key1, key2) => {
+    return answers[key1].order > answers[key2].order;
+  })
+}
+
+export function splitAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
+  if (!currentEntry) return [];
+  const {answers} = currentEntry;
+  const {guesses} = drawDuoState;
+  if (!answers) return [];
+  const answerKeys = getSortedAnswerKeys(answers);
   let leftAnswers = [];
   let rightAnswers = [];
   let halfCount = Math.ceil(answerKeys.length / 2);
@@ -215,4 +237,12 @@ export function splitAnswers(currentEntry, drawDuoState: DrawDuoGame) {
     }
   });
   return [leftAnswers, rightAnswers];
+}
+
+export function getCurrentAnswer(currentEntry: Entry, sortedAnswers: FormattedAnswer[]) {
+  if (!currentEntry) return null;
+  const {currentRevealedAnswerIndex, currentState} = currentEntry;
+  if (currentState !== DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS) return null;
+  if (currentRevealedAnswerIndex > sortedAnswers.length - 1) return null;
+  return sortedAnswers[currentRevealedAnswerIndex];
 }
