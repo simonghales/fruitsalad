@@ -12,7 +12,7 @@ import {
 import SlideTransition from '../../../../components/transitions/SlideTransition/SlideTransition';
 import SessionNotFound from '../../../../modals/SessionNotFound/SessionNotFound';
 import {
-  getCurrentAnswer, getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers,
+  getCurrentAnswer, getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers, getVotedAnswers,
   splitAnswers
 } from '../../functions';
 
@@ -30,30 +30,35 @@ class DrawDuoDisplayVoting extends Component {
     currentSubState: string,
     sortedAnswers: FormattedAnswer[],
     splitAnswers: [FormattedAnswer[]],
+    votedAnswers: FormattedAnswer[],
   };
 
   constructor(props) {
     super(props);
     const currentEntry = getCurrentEntryData(props.session.drawDuo);
     const sortedAnswers = getSortedAnswers(currentEntry, props.session.drawDuo);
+    const votedAnswers = getVotedAnswers(currentEntry, props.session.drawDuo);
     this.state = {
-      currentAnswer: getCurrentAnswer(currentEntry, sortedAnswers),
+      currentAnswer: getCurrentAnswer(currentEntry, votedAnswers),
       currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(props.session.drawDuo),
       sortedAnswers: sortedAnswers,
       splitAnswers: splitAnswers(currentEntry, props.session.drawDuo),
+      votedAnswers: votedAnswers,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     const currentEntry = getCurrentEntryData(nextProps.session.drawDuo);
     const sortedAnswers = getSortedAnswers(currentEntry, nextProps.session.drawDuo);
+    const votedAnswers = getVotedAnswers(currentEntry, nextProps.session.drawDuo);
     this.setState({
-      currentAnswer: getCurrentAnswer(currentEntry, sortedAnswers),
+      currentAnswer: getCurrentAnswer(currentEntry, votedAnswers),
       currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(nextProps.session.drawDuo),
       sortedAnswers: sortedAnswers,
       splitAnswers: splitAnswers(currentEntry, nextProps.session.drawDuo),
+      votedAnswers: votedAnswers,
     });
   }
 
@@ -86,14 +91,14 @@ class DrawDuoDisplayVoting extends Component {
 
   getResults() {
     if (!this.isResults()) return null;
-    const {sortedAnswers} = this.state;
+    const {votedAnswers} = this.state;
     return (
       <div>
         {
-          sortedAnswers.map((answer) => {
+          votedAnswers.map((answer) => {
             const key = (answer.guess) ? answer.guess : 'prompt';
             return (
-              <TransitionGroup>
+              <TransitionGroup key={answer.key}>
                 {
                   this.isCurrentAnswer(answer.key) ? (
                     <CSSTransition
@@ -164,9 +169,7 @@ class DrawDuoDisplayVoting extends Component {
                   ) : null
                 }
               </TransitionGroup>
-              <TransitionGroup>
-                {this.getResults()}
-              </TransitionGroup>
+              {this.getResults()}
             </div>
           </div>
           <div className='DrawDuoDisplayVoting__answers'>

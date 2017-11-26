@@ -12,7 +12,6 @@ import GamesScreen from '../../screens/GamesScreen/GamesScreen';
 import {AppState} from '../../redux/index';
 import {UserIsAuthenticated} from '../../auth/UserIsAuthenticated/UserIsAuthenticated';
 import {Redirect, Switch} from 'react-router';
-import SessionInPlay from '../SessionInPlay/SessionInPlay';
 import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplay/DrawDuoDisplay';
 
 class App extends Component {

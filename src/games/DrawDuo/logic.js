@@ -9,16 +9,40 @@ export function generateRandomOrderOfAnswers(drawDuoGameState: DrawDuoGame): str
     addVoteToAnswers(talliedAnswers, currentEntryData.votes[userKey]);
   }
   const talliedCount = Object.keys(talliedAnswers).length;
+  let talliedPromptAdded = false;
   let talliedIndex = 1;
   for (let answerKey in talliedAnswers) {
     if (answerKey === 'prompt') {
       talliedAnswers[answerKey].order = talliedCount;
+      talliedPromptAdded = true;
     } else {
       talliedAnswers[answerKey].order = talliedIndex;
       talliedIndex++;
     }
   }
+  if (!talliedPromptAdded) {
+    const promptAnswerKey = getPromptAnswerKey(currentEntryData);
+    talliedAnswers[promptAnswerKey] = {
+      order: talliedCount + 1,
+      count: 0,
+    };
+  }
   return talliedAnswers;
+}
+
+function getPromptAnswerKey(currentEntryData: Entry) {
+  const {answers} = currentEntryData;
+  let promptAnswerKey = '';
+  for (let answerKey in answers) {
+    if (answers[answerKey].prompt) {
+      promptAnswerKey = answerKey;
+      break;
+    }
+  }
+  if (!promptAnswerKey) {
+    console.warn('prompt wasnt found...');
+  }
+  return promptAnswerKey;
 }
 
 function addVoteToAnswers(answers, answerKey: string) {
@@ -58,17 +82,13 @@ export function pushGuesses(drawDuoRef, currentEntry: string) {
 export function pushVotes(drawDuoRef, drawDuoGameState: DrawDuoGame) {
   const {currentEntry, entries} = drawDuoGameState;
   const currentEntryData: Entry = entries[currentEntry];
-  const guessesKeys = Object.keys(currentEntryData.guesses);
+  const answerKeys = Object.keys(currentEntryData.answers);
   let votes = {};
   for (let pairKey in drawDuoGameState.pairs) {
     if (pairKey === currentEntryData.pair) continue;
     for (let userKey in drawDuoGameState.pairs[pairKey]) {
-      const randomNumber = randomIntFromInterval(0, guessesKeys.length + 2);
-      if (randomNumber >= guessesKeys.length) {
-        votes[`/entries/${currentEntry}/votes/${userKey}`] = 'prompt';
-      } else {
-        votes[`/entries/${currentEntry}/votes/${userKey}`] = guessesKeys[randomNumber];
-      }
+      const randomNumber = randomIntFromInterval(0, answerKeys.length - 1);
+      votes[`/entries/${currentEntry}/votes/${userKey}`] = answerKeys[randomNumber];
     }
   }
   drawDuoRef.update(votes);
@@ -115,7 +135,7 @@ export function revealEntryAnswer(drawDuoRef, drawDuoGameState: DrawDuoGame) {
 export function isAnEntryAnswerRemaining(drawDuoGameState: DrawDuoGame): boolean {
   const {currentEntry} = drawDuoGameState;
   const currentEntryData: Entry = drawDuoGameState.entries[currentEntry];
-  const {answers, currentRevealedAnswerIndex} = currentEntryData;
-  const answerKeys = Object.keys(answers);
+  const {answersTallied, currentRevealedAnswerIndex} = currentEntryData;
+  const answerKeys = Object.keys(answersTallied);
   return (currentRevealedAnswerIndex < answerKeys.length);
 }

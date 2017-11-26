@@ -57,7 +57,7 @@ export function generateRound(entries) {
 export function generateEntry(pairId) {
   return {
     currentState: DRAW_DUO_ENTRY_CURRENT_STATE_PENDING,
-    currentRevealedAnswerIndex: 0,
+    currentRevealedAnswerIndex: -1,
     guessingStartTimestamp: '',
     votingStartTimestamp: '',
     guessesSubmitted: false,
@@ -201,14 +201,18 @@ export function getSortedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame)
   const answerKeys = getSortedAnswerKeys(answers);
   let sortedAnswers = [];
   answerKeys.forEach((answerKey) => {
-    const answer = {
-      ...answers[answerKey],
-      text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
-      key: answerKey,
-    };
+    const answer = getFormattedAnswer(answers, answerKey, guesses, currentEntry);
     sortedAnswers.push(answer);
   });
   return sortedAnswers;
+}
+
+function getFormattedAnswer(answers, answerKey, guesses, currentEntry) {
+  return {
+    ...answers[answerKey],
+    text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
+    key: answerKey,
+  };
 }
 
 function getSortedAnswerKeys(answers) {
@@ -241,10 +245,23 @@ export function splitAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
   return [leftAnswers, rightAnswers];
 }
 
-export function getCurrentAnswer(currentEntry: Entry, sortedAnswers: FormattedAnswer[]) {
+export function getCurrentAnswer(currentEntry: Entry, votedAnswers: FormattedAnswer[]) {
   if (!currentEntry) return null;
   const {currentRevealedAnswerIndex, currentState} = currentEntry;
   if (currentState !== DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS) return null;
-  if (currentRevealedAnswerIndex > sortedAnswers.length - 1) return null;
-  return sortedAnswers[currentRevealedAnswerIndex];
+  if (currentRevealedAnswerIndex > votedAnswers.length - 1) return null;
+  return votedAnswers[currentRevealedAnswerIndex];
+}
+
+export function getVotedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
+  if (!currentEntry) return [];
+  const {guesses} = drawDuoState;
+  const {answers, answersTallied} = currentEntry;
+  if (!answers || !answersTallied) return [];
+  const orderedAnswers = Object.keys(answersTallied).sort((key1, key2) => answersTallied[key1].order > answersTallied[key2].order)
+    .map((answerKey) => {
+      return getFormattedAnswer(answers, answerKey, guesses, currentEntry);
+    });
+  console.log('orderedAnswers', orderedAnswers);
+  return orderedAnswers;
 }
