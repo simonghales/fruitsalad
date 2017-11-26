@@ -41,6 +41,7 @@ export function generateInitialGameState(): DrawDuoGame {
     entries: {},
     pairs: {},
     rounds: {},
+    guesses: {},
   };
 }
 
@@ -61,17 +62,15 @@ export function generateEntry(pairId) {
     drawingsSubmitted: false,
     votesSubmitted: false,
     answerRevealed: false,
+    answersTallied: {},
     pair: pairId,
-    prompt: 'DRAWING PROMPT GOES HERE',
+    prompt: 'a couple of musical dogs',
     drawings: {
       'drawingid': true,
     },
-    guesses: {
-      'guessid': true,
-    },
-    votes: {
-      'userid': 'guessid',
-    },
+    guesses: {},
+    votes: {},
+    answers: {},
   }
 }
 
@@ -182,4 +181,38 @@ export function getDisplayComponentFromGameVotingSubState(drawDuoState: DrawDuoG
 
   }
   return null;
+}
+
+export function getCurrentEntryData(drawDuoState: DrawDuoGame) {
+  if (!drawDuoState.currentEntry) {
+    console.warn('No current entry');
+    return null;
+  }
+  return drawDuoState.entries[drawDuoState.currentEntry];
+}
+
+export function splitAnswers(currentEntry, drawDuoState: DrawDuoGame) {
+  if (!currentEntry) return [];
+  const {answers} = currentEntry;
+  const {guesses} = drawDuoState;
+  if (!answers) return [];
+  let answerKeys = Object.keys(answers);
+  answerKeys.sort((key1, key2) => {
+    return answers[key1].order > answers[key2].order;
+  });
+  let leftAnswers = [];
+  let rightAnswers = [];
+  let halfCount = Math.ceil(answerKeys.length / 2);
+  answerKeys.forEach((answerKey) => {
+    const answer = {
+      ...answers[answerKey],
+      text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
+    };
+    if (leftAnswers.length < halfCount) {
+      leftAnswers.push(answer);
+    } else {
+      rightAnswers.push(answer);
+    }
+  });
+  return [leftAnswers, rightAnswers];
 }

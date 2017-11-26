@@ -7,10 +7,11 @@ import {AppState} from '../../../../redux/index';
 import DrawDuoArtwork from '../../components/DrawDuoArtwork/DrawDuoArtwork';
 import {
   DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING, DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS,
-  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING} from '../../models';
+  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING, Entry, FormattedAnswer
+} from '../../models';
 import SlideTransition from '../../../../components/transitions/SlideTransition/SlideTransition';
 import SessionNotFound from '../../../../modals/SessionNotFound/SessionNotFound';
-import {getGameVotingCurrentSubState} from '../../functions';
+import {getCurrentEntryData, getGameVotingCurrentSubState, splitAnswers} from '../../functions';
 
 class DrawDuoDisplayVoting extends Component {
 
@@ -19,34 +20,28 @@ class DrawDuoDisplayVoting extends Component {
   };
 
   state: {
+    currentEntry: Entry,
     currentSubState: string,
+    splitAnswers: [FormattedAnswer[]],
   };
 
   constructor(props) {
     super(props);
+    const currentEntry = getCurrentEntryData(props.session.drawDuo);
     this.state = {
+      currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(props.session.drawDuo),
+      splitAnswers: splitAnswers(currentEntry, props.session.drawDuo),
     };
   }
 
   componentWillReceiveProps(nextProps) {
+    const currentEntry = getCurrentEntryData(nextProps.session.drawDuo);
     this.setState({
+      currentEntry: currentEntry,
       currentSubState: getGameVotingCurrentSubState(nextProps.session.drawDuo),
+      splitAnswers: splitAnswers(currentEntry, nextProps.session.drawDuo),
     });
-  }
-
-  getLabelMessage() {
-    const {currentSubState} = this.state;
-    if (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING) {
-      return 'Describe it!';
-    }
-    if (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING) {
-      return 'Select an answer';
-    }
-    if (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS) {
-      return ' ';
-    }
-    return '';
   }
 
   displayAnswers() {
@@ -72,6 +67,7 @@ class DrawDuoDisplayVoting extends Component {
 
   render() {
     const {session} = this.props;
+    const {splitAnswers} = this.state;
     const guessing = this.isGuessing();
     const voting = this.isVoting();
     return (
@@ -83,10 +79,11 @@ class DrawDuoDisplayVoting extends Component {
       ])}>
         <div className='DrawDuoDisplayVoting__content'>
           <div className='DrawDuoDisplayVoting__answers'>
-            <div className='DrawDuoDisplayVoting__answers__answer'>2 dogs playing piano</div>
-            <div className='DrawDuoDisplayVoting__answers__answer'>2 dogs jumping on a box</div>
-            <div className='DrawDuoDisplayVoting__answers__answer'>a couple of musical dogs</div>
-            <div className='DrawDuoDisplayVoting__answers__answer'>the dogs broke my keyboard</div>
+            {
+              splitAnswers[0].map((answer) => (
+                <div className='DrawDuoDisplayVoting__answers__answer'>{answer.text}</div>
+              ))
+            }
           </div>
           <div className='DrawDuoDisplayVoting__drawingContainer'>
             <DrawDuoArtwork display={true}/>
@@ -118,9 +115,11 @@ class DrawDuoDisplayVoting extends Component {
             </div>
           </div>
           <div className='DrawDuoDisplayVoting__answers'>
-            <div className='DrawDuoDisplayVoting__answers__answer'>animals breaking my piano</div>
-            <div className='DrawDuoDisplayVoting__answers__answer'>i have no idea</div>
-            <div className='DrawDuoDisplayVoting__answers__answer'>2 cats playing keyboard</div>
+            {
+              splitAnswers[1].map((answer) => (
+                <div className='DrawDuoDisplayVoting__answers__answer'>{answer.text}</div>
+              ))
+            }
           </div>
         </div>
       </div>

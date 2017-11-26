@@ -10,16 +10,17 @@ import {
   DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
   DRAW_DUO_ROUND_CURRENT_STATE_COMPLETED,
   DRAW_DUO_ROUND_CURRENT_STATE_DRAWING,
-  DRAW_DUO_ROUND_CURRENT_STATE_VOTING
+  DRAW_DUO_ROUND_CURRENT_STATE_VOTING, DrawDuoGame
 } from '../../models';
 import {DRAW_DUO_CONFIG} from '../../config';
 import {generateEntry, generateInitialGameState, generateRound} from '../../functions';
+import {generateAnswers, generateRandomOrderOfAnswers, pushGuesses, pushVotes} from '../../logic';
 
 class DrawDuoGameHost extends Component {
 
   initiated = false;
   drawDuoRef;
-  drawDuoSnapshot;
+  drawDuoSnapshot: DrawDuoGame;
 
   props: {
     firebase: any,
@@ -49,6 +50,7 @@ class DrawDuoGameHost extends Component {
   componentDidMount() {
     const {firebase} = this.props;
     const sessionKey = 'HALES';
+    // const sessionKey = 'ENTRY_VOTING';
     this.drawDuoRef = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
     this.drawDuoRef.on('value', snapshot => {
       this.drawDuoSnapshot = snapshot.val();
@@ -118,7 +120,10 @@ class DrawDuoGameHost extends Component {
   }
 
   drawingsSubmitted() {
-    this.continueRound();
+    const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
+    setTimeout(() => {
+      this.continueRound();
+    }, timer);
   }
 
   continueRound() {
@@ -184,6 +189,7 @@ class DrawDuoGameHost extends Component {
       [`entries/${currentEntry}/guessingStartTimestamp`]: 'NOW',
     });
     const timer = DRAW_DUO_CONFIG.defaults.guessTimer;
+    pushGuesses(this.drawDuoRef, currentEntry);
     setTimeout(() => {
       this.guessesSubmitted();
     }, timer);
@@ -196,8 +202,13 @@ class DrawDuoGameHost extends Component {
     });
     const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
     setTimeout(() => {
-      this.voteOnEntry();
+      this.generateAnswers();
     }, timer);
+  }
+
+  generateAnswers() {
+    generateAnswers(this.drawDuoRef, this.drawDuoSnapshot);
+    this.voteOnEntry();
   }
 
   voteOnEntry() {
@@ -206,7 +217,9 @@ class DrawDuoGameHost extends Component {
       [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
       [`entries/${currentEntry}/votingStartTimestamp`]: 'NOW',
     });
+    return; // stop here for ENTRY_VOTING
     const timer = DRAW_DUO_CONFIG.defaults.voteTimer;
+    pushVotes(this.drawDuoRef, this.drawDuoSnapshot);
     setTimeout(() => {
       this.votesSubmitted();
     }, timer);
@@ -225,13 +238,20 @@ class DrawDuoGameHost extends Component {
 
   revealEntryResults() {
     const {currentEntry} = this.drawDuoSnapshot;
+    const talliedAnswers = generateRandomOrderOfAnswers(this.drawDuoSnapshot);
     this.drawDuoRef.update({
+      [`entries/${currentEntry}/answersTallied`]: talliedAnswers,
       [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS,
     });
     const timer = DRAW_DUO_CONFIG.defaults.revealTimer;
     setTimeout(() => {
       this.answerRevealed();
     }, timer);
+  }
+
+  nextEntryAnswer() {
+    const {currentEntry} = this.drawDuoSnapshot;
+    const currentEntryData = this.drawDuoSnapshot.entries[currentEntry];
   }
 
   answerRevealed() {

@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 class CountdownTimer extends Component {
 
+  unmounted = false;
+
   props: {
     timerDuration: number,
   };
@@ -20,11 +22,16 @@ class CountdownTimer extends Component {
     this.decrementSecondsRemaining = this.decrementSecondsRemaining.bind(this);
   }
 
+  componentWillUnmount() {
+    this.unmounted = true;
+  }
+
   componentDidMount() {
     setTimeout(this.decrementSecondsRemaining, 1000);
   }
 
   decrementSecondsRemaining() {
+    if (this.unmounted) return;
     const {secondsRemaining} = this.state;
     const newSecondsRemaining = secondsRemaining - 1;
     this.setState({

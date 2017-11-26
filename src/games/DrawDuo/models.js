@@ -30,6 +30,21 @@ export interface Pair {
 export interface User {
 }
 
+export interface Answer {
+  text: string,
+  order: number,
+}
+
+export interface FormattedAnswer {
+  text: string,
+  order: number,
+}
+
+export interface Guess {
+  guess: string,
+  user: string,
+}
+
 export interface Entry {
   currentState: string,
   guessingStartTimestamp: string,
@@ -43,6 +58,7 @@ export interface Entry {
   drawings: {},
   guesses: {},
   votes: {},
+  answers: {},
 }
 
 export interface Round {
@@ -59,6 +75,7 @@ export interface Drawing {
 
 export interface DrawDuoGame {
   completedTimestamp: string,
+  currentEntry: string,
   currentState: string,
   totalRounds: number,
   currentRound: string,
@@ -134,6 +151,7 @@ const EXAMPLE_DRAW_DUO_GAME: DrawDuoGame = {
       drawingsSubmitted: true,
       votesSubmitted: true,
       answerRevealed: true,
+      answersTallied: {},
       pair: 'pairid',
       prompt: 'DRAWING PROMPT GOES HERE',
       drawings: {
