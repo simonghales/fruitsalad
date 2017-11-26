@@ -278,12 +278,7 @@ export function getGameVotingCurrentSubState(drawDuoState: DrawDuoGame) {
     return 'unknown';
   }
 
-  console.log('drawDuoState', drawDuoState);
-  console.log('currentEntry', currentEntry);
-
   const currentEntryData: Entry = drawDuoState.entries[currentEntry];
-
-  console.log('currentEntryData', currentEntryData);
 
   if (currentEntryData.currentState === DRAW_DUO_ENTRY_CURRENT_STATE_GUESSING) {
     return DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING;

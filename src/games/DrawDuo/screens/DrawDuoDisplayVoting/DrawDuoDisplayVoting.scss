@@ -1,8 +1,10 @@
 @import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
 @import "../../../../styles/tools/buttons";
 @import "../../../../styles/tools/inputs";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
+@import "../../../../styles/tools/transitions";
 
 @mixin displayAnswers
 {
@@ -35,24 +37,44 @@
 
 .DrawDuoDisplayVoting__answers
 {
-  opacity:    0;
-  transition: opacity 300ms ease;
 
-  @include displayAnswers
+  &:first-of-type
   {
-    opacity: 1;
+    @include slideInRightAnimationDefaults;
+
+    @include displayAnswers
+    {
+      @include slideInRightAnimation;
+    }
+
+  }
+
+  &:last-of-type
+  {
+    @include slideInLeftAnimationDefaults;
+
+    @include displayAnswers
+    {
+      @include slideInLeftAnimation;
+    }
+
   }
 
 }
 
 .DrawDuoDisplayVoting__answers__answer
 {
-  margin: 20px 0;
+  @include drawDuoFont;
+  font-weight: 700;
+  font-size:   24px;
+  line-height: 24px;
+  margin:      40px 0;
 }
 
 .DrawDuoDisplayVoting__drawingContainer
 {
   position: relative;
+  margin:   0 40px;
 }
 
 .DrawDuoDisplayVoting__drawing__label
@@ -63,5 +85,39 @@
   right:      0;
   top:        100%;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
+}
+
+.DrawDuoDisplayVoting__drawing__label__text
+{
+  position: absolute;
+  left:     0;
+  right:    0;
+
+  @include slideEnter
+  {
+    opacity:   0.01;
+    transform: translateX(100px);
+  }
+
+  @include slideEnterActive
+  {
+    opacity:    1;
+    transform:  translateX(0);
+    transition: opacity 250ms ease-in, transform 500ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  @include slideExit
+  {
+    transform: translateX(0);
+    opacity:   1;
+  }
+
+  @include slideExitActive
+  {
+    transform:  translateX(-100px);
+    opacity:    0.01;
+    transition: opacity 250ms ease-in, transform 500ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
 }

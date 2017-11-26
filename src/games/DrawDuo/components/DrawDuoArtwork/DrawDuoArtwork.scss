@@ -32,20 +32,20 @@
     left:          0;
     right:         0;
     bottom:        100%;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
 }
 
 .DrawDuoArtwork__users__text
 {
-  @include drawDuoFont;
+  @include drawDuoHeadingFont;
   margin: 0 10px;
 }
 
 .DrawDuoArtwork__users__label
 {
-  @include drawDuoFont;
+  @include drawDuoHeadingFont;
   margin-left: 10px;
 }
 

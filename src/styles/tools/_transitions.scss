@@ -1,0 +1,43 @@
+@mixin slideEnter
+{
+
+  &.slide-enter,
+  .slide-enter &
+  {
+    @content;
+  }
+
+}
+
+@mixin slideEnterActive
+{
+
+  &.slide-enter.slide-enter-active,
+  .slide-enter.slide-enter-active &
+  {
+    @content;
+  }
+
+}
+
+@mixin slideExit
+{
+
+  &.slide-exit,
+  .slide-exit &
+  {
+    @content;
+  }
+
+}
+
+@mixin slideExitActive
+{
+
+  &.slide-exit.slide-exit-active,
+  .slide-exit.slide-exit-active &
+  {
+    @content;
+  }
+
+}

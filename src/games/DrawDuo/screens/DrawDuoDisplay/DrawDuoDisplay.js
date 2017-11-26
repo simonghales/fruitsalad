@@ -36,7 +36,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedComponent = firebaseConnect((props, store) => {
-  const sessionKey = 'DRAWING_ROUND';
+  const sessionKey = 'ENTRY_VOTING';
+  // const sessionKey = 'HALES';
   let queries = [
     {
       path: `/sessions/${sessionKey}`,
