@@ -7,11 +7,10 @@ import {AppState} from '../../../../redux/index';
 import DrawDuoArtwork from '../../components/DrawDuoArtwork/DrawDuoArtwork';
 import {
   DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING, DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS,
-  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING,
-  getGameVotingCurrentSubState
-} from '../../../../models/drawDuo';
+  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING} from '../../models';
 import SlideTransition from '../../../../components/transitions/SlideTransition/SlideTransition';
 import SessionNotFound from '../../../../modals/SessionNotFound/SessionNotFound';
+import {getGameVotingCurrentSubState} from '../../functions';
 
 class DrawDuoDisplayVoting extends Component {
 

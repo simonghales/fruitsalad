@@ -3,7 +3,7 @@ import './DrawDuoDisplay.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import {firebaseConnect, isLoaded} from 'react-redux-firebase';
-import {getDisplayComponentFromGameState} from '../../../../models/drawDuo';
+import {getDisplayComponentFromGameState} from '../../functions';
 
 class DrawDuoDisplay extends Component {
 

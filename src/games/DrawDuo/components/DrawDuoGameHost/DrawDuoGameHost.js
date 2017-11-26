@@ -10,11 +10,10 @@ import {
   DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
   DRAW_DUO_ROUND_CURRENT_STATE_COMPLETED,
   DRAW_DUO_ROUND_CURRENT_STATE_DRAWING,
-  DRAW_DUO_ROUND_CURRENT_STATE_VOTING,
-  generateEntry, generateInitialGameState,
-  generateRound
-} from '../../../../models/drawDuo';
+  DRAW_DUO_ROUND_CURRENT_STATE_VOTING
+} from '../../models';
 import {DRAW_DUO_CONFIG} from '../../config';
+import {generateEntry, generateInitialGameState, generateRound} from '../../functions';
 
 class DrawDuoGameHost extends Component {
 
@@ -195,7 +194,10 @@ class DrawDuoGameHost extends Component {
     this.drawDuoRef.update({
       [`entries/${currentEntry}/guessesSubmitted`]: true,
     });
-    this.voteOnEntry();
+    const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
+    setTimeout(() => {
+      this.voteOnEntry();
+    }, timer);
   }
 
   voteOnEntry() {
@@ -215,7 +217,10 @@ class DrawDuoGameHost extends Component {
     this.drawDuoRef.update({
       [`entries/${currentEntry}/votesSubmitted`]: true,
     });
-    this.revealEntryResults();
+    const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
+    setTimeout(() => {
+      this.revealEntryResults();
+    }, timer);
   }
 
   revealEntryResults() {
@@ -236,7 +241,10 @@ class DrawDuoGameHost extends Component {
       [`rounds/${currentRound}/entries/${currentEntry}/completed`]: true,
       [`entries/${currentEntry}/answerRevealed`]: true,
     });
-    this.getNextEntry();
+    const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
+    setTimeout(() => {
+      this.getNextEntry();
+    }, timer);
   }
 
   generatePairs() {
