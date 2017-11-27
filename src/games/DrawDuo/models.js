@@ -62,6 +62,7 @@ export interface Entry {
   drawingsSubmitted: boolean,
   guessesSubmitted: boolean,
   votesSubmitted: boolean,
+  answersTallied: {},
   answerRevealed: boolean,
   pair: string,
   prompt: string,

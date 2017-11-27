@@ -73,14 +73,20 @@
     width:  500px;
     height: 500px;
 
+    @media (max-width: 1440px)
+    {
+      width:  400px;
+      height: 400px;
+    }
+
     &:first-of-type
     {
-      margin-right: 20px;
+      margin-right: 10px;
     }
 
     &:last-of-type
     {
-      margin-left: 20px;
+      margin-left: 10px;
     }
 
   }

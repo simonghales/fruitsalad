@@ -16,16 +16,66 @@
 
 }
 
+@mixin isGuessing
+{
+
+  &.DrawDuoDisplayVoting--guessing,
+  .DrawDuoDisplayVoting--guessing &
+  {
+    @content;
+  }
+
+}
+
+@mixin isNotGuessing
+{
+
+  &.DrawDuoDisplayVoting--voting,
+  .DrawDuoDisplayVoting--voting &,
+  &.DrawDuoDisplayVoting--results,
+  .DrawDuoDisplayVoting--results &
+  {
+    @content;
+  }
+
+}
+
+@mixin isVoting
+{
+
+  &.DrawDuoDisplayVoting--voting,
+  .DrawDuoDisplayVoting--voting &
+  {
+    @content;
+  }
+
+}
+
+@mixin isResults
+{
+
+  &.DrawDuoDisplayVoting--results,
+  .DrawDuoDisplayVoting--results &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoDisplayVoting
 {
-  position:        fixed;
-  top:             0;
-  left:            0;
-  right:           0;
-  bottom:          0;
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
+  position:          fixed;
+  top:               0;
+  left:              0;
+  right:             0;
+  bottom:            0;
+  display:           flex;
+  align-items:       center;
+  justify-content:   center;
+
+  background-image:  url('../../../../assets/textures/hip-square.png');
+  background-repeat: repeat;
+
 }
 
 .DrawDuoDisplayVoting__content
@@ -33,15 +83,28 @@
   display:         flex;
   align-items:     center;
   justify-content: center;
+  transition:      transform 500ms ease;
+
+  @include isResults
+  {
+    transform: translateY(-50px);
+  }
+
 }
 
 .DrawDuoDisplayVoting__answers
 {
-  flex: 1;
+  position: relative;
+  flex:     1;
 
   &:first-of-type
   {
     @include slideInRightAnimationDefaults;
+
+    @include isNotGuessing
+    {
+      left: 50px;
+    }
 
     @include displayAnswers
     {
@@ -53,6 +116,11 @@
   &:last-of-type
   {
     @include slideInLeftAnimationDefaults;
+
+    @include isNotGuessing
+    {
+      right: 50px;
+    }
 
     @include displayAnswers
     {
@@ -67,15 +135,50 @@
 {
   @include drawDuoFont;
   font-weight: 700;
-  font-size:   24px;
-  line-height: 24px;
+  font-size:   32px;
+  line-height: 32px;
   margin:      40px 0;
+
+  &.DrawDuoDisplayVoting__answers__answer--alreadyRevealed
+  {
+
+    .DrawDuoDisplayVoting__answers--left &
+    {
+      @include slideOutLeftAnimation;
+    }
+
+    .DrawDuoDisplayVoting__answers--right &
+    {
+      @include slideOutRightAnimation;
+    }
+
+  }
+
 }
 
 .DrawDuoDisplayVoting__drawingContainer
 {
   position: relative;
   margin:   0 40px;
+
+  .DrawDuoArtwork__drawing
+  {
+    @include isNotGuessing
+    {
+
+      &:first-of-type
+      {
+        transform: scale(0.8) translateX(50px);
+      }
+
+      &:last-of-type
+      {
+        transform: scale(0.8) translateX(-50px);
+      }
+
+    }
+  }
+
 }
 
 .DrawDuoDisplayVoting__drawing__label

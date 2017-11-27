@@ -303,3 +303,11 @@ export function getVotedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) 
   console.log('orderedAnswers', orderedAnswers);
   return orderedAnswers;
 }
+
+export function getAnswerRevealIndex(answerKey: string, currentEntry: Entry) {
+  const {answersTallied} = currentEntry;
+  const sortedAnswersTalliedKeys = getSortedAnswerKeys(answersTallied);
+  return sortedAnswersTalliedKeys.findIndex((key) => {
+    return (key === answerKey);
+  })
+}

@@ -12,6 +12,7 @@ import {
 import SlideTransition from '../../../../components/transitions/SlideTransition/SlideTransition';
 import SessionNotFound from '../../../../modals/SessionNotFound/SessionNotFound';
 import {
+  getAnswerRevealIndex,
   getCurrentAnswer, getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers, getVotedAnswers,
   splitAnswers
 } from '../../functions';
@@ -90,6 +91,13 @@ class DrawDuoDisplayVoting extends Component {
     return (currentAnswer.key === answerKey);
   }
 
+  isAlreadyRevealed(answerKey: string) {
+    const {currentEntry} = this.state;
+    const currentRevealIndex = currentEntry.currentRevealedAnswerIndex;
+    const answerRevealIndex = getAnswerRevealIndex(answerKey, currentEntry);
+    return (answerRevealIndex !== -1 && answerRevealIndex < currentRevealIndex);
+  }
+
   getResults() {
     if (!this.isResults()) return null;
     const {votedAnswers} = this.state;
@@ -130,15 +138,19 @@ class DrawDuoDisplayVoting extends Component {
         'DrawDuoDisplayVoting',
         {
           'DrawDuoDisplayVoting--displayAnswers': this.displayAnswers(),
+          'DrawDuoDisplayVoting--guessing': this.isGuessing(),
+          'DrawDuoDisplayVoting--voting': this.isVoting(),
+          'DrawDuoDisplayVoting--results': this.isResults(),
         }
       ])}>
         <div className='DrawDuoDisplayVoting__content'>
-          <div className='DrawDuoDisplayVoting__answers'>
+          <div className='DrawDuoDisplayVoting__answers DrawDuoDisplayVoting__answers--left'>
             {
               splitAnswers.length > 0 && splitAnswers[0].map((answer, index) => (
                 <div className={classNames([
                   'DrawDuoDisplayVoting__answers__answer',
                   {
+                    'DrawDuoDisplayVoting__answers__answer--alreadyRevealed': this.isAlreadyRevealed(answer.key),
                     'DrawDuoDisplayVoting__answers__answer--current': this.isCurrentAnswer(answer.key),
                   }
                 ])} key={index}>{answer.text}</div>
@@ -175,10 +187,16 @@ class DrawDuoDisplayVoting extends Component {
               {this.getResults()}
             </div>
           </div>
-          <div className='DrawDuoDisplayVoting__answers'>
+          <div className='DrawDuoDisplayVoting__answers DrawDuoDisplayVoting__answers--right'>
             {
               splitAnswers.length > 0 && splitAnswers[1].map((answer, index) => (
-                <div className='DrawDuoDisplayVoting__answers__answer' key={index}>{answer.text}</div>
+                <div className={classNames([
+                  'DrawDuoDisplayVoting__answers__answer',
+                  {
+                    'DrawDuoDisplayVoting__answers__answer--alreadyRevealed': this.isAlreadyRevealed(answer.key),
+                    'DrawDuoDisplayVoting__answers__answer--current': this.isCurrentAnswer(answer.key),
+                  }
+                ])} key={index}>{answer.text}</div>
               ))
             }
           </div>
