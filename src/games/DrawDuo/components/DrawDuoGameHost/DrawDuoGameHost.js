@@ -36,7 +36,7 @@ class DrawDuoGameHost extends Component {
   }
 
   attemptToStart() {
-    return; // disabling for now
+    // return; // disabling for now
     const {session} = this.props;
     if (!isLoaded(session) || this.initiated || !this.drawDuoSnapshot) {
       return;
@@ -344,8 +344,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedComponent = firebaseConnect((props, store) => {
-  const sessionKey = 'DRAWING_ROUND';
-  // const sessionKey = 'HALES';
+  // const sessionKey = 'DRAWING_ROUND';
+  const sessionKey = 'HALES';
   let queries = [
     {
       path: `/sessions/${sessionKey}`,
