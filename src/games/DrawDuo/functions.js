@@ -25,6 +25,12 @@ import DrawDuoDisplayCompleted from './screens/DrawDuoDisplayCompleted/DrawDuoDi
 import DrawDuoDisplayInitiating from './screens/DrawDuoDisplayInitiating/DrawDuoDisplayInitiating';
 import DrawDuoDisplayDrawing from './screens/DrawDuoDisplayDrawing/DrawDuoDisplayDrawing';
 import DrawDuoDisplayVoting from './screens/DrawDuoDisplayVoting/DrawDuoDisplayVoting';
+import DrawDuoControllerCompleted from './screens/DrawDuoControllerCompleted/DrawDuoControllerCompleted';
+import DrawDuoControllerInitiating from './screens/DrawDuoControllerInitiating/DrawDuoControllerInitiating';
+import DrawDuoControllerDrawing from './screens/DrawDuoControllerDrawing/DrawDuoControllerDrawing';
+import DrawDuoControllerVoting from './screens/DrawDuoControllerVoting/DrawDuoControllerVoting';
+import DrawDuoControllerGuessing from './screens/DrawDuoControllerGuessing/DrawDuoControllerGuessing';
+import DrawDuoControllerResults from './screens/DrawDuoControllerResults/DrawDuoControllerResults';
 
 export function generateInitialGameState(): DrawDuoGame {
   return {
@@ -166,6 +172,36 @@ export function getDisplayComponentFromGameState(drawDuoState: DrawDuoGame) {
   }
   if (currentState === DRAW_DUO_GAME_STATE_ROUND_VOTING) {
     return <DrawDuoDisplayVoting/>
+  }
+  return null;
+}
+
+export function getControllerComponentFromGameState(drawDuoState: DrawDuoGame) {
+  if (!drawDuoState) return null;
+  const currentState = getGameCurrentState(drawDuoState);
+  if (currentState === DRAW_DUO_GAME_STATE_COMPLETED) {
+    return <DrawDuoControllerCompleted/>
+  }
+  else if (currentState === DRAW_DUO_GAME_STATE_INITIATING) {
+    return <DrawDuoControllerInitiating/>
+  }
+  else if (currentState === DRAW_DUO_GAME_STATE_ROUND_DRAWING) {
+    return <DrawDuoControllerDrawing/>
+  }
+  else if (currentState === DRAW_DUO_GAME_STATE_ROUND_VOTING) {
+    const currentSubState = getGameVotingCurrentSubState(drawDuoState);
+    if (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING) {
+      return <DrawDuoControllerGuessing/>
+    }
+    else if (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING) {
+      return <DrawDuoControllerVoting/>
+    }
+    else if (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS) {
+      return <DrawDuoControllerResults/>
+    }
+    else {
+      console.warn(`unmatched currentSubState: ${currentSubState}`);
+    }
   }
   return null;
 }

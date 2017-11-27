@@ -1,0 +1,31 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoVoteOption
+{
+  @include mediumDrawDuoHeading;
+  @include drawDuoFont;
+  background-color: #FFFFFF;
+  border-radius:    4px;
+  border:           1px solid #F0F0F0;
+  margin:           10px;
+  padding:          20px 10px;
+  text-align:       center;
+  transition:       opacity 300ms ease;
+
+  .DrawDuoControllerVoting--voteSubmitted &
+  {
+    opacity: 0.25;
+
+    &.DrawDuoVoteOption--selected
+    {
+      opacity: 1;
+    }
+
+  }
+
+}

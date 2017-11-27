@@ -94,11 +94,16 @@ export function pushVotes(drawDuoRef, drawDuoGameState: DrawDuoGame) {
   const currentEntryData: Entry = entries[currentEntry];
   const answerKeys = Object.keys(currentEntryData.answers);
   let votes = {};
+  const promptAnswerKey = getPromptAnswerKey(currentEntryData);
   for (let pairKey in drawDuoGameState.pairs) {
     if (pairKey === currentEntryData.pair) continue;
     for (let userKey in drawDuoGameState.pairs[pairKey]) {
-      const randomNumber = randomIntFromInterval(0, answerKeys.length - 1);
-      votes[`/entries/${currentEntry}/votes/${userKey}`] = answerKeys[randomNumber];
+      const randomNumber = randomIntFromInterval(0, answerKeys.length + 1);
+      if (randomNumber > answerKeys.length - 1) {
+        votes[`/entries/${currentEntry}/votes/${userKey}`] = promptAnswerKey;
+      } else {
+        votes[`/entries/${currentEntry}/votes/${userKey}`] = answerKeys[randomNumber];
+      }
     }
   }
   drawDuoRef.update(votes);
@@ -147,5 +152,5 @@ export function isAnEntryAnswerRemaining(drawDuoGameState: DrawDuoGame): boolean
   const currentEntryData: Entry = drawDuoGameState.entries[currentEntry];
   const {answersTallied, currentRevealedAnswerIndex} = currentEntryData;
   const answerKeys = Object.keys(answersTallied);
-  return (currentRevealedAnswerIndex < answerKeys.length);
+  return (currentRevealedAnswerIndex < answerKeys.length - 1);
 }

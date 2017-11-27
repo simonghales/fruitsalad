@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import './ArtyButton.css';
 import classNames from 'classnames';
 
-const ArtyButton = (props) => {
+const ArtyButton = ({children, ...props}) => {
   return (
     <button {...props} className='ArtyButton'>
-      {props.children}
+      {children}
     </button>
   );
 }

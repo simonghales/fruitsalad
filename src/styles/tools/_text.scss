@@ -13,6 +13,7 @@
 @mixin drawDuoFont
 {
   font-family: 'Caveat', sans-serif;
+  font-weight: 700;
 }
 
 @mixin textShadow
@@ -84,4 +85,11 @@
   @include drawDuoHeadingFont;
   font-size:   24px;
   line-height: 24px;
+}
+
+@mixin mediumSmallDrawDuoHeading
+{
+  @include drawDuoHeadingFont;
+  font-size:   18px;
+  line-height: 18px;
 }

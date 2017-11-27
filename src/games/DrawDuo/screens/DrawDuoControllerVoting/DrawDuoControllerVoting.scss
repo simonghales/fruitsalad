@@ -1,0 +1,27 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoControllerVoting
+{
+  position:   fixed;
+  top:        0;
+  left:       0;
+  right:      0;
+  bottom:     0;
+  overflow-y: auto;
+}
+
+.DrawDuoControllerVoting__title
+{
+  @include mediumDrawDuoHeading;
+  margin:     40px 20px;
+  text-align: center;
+}
+
+.DrawDuoControllerVoting__answers
+{
+  margin-bottom: 40px;
+}

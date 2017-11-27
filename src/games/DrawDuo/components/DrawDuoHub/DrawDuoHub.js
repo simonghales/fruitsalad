@@ -9,11 +9,16 @@ import {AppState} from '../../../../redux/index';
 import {getCurrentScreen} from '../../../../redux/reducers/drawDuo/state';
 import {getComponentFromCurrentScreen} from '../../config';
 import DrawDuoGameHost from '../DrawDuoGameHost/DrawDuoGameHost';
+import {DrawDuoGame} from '../../models';
+import {getControllerComponentFromGameState} from '../../functions';
+import {isLoaded} from 'react-redux-firebase';
 
 class DrawDuoHub extends Component {
 
   props: {
-    currentScreen: string,
+    session: {
+      drawDuo: DrawDuoGame,
+    },
   };
 
   constructor(props) {
@@ -21,12 +26,13 @@ class DrawDuoHub extends Component {
   }
 
   render() {
-    const {currentScreen} = this.props;
+    const {session} = this.props;
+    console.log('session', session);
     return (
       <div className='DrawDuoHub'>
         <DrawDuoGameHost/>
         {
-          getComponentFromCurrentScreen(currentScreen)
+          isLoaded(session) && getControllerComponentFromGameState(session.drawDuo)
         }
       </div>
     )
@@ -34,8 +40,9 @@ class DrawDuoHub extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const session = state.firebase.data.session;
   return {
-    currentScreen: getCurrentScreen(state),
+    session: session,
   };
 };
 

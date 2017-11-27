@@ -4,11 +4,14 @@ import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import {firebaseConnect, isLoaded} from 'react-redux-firebase';
 import {getDisplayComponentFromGameState} from '../../functions';
+import {DrawDuoGame} from '../../models';
 
 class DrawDuoDisplay extends Component {
 
   props: {
-    session: {},
+    session: {
+      drawDuo: DrawDuoGame,
+    },
   };
 
   render() {

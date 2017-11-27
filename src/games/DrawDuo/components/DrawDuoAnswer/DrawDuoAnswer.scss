@@ -7,6 +7,7 @@
 
 .DrawDuoAnswer
 {
+  @include drawDuoFont;
   position:  relative;
   min-width: 500px;
 }
@@ -30,7 +31,7 @@
 
       &:nth-child(#{$i})
       {
-        animation-delay: ($i - 1) * 750ms;
+        animation-delay: (($i - 1) * 750ms) + 500ms;
       }
 
     }
@@ -48,7 +49,7 @@
 {
   @include slideInDownAnimationDefaults;
   @include slideInDownAnimation($animationSpeed: 500ms, $animationDelay: 2000ms);
-  @include mediumDrawDuoHeading;
+  @include mediumSmallDrawDuoHeading;
   position:        absolute;
   left:            0;
   right:           0;
