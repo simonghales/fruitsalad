@@ -27,10 +27,8 @@ class DrawDuoHub extends Component {
 
   render() {
     const {session} = this.props;
-    console.log('session', session);
     return (
       <div className='DrawDuoHub'>
-        <DrawDuoGameHost/>
         {
           isLoaded(session) && getControllerComponentFromGameState(session.drawDuo)
         }

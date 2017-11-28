@@ -27,12 +27,23 @@ class DrawDuoGameHost extends Component {
 
   props: {
     firebase: any,
+    match: {
+      params: {
+        id?: string,
+      },
+    },
     session: any,
   };
 
   constructor(props) {
     super(props);
     this.initiateGame = this.initiateGame.bind(this);
+  }
+
+  sessionKeyMatchesKey(key: string) {
+    const {match} = this.props;
+    const sessionKey = match.params.id;
+    return (sessionKey === key);
   }
 
   attemptToStart() {
@@ -52,9 +63,8 @@ class DrawDuoGameHost extends Component {
   }
 
   componentDidMount() {
-    const {firebase} = this.props;
-    const sessionKey = 'HALES';
-    // const sessionKey = 'ENTRY_SEMI_RESULTS';
+    const {firebase, match} = this.props;
+    const sessionKey = match.params.id.toUpperCase();
     this.drawDuoRef = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
     this.drawDuoRef.on('value', snapshot => {
       this.drawDuoSnapshot = snapshot.val();
@@ -124,6 +134,7 @@ class DrawDuoGameHost extends Component {
 
   drawingsSubmitted() {
     const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
+    // return; // stop here for DRAWING_ROUND
     setTimeout(() => {
       this.continueRound();
     }, timer);
@@ -220,7 +231,7 @@ class DrawDuoGameHost extends Component {
       [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
       [`entries/${currentEntry}/votingStartTimestamp`]: 'NOW',
     });
-    // return; // stop here for ENTRY_VOTING
+    if (this.sessionKeyMatchesKey('ENTRY_VOTING')) return; // stop here for ENTRY_VOTING
     const timer = DRAW_DUO_CONFIG.defaults.voteTimer;
     pushVotes(this.drawDuoRef, this.drawDuoSnapshot);
     setTimeout(() => {
@@ -254,8 +265,7 @@ class DrawDuoGameHost extends Component {
 
   nextEntryAnswer() {
     revealEntryAnswer(this.drawDuoRef, this.drawDuoSnapshot);
-    // return; // stop here for ENTRY_SEMI_RESULTS
-
+    if (this.sessionKeyMatchesKey('ENTRY_SEMI_RESULTS')) return; // stop here for ENTRY_SEMI_RESULTS
 
     if (!isAnEntryAnswerRemaining(this.drawDuoSnapshot)) {
       const timer = DRAW_DUO_CONFIG.defaults.revealFinalAnswerTimer;
@@ -278,7 +288,8 @@ class DrawDuoGameHost extends Component {
       [`rounds/${currentRound}/entries/${currentEntry}/completed`]: true,
       [`entries/${currentEntry}/answerRevealed`]: true,
     });
-    const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
+    if (this.sessionKeyMatchesKey('ENTRY_RESULTS')) return; // stop here for ENTRY_RESULTS
+    const timer = DRAW_DUO_CONFIG.defaults.completedEntryTimer;
     setTimeout(() => {
       this.getNextEntry();
     }, timer);
@@ -286,7 +297,19 @@ class DrawDuoGameHost extends Component {
 
   generatePairs() {
     const {session} = this.props;
-    const users = session.users;
+    let users = session.users;
+    if (!users) {
+      users = {
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+      };
+    }
     const userKeys = Object.keys(users);
 
     const pairs = [], size = 2;
@@ -344,15 +367,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedComponent = firebaseConnect((props, store) => {
-  // const sessionKey = 'DRAWING_ROUND';
-  const sessionKey = 'HALES';
-  let queries = [
-    {
-      path: `/sessions/${sessionKey}`,
-      storeAs: 'session',
-    }
-  ];
-  return queries;
 })(DrawDuoGameHost);
 
 

@@ -17,6 +17,7 @@ export const DRAW_DUO_CONFIG = {
     revealTimer: (2 * 1000),
     revealAnswerTimer: (5 * 1000),
     revealFinalAnswerTimer: (8 * 1000),
+    completedEntryTimer: (8 * 1000),
     sleepTimer: (1 * 1000),
   },
   userHeaderDisplayed: true,

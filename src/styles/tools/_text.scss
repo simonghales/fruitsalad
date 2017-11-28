@@ -93,3 +93,10 @@
   font-size:   18px;
   line-height: 18px;
 }
+
+@mixin mediumDrawDuoText
+{
+  @include drawDuoFont;
+  font-size:   32px;
+  line-height: 32px;
+}

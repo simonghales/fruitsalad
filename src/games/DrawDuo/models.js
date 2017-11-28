@@ -23,6 +23,7 @@ export const DRAW_DUO_GAME_STATE_ROUND_VOTING = 'gameStateRoundVoting';
 export const DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING = 'gameVotingSubStateGuessing';
 export const DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING = 'gameVotingSubStateVoting';
 export const DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS = 'gameVotingSubStateResults';
+export const DRAW_DUO_GAME_VOTING_SUB_STATE_COMPLETED = 'gameVotingSubStateCompleted';
 
 export interface Pair {
 }

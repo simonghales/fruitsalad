@@ -39,14 +39,14 @@
 
 .DrawDuoArtwork__users__text
 {
-  @include drawDuoHeadingFont;
-  margin: 0 10px;
+  @include mediumDrawDuoHeading;
+  margin: 0 15px;
 }
 
 .DrawDuoArtwork__users__label
 {
-  @include drawDuoHeadingFont;
-  margin-left: 10px;
+  @include mediumDrawDuoHeading;
+  margin-left: 15px;
 }
 
 .DrawDuoArtwork__drawings
@@ -67,11 +67,13 @@
   height:           calc(100vw - 40px);
   background-color: #FFFFFF;
   border:           1px solid #F0F0F0;
+  transition:       transform 300ms ease;
 
   @include artworkDisplay
   {
     width:  500px;
     height: 500px;
+    border: 2px solid #000000;
 
     @media (max-width: 1440px)
     {

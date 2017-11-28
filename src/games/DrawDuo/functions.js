@@ -2,7 +2,7 @@ import React from 'react';
 import {DRAW_DUO_CONFIG} from './config';
 import {
   DRAW_DUO_CURRENT_STATE_COMPLETED,
-  DRAW_DUO_CURRENT_STATE_INITIATING,
+  DRAW_DUO_CURRENT_STATE_INITIATING, DRAW_DUO_ENTRY_CURRENT_STATE_COMPLETED,
   DRAW_DUO_ENTRY_CURRENT_STATE_GUESSING,
   DRAW_DUO_ENTRY_CURRENT_STATE_PENDING,
   DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS,
@@ -10,7 +10,7 @@ import {
   DRAW_DUO_GAME_STATE_COMPLETED,
   DRAW_DUO_GAME_STATE_INITIATING,
   DRAW_DUO_GAME_STATE_ROUND_DRAWING,
-  DRAW_DUO_GAME_STATE_ROUND_VOTING,
+  DRAW_DUO_GAME_STATE_ROUND_VOTING, DRAW_DUO_GAME_VOTING_SUB_STATE_COMPLETED,
   DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING,
   DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS,
   DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING,
@@ -39,6 +39,7 @@ export function generateInitialGameState(): DrawDuoGame {
     currentState: DRAW_DUO_CURRENT_STATE_INITIATING,
     currentRound: '',
     totalRounds: DRAW_DUO_CONFIG.defaults.numberOfRounds,
+    completedEntryTimer: DRAW_DUO_CONFIG.defaults.completedEntryTimer,
     drawingTimer: DRAW_DUO_CONFIG.defaults.drawingTimer,
     guessTimer: DRAW_DUO_CONFIG.defaults.guessTimer,
     voteTimer: DRAW_DUO_CONFIG.defaults.voteTimer,
@@ -151,6 +152,10 @@ export function getGameVotingCurrentSubState(drawDuoState: DrawDuoGame) {
 
   if (currentEntryData.currentState === DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS) {
     return DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS;
+  }
+
+  if (currentEntryData.currentState === DRAW_DUO_ENTRY_CURRENT_STATE_COMPLETED) {
+    return DRAW_DUO_GAME_VOTING_SUB_STATE_COMPLETED;
   }
 
   console.warn('no match?', currentEntryData.currentState);
@@ -286,7 +291,7 @@ export function splitAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
 export function getCurrentAnswer(currentEntry: Entry, votedAnswers: FormattedAnswer[]) {
   if (!currentEntry) return null;
   const {currentRevealedAnswerIndex, currentState} = currentEntry;
-  if (currentState !== DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS) return null;
+  if (currentState !== DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS && currentState !== DRAW_DUO_ENTRY_CURRENT_STATE_COMPLETED) return null;
   if (currentRevealedAnswerIndex > votedAnswers.length - 1) return null;
   return votedAnswers[currentRevealedAnswerIndex];
 }
@@ -306,6 +311,7 @@ export function getVotedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) 
 
 export function getAnswerRevealIndex(answerKey: string, currentEntry: Entry) {
   const {answersTallied} = currentEntry;
+  if (!answersTallied) return -1;
   const sortedAnswersTalliedKeys = getSortedAnswerKeys(answersTallied);
   return sortedAnswersTalliedKeys.findIndex((key) => {
     return (key === answerKey);

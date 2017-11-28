@@ -11,7 +11,7 @@ class DrawDuoDisplayCompleted extends Component {
     return (
       <div className='DrawDuoDisplayCompleted'>
         <div className='DrawDuoDisplayCompleted__content'>
-          <div>GAME COMPLETED</div>
+          <div className='DrawDuoDisplayCompleted__title'>GAME COMPLETED</div>
         </div>
       </div>
     )

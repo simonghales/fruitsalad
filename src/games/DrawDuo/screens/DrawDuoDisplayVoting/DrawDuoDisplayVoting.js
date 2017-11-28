@@ -6,6 +6,7 @@ import {CSSTransition, Transition, TransitionGroup} from 'react-transition-group
 import {AppState} from '../../../../redux/index';
 import DrawDuoArtwork from '../../components/DrawDuoArtwork/DrawDuoArtwork';
 import {
+  DRAW_DUO_GAME_VOTING_SUB_STATE_COMPLETED,
   DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING, DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS,
   DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING, DrawDuoGame, Entry, FormattedAnswer
 } from '../../models';
@@ -17,6 +18,7 @@ import {
   splitAnswers
 } from '../../functions';
 import DrawDuoAnswer from '../../components/DrawDuoAnswer/DrawDuoAnswer';
+import DrawDuoEntryResults from '../../components/DrawDuoEntryResults/DrawDuoEntryResults';
 
 class DrawDuoDisplayVoting extends Component {
 
@@ -85,6 +87,11 @@ class DrawDuoDisplayVoting extends Component {
     return (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS);
   }
 
+  isCompleted() {
+    const {currentSubState} = this.state;
+    return (currentSubState === DRAW_DUO_GAME_VOTING_SUB_STATE_COMPLETED);
+  }
+
   isCurrentAnswer(answerKey: string) {
     const {currentAnswer} = this.state;
     if (!currentAnswer) return false;
@@ -95,7 +102,7 @@ class DrawDuoDisplayVoting extends Component {
     const {currentEntry} = this.state;
     const currentRevealIndex = currentEntry.currentRevealedAnswerIndex;
     const answerRevealIndex = getAnswerRevealIndex(answerKey, currentEntry);
-    return (answerRevealIndex !== -1 && answerRevealIndex < currentRevealIndex);
+    return (answerRevealIndex !== -1 && answerRevealIndex <= currentRevealIndex);
   }
 
   getResults() {
@@ -128,6 +135,26 @@ class DrawDuoDisplayVoting extends Component {
     );
   }
 
+  getPrompt() {
+    const {currentEntry} = this.state;
+    return (
+      <TransitionGroup key='prompt'>
+        {
+          this.isCompleted() ? (
+            <CSSTransition
+              timeout={500}
+              classNames='slide'
+              key='selectAnswer'>
+              <div className='DrawDuoDisplayVoting__drawing__label__text DrawDuoDisplayVoting__drawing__label__text--prompt' key='prompt'>
+                {currentEntry.prompt}
+              </div>
+            </CSSTransition>
+          ) : null
+        }
+      </TransitionGroup>
+    );
+  }
+
   render() {
     const {session} = this.props;
     const {splitAnswers} = this.state;
@@ -141,6 +168,7 @@ class DrawDuoDisplayVoting extends Component {
           'DrawDuoDisplayVoting--guessing': this.isGuessing(),
           'DrawDuoDisplayVoting--voting': this.isVoting(),
           'DrawDuoDisplayVoting--results': this.isResults(),
+          'DrawDuoDisplayVoting--completed': this.isCompleted(),
         }
       ])}>
         <div className='DrawDuoDisplayVoting__content'>
@@ -185,6 +213,7 @@ class DrawDuoDisplayVoting extends Component {
                 }
               </TransitionGroup>
               {this.getResults()}
+              {this.getPrompt()}
             </div>
           </div>
           <div className='DrawDuoDisplayVoting__answers DrawDuoDisplayVoting__answers--right'>
@@ -201,6 +230,7 @@ class DrawDuoDisplayVoting extends Component {
             }
           </div>
         </div>
+        <DrawDuoEntryResults show={this.isCompleted()}/>
       </div>
     )
   }

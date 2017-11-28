@@ -1,0 +1,5 @@
+@mixin backgroundPaper($path: '../../assets/textures/', $file: 'halftone-yellow.png')
+{
+  background-image:  url(#{$path}#{$file});
+  background-repeat: repeat;
+}

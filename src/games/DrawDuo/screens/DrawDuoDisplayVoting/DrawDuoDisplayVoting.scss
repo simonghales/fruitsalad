@@ -4,6 +4,7 @@
 @import "../../../../styles/tools/inputs";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
+@import "../../../../styles/tools/textures";
 @import "../../../../styles/tools/transitions";
 
 @mixin displayAnswers
@@ -30,6 +31,8 @@
 @mixin isNotGuessing
 {
 
+  &.DrawDuoDisplayVoting--completed,
+  .DrawDuoDisplayVoting--completed &,
   &.DrawDuoDisplayVoting--voting,
   .DrawDuoDisplayVoting--voting &,
   &.DrawDuoDisplayVoting--results,
@@ -62,20 +65,27 @@
 
 }
 
+@mixin isCompleted
+{
+
+  &.DrawDuoDisplayVoting--completed,
+  .DrawDuoDisplayVoting--completed &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoDisplayVoting
 {
-  position:          fixed;
-  top:               0;
-  left:              0;
-  right:             0;
-  bottom:            0;
-  display:           flex;
-  align-items:       center;
-  justify-content:   center;
-
-  background-image:  url('../../../../assets/textures/hip-square.png');
-  background-repeat: repeat;
-
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
 }
 
 .DrawDuoDisplayVoting__content
@@ -86,6 +96,11 @@
   transition:      transform 500ms ease;
 
   @include isResults
+  {
+    transform: translateY(-50px);
+  }
+
+  @include isCompleted
   {
     transform: translateY(-50px);
   }
@@ -161,19 +176,43 @@
   position: relative;
   margin:   0 40px;
 
+  .DrawDuoArtwork__drawings
+  {
+    transition: transform 300ms ease;
+
+    @include isCompleted
+    {
+      transform: translateY(-50px);
+    }
+
+  }
+
   .DrawDuoArtwork__drawing
   {
     @include isNotGuessing
     {
+      border-width: 3px;
 
       &:first-of-type
       {
-        transform: scale(0.8) translateX(50px);
+        transform: scale(0.8) translateX(60px);
+
+        @media (max-width: 1440px)
+        {
+          transform: scale(0.8) translateX(50px);
+        }
+
       }
 
       &:last-of-type
       {
-        transform: scale(0.8) translateX(-50px);
+        transform: scale(0.8) translateX(-60px);
+
+        @media (max-width: 1440px)
+        {
+          transform: scale(0.8) translateX(-50px);
+        }
+
       }
 
     }
@@ -190,6 +229,13 @@
   top:        100%;
   text-align: center;
   margin-top: 40px;
+  transition: transform 300ms ease;
+
+  @include isCompleted
+  {
+    transform: translateY(-90px);
+  }
+
 }
 
 .DrawDuoDisplayVoting__drawing__label__text
@@ -222,6 +268,11 @@
     transform:  translateX(-100px);
     opacity:    0.01;
     transition: opacity 250ms ease-in, transform 500ms cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  &.DrawDuoDisplayVoting__drawing__label__text--prompt
+  {
+    @include mediumDrawDuoText;
   }
 
 }

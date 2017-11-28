@@ -2,26 +2,56 @@ import React, {Component} from 'react';
 import './DrawDuoDisplay.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
-import {firebaseConnect, isLoaded} from 'react-redux-firebase';
+import {firebaseConnect, isLoaded, isEmpty} from 'react-redux-firebase';
 import {getDisplayComponentFromGameState} from '../../functions';
 import {DrawDuoGame} from '../../models';
+import {withRouter} from 'react-router';
+import DrawDuoGameHost from '../../components/DrawDuoGameHost/DrawDuoGameHost';
 
 class DrawDuoDisplay extends Component {
 
   props: {
+    host: boolean,
     session: {
       drawDuo: DrawDuoGame,
     },
+    sessionLoaded: boolean,
+    sessionEmpty: boolean,
+    sessionValid: boolean,
   };
 
+  renderContent() {
+    const {session, sessionEmpty, sessionLoaded, sessionValid} = this.props;
+    if (!sessionValid) {
+      return (
+        <div className='DrawDuoDisplay__message'>
+          {
+            !sessionLoaded && (
+              <div>
+                LOADING SESSION
+              </div>
+            )
+          }
+          {
+            sessionLoaded && sessionEmpty && (
+              <div>
+                NO SESSION FOUND
+              </div>
+            )
+          }
+        </div>
+      )
+    } else {
+      return getDisplayComponentFromGameState(session.drawDuo);
+    }
+  }
+
   render() {
-    const {session} = this.props;
-    const sessionLoaded = isLoaded(session);
-    if (!sessionLoaded) return null;
-    console.log('session', session, 'loaded?', sessionLoaded);
+    const {host} = this.props;
     return (
       <div className='DrawDuoDisplay'>
-        {getDisplayComponentFromGameState(session.drawDuo)}
+        {host && <DrawDuoGameHost/>}
+        {this.renderContent()}
       </div>
     )
   }
@@ -31,6 +61,9 @@ const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
   return {
     session: session,
+    sessionLoaded: isLoaded(session),
+    sessionEmpty: isEmpty(session),
+    sessionValid: !isEmpty(session) && isLoaded(session),
   };
 };
 
@@ -39,8 +72,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedComponent = firebaseConnect((props, store) => {
-  // const sessionKey = 'ENTRY_SEMI_RESULTS';
-  const sessionKey = 'HALES';
+  const sessionKey = props.match.params.id.toUpperCase();
   let queries = [
     {
       path: `/sessions/${sessionKey}`,
@@ -50,4 +82,4 @@ const wrappedComponent = firebaseConnect((props, store) => {
   return queries;
 })(DrawDuoDisplay);
 
-export default connect(mapStateToProps, mapDispatchToProps)(wrappedComponent);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(wrappedComponent));
