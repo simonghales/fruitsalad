@@ -83,7 +83,12 @@ export interface EntryModel {
   answers: {
     [string]: AnswerModel,
   },
-  currentAnswerIndex: number,
+  answersRevealOrder: {
+    [string]: {
+      order: number,
+    },
+  },
+  currentAnswerRevealIndex: number,
   drawings: {
     // userKey : string
     [string]: string,
@@ -113,7 +118,6 @@ export interface AnswerModel {
   prompt?: boolean,
   user?: string,
   order?: number,
-  revealOrder?: number,
 }
 
 export type DrawDuoModelState =

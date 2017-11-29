@@ -25,9 +25,11 @@ import {
   roundDrawingTimerElapsed, setRound, setRoundDrawingsSubmitted
 } from '../../logic/rounds';
 import {
+  areEntryAnswersRevealed,
   completeEntry,
-  getEntryCurrentState, isACurrentEntry, isNextEntry, isNextEntryAnswer, setEntry, setEntryAnswersRevealed,
-  setNextEntryAnswer, startEntryGuessing, startEntryResults, startEntryVoting,
+  getEntryCurrentState, isACurrentEntry, isFinalEntryAnswer, isNextEntry, isNextEntryAnswer, setEntry,
+  setEntryAnswersRevealed,
+  setNextEntryAnswer, shuffleEntryAnswerRevealOrder, startEntryGuessing, startEntryResults, startEntryVoting,
   startNextEntry, submitEntryPromptAnswer, submitEntryTestAnswers, submitEntryTestVotes
 } from '../../logic/entries';
 
@@ -73,6 +75,7 @@ class DrawDuoGameHostNEW extends Component {
   }
 
   attemptToStart() {
+    // return;
     const {session} = this.props;
     if (!isLoaded(session) || this.initiated || !this.drawDuoSnapshot) {
       return;
@@ -91,19 +94,14 @@ class DrawDuoGameHostNEW extends Component {
 
   initiateGame(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    initiateGame(drawDuo, drawDuoRef);
+    initiateGame(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   nextGameStep(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
-    const gameCurrentState: DrawDuoModelState = getGameCurrentState(drawDuo);
+    const gameCurrentState: DrawDuoModelState = getGameCurrentState(this.drawDuoSnapshot);
 
     switch (gameCurrentState) {
 
@@ -129,38 +127,29 @@ class DrawDuoGameHostNEW extends Component {
 
   populateGameData(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
     this.setGameInitiating();
-    populateGameData(drawDuo, drawDuoRef);
+    populateGameData(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   setGameInitiating(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setGameInitiating(drawDuo, drawDuoRef);
+    setGameInitiating(this.drawDuoSnapshot, this.drawDuoRef);
 
   }
 
   setGamePlaying() {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setGamePlaying(drawDuo, drawDuoRef);
+    setGamePlaying(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   setGameCompleted() {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setGameCompleted(drawDuo, drawDuoRef);
-    console.log('GAME IS COMPLETE', drawDuo);
+    setGameCompleted(this.drawDuoSnapshot, this.drawDuoRef);
+    console.log('GAME IS COMPLETE', this.drawDuoSnapshot);
 
   }
 
@@ -168,16 +157,14 @@ class DrawDuoGameHostNEW extends Component {
 
   nextRoundStep(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
     // check if there is a current round
 
-    if (!isACurrentRound(drawDuo)) {
+    if (!isACurrentRound(this.drawDuoSnapshot)) {
       this.setRound();
       return;
     }
 
-    const roundCurrentState: RoundModelState = getRoundCurrentState(drawDuo);
+    const roundCurrentState: RoundModelState = getRoundCurrentState(this.drawDuoSnapshot);
 
     console.log('nextRoundStep', roundCurrentState);
 
@@ -208,13 +195,10 @@ class DrawDuoGameHostNEW extends Component {
 
   nextRound() {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
-    if (!isANextRound(drawDuo)) {
+    if (!isANextRound(this.drawDuoSnapshot)) {
       this.setGameCompleted();
     } else {
-      nextRound(drawDuo, drawDuoRef);
+      nextRound(this.drawDuoSnapshot, this.drawDuoRef);
       this.terminateAndCallNextGameStep();
     }
 
@@ -222,16 +206,13 @@ class DrawDuoGameHostNEW extends Component {
 
   nextRoundDrawingStep(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
-    const drawingsSubmitted = roundDrawingsSubmitted(drawDuo);
+    const drawingsSubmitted = roundDrawingsSubmitted(this.drawDuoSnapshot);
 
     if (drawingsSubmitted) {
       this.setRoundDrawingsSubmitted();
     }
 
-    if (drawingsSubmitted || roundDrawingTimerElapsed(drawDuo)) {
+    if (drawingsSubmitted || roundDrawingTimerElapsed(this.drawDuoSnapshot)) {
       this.beginRoundVoting();
     }
 
@@ -239,9 +220,7 @@ class DrawDuoGameHostNEW extends Component {
 
   nextRoundVotingStep(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-
-    if (roundAllEntriesCompleted(drawDuo)) {
+    if (roundAllEntriesCompleted(this.drawDuoSnapshot)) {
       this.revealRoundResults();
     } else {
       this.nextEntryStep();
@@ -251,37 +230,29 @@ class DrawDuoGameHostNEW extends Component {
 
   beginRoundVoting() {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    beginRoundVoting(drawDuo, drawDuoRef);
+    beginRoundVoting(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   setRound(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setRound(drawDuo, drawDuoRef);
+    setRound(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   setRoundDrawingsSubmitted() {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setRoundDrawingsSubmitted(drawDuo, drawDuoRef);
+    setRoundDrawingsSubmitted(this.drawDuoSnapshot, this.drawDuoRef);
 
   }
 
   beginRound(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    beginRound(drawDuo, drawDuoRef);
+    beginRound(this.drawDuoSnapshot, this.drawDuoRef);
 
-    const timer = drawDuo.config.timers.drawing;
+    const timer = this.drawDuoSnapshot.config.timers.drawing;
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
@@ -291,11 +262,9 @@ class DrawDuoGameHostNEW extends Component {
 
   revealRoundResults(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    revealRoundResults(drawDuo, drawDuoRef);
+    revealRoundResults(this.drawDuoSnapshot, this.drawDuoRef);
 
-    const timer = drawDuo.config.timers.reveal;
+    const timer = this.drawDuoSnapshot.config.timers.reveal;
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
     }, timer);
@@ -304,9 +273,7 @@ class DrawDuoGameHostNEW extends Component {
 
   completeRound(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    completeRound(drawDuo, drawDuoRef);
+    completeRound(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
@@ -315,16 +282,12 @@ class DrawDuoGameHostNEW extends Component {
 
   nextEntryStep(): void {
 
-
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
-    if (!isACurrentEntry(drawDuo)) {
+    if (!isACurrentEntry(this.drawDuoSnapshot)) {
       this.setEntry();
       return;
     }
 
-    const entryCurrentState = getEntryCurrentState(drawDuo);
+    const entryCurrentState = getEntryCurrentState(this.drawDuoSnapshot);
 
     console.log('nextEntryStep', entryCurrentState);
 
@@ -353,13 +316,11 @@ class DrawDuoGameHostNEW extends Component {
 
   startEntryGuessing(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    startEntryGuessing(drawDuo, drawDuoRef);
-    submitEntryPromptAnswer(drawDuo, drawDuoRef);
-    submitEntryTestAnswers(drawDuo, drawDuoRef);
+    startEntryGuessing(this.drawDuoSnapshot, this.drawDuoRef);
+    submitEntryPromptAnswer(this.drawDuoSnapshot, this.drawDuoRef);
+    submitEntryTestAnswers(this.drawDuoSnapshot, this.drawDuoRef);
 
-    const timer = drawDuo.config.timers.guess;
+    const timer = this.drawDuoSnapshot.config.timers.guess;
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
@@ -369,12 +330,10 @@ class DrawDuoGameHostNEW extends Component {
 
   startEntryVoting(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    startEntryVoting(drawDuo, drawDuoRef);
-    submitEntryTestVotes(drawDuo, drawDuoRef);
+    startEntryVoting(this.drawDuoSnapshot, this.drawDuoRef);
+    submitEntryTestVotes(this.drawDuoSnapshot, this.drawDuoRef);
 
-    const timer = drawDuo.config.timers.vote;
+    const timer = this.drawDuoSnapshot.config.timers.vote;
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
@@ -384,19 +343,15 @@ class DrawDuoGameHostNEW extends Component {
 
   startEntryResults(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    startEntryResults(drawDuo, drawDuoRef);
+    shuffleEntryAnswerRevealOrder(this.drawDuoSnapshot, this.drawDuoRef);
+    startEntryResults(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   nextEntryResultsStep(): void {
 
-    const allAnswersRevealed = true;
-
-    // looping through answers here
-    if (allAnswersRevealed) {
+    if (areEntryAnswersRevealed(this.drawDuoSnapshot)) {
       this.completeEntry();
     } else {
       this.nextEntryResultsAnswerReveal();
@@ -406,16 +361,13 @@ class DrawDuoGameHostNEW extends Component {
 
   nextEntryResultsAnswerReveal(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
-    if (!isNextEntryAnswer(drawDuo)) {
+    if (!isNextEntryAnswer(this.drawDuoSnapshot)) {
       this.setEntryAnswersRevealed();
     } else {
 
-      setNextEntryAnswer(drawDuo, drawDuoRef);
+      setNextEntryAnswer(this.drawDuoSnapshot, this.drawDuoRef);
 
-      const timer = 1000;
+      const timer = (isFinalEntryAnswer(this.drawDuoSnapshot)) ? this.drawDuoSnapshot.config.timers.revealFinalAnswer : this.drawDuoSnapshot.config.timers.revealAnswer;
 
       setTimeout(() => {
         this.terminateAndCallNextGameStep();
@@ -427,29 +379,22 @@ class DrawDuoGameHostNEW extends Component {
 
   setEntryAnswersRevealed(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setEntryAnswersRevealed(drawDuo, drawDuoRef);
+    setEntryAnswersRevealed(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   completeEntry(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    completeEntry(drawDuo, drawDuoRef);
+    completeEntry(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }
 
   startNextEntry(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-
-    if (isNextEntry(drawDuo)) {
-      startNextEntry(drawDuo, drawDuoRef);
+    if (isNextEntry(this.drawDuoSnapshot)) {
+      startNextEntry(this.drawDuoSnapshot, this.drawDuoRef);
       this.terminateAndCallNextGameStep();
     } else {
       this.revealRoundResults();
@@ -459,9 +404,7 @@ class DrawDuoGameHostNEW extends Component {
 
   setEntry(): void {
 
-    const drawDuo = this.drawDuoSnapshot;
-    const drawDuoRef = this.drawDuoRef;
-    setEntry(drawDuo, drawDuoRef);
+    setEntry(this.drawDuoSnapshot, this.drawDuoRef);
     this.terminateAndCallNextGameStep();
 
   }

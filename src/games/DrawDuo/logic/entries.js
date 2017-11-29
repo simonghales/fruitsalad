@@ -12,10 +12,6 @@ export function isACurrentEntry(drawDuo: DrawDuoModel) {
   return (drawDuo.currentEntry);
 }
 
-function nextEntryStep(): void {
-
-}
-
 export function getEntryCurrentState(drawDuo: DrawDuoModel): EntryModelState {
   return drawDuo.entries[drawDuo.currentEntry.key].state;
 }
@@ -50,11 +46,27 @@ export function isNextEntry(drawDuo: DrawDuoModel): void {
   return (getNextEntry(drawDuo));
 }
 
-export function isNextEntryAnswer(drawDuo: DrawDuoModel): void {
+export function isFinalEntryAnswer(drawDuo: DrawDuoModel): boolean {
+
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const currentEntry: EntryModel = getCurrentEntryData(drawDuo);
+  const {answersRevealOrder, currentAnswerRevealIndex} = currentEntry;
+  return (currentAnswerRevealIndex >= Object.keys(answersRevealOrder).length - 1);
 
 }
 
+export function isNextEntryAnswer(drawDuo: DrawDuoModel): boolean {
+  return (!isFinalEntryAnswer(drawDuo));
+}
+
 export function setNextEntryAnswer(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const currentEntry: EntryModel = getCurrentEntryData(drawDuo);
+  const {currentAnswerRevealIndex} = currentEntry;
+  drawDuoRef.update({
+    [`entries/${currentEntryKey}/currentAnswerRevealIndex`]: currentAnswerRevealIndex + 1,
+  });
 
 }
 
@@ -138,7 +150,6 @@ export function submitEntryPromptAnswer(drawDuo: DrawDuoModel, drawDuoRef: DrawD
       prompt: true,
       user: false,
       order: 0,
-      revealOrder: 0,
     }
   });
 }
@@ -170,6 +181,43 @@ export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoR
 
 }
 
+export function shuffleEntryAnswerRevealOrder(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const currentEntry: EntryModel = getCurrentEntryData(drawDuo);
+  const {answers} = currentEntry;
+
+  let orderedAnswers = {};
+
+  for (let answerKey in answers) {
+    if (answers[answerKey].votes) {
+      orderedAnswers[answerKey] = {
+        order: 0,
+      }
+    }
+  }
+
+  let orderNumbers = Array.from({length: Object.keys(orderedAnswers).length}).map((item, index) => index);
+
+  for (let answerKey in orderedAnswers) {
+    let order = -1;
+    if (answers[answerKey].prompt) {
+      order = orderNumbers.length - 1;
+    } else {
+      const orderIndex = randomIntFromInterval(0, orderNumbers.length - 1 - 1); // only the prompt can pick the last index
+      order = orderNumbers[orderIndex]; // only the prompt can pick the last index
+      orderNumbers.splice(orderIndex, 1);
+    }
+    orderedAnswers[answerKey] = {
+      order: order,
+    };
+  }
+
+  drawDuoRef.update({
+    [`/entries/${currentEntryKey}/answersRevealOrder`]: orderedAnswers,
+  });
+
+}
+
 export function startEntryVoting(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   drawDuoRef.update({
@@ -187,13 +235,21 @@ export function startEntryResults(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefM
 }
 
 export function setEntryAnswersRevealed(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  drawDuoRef.update({
+    [`entries/${currentEntryKey}/milestones/answersRevealed`]: true,
+  });
+}
 
+export function areEntryAnswersRevealed(drawDuo: DrawDuoModel): boolean {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const currentEntry: EntryModel = getCurrentEntryData(drawDuo);
+  return currentEntry.milestones.answersRevealed;
 }
 
 export function completeEntry(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   drawDuoRef.update({
-    [`entries/${currentEntryKey}/milestones/answersRevealed`]: true,
     [`entries/${currentEntryKey}/state`]: DRAW_DUO_ENTRY_STATE_COMPLETED,
   });
 }
@@ -229,7 +285,7 @@ export function getOffsettedIndex(index: number, range: number) {
 export function generateEntry(pair: PairModelKeyWrapped, index: number) {
   return {
     answers: {},
-    currentAnswerIndex: -1,
+    currentAnswerRevealIndex: -1,
     drawings: {},
     milestones: {
       answersSubmitted: false,
