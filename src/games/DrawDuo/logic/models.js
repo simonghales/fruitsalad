@@ -8,15 +8,31 @@ import {
   DRAW_DUO_STATE_PLAYING
 } from './constants';
 
+export interface DrawDuoRefModel {
+  push(): void,
+  update(): void,
+  update(): void,
+}
+
 export interface UserModel {
   name: string,
   image: string,
 }
 
+export interface PairModelWrapper {
+  [string]: PairModel,
+}
+
 export interface PairModel {
+  //userKey
   [string]: {
     score: number,
   },
+}
+
+export interface PairModelKeyWrapped {
+  key: string,
+  pair: PairModel,
 }
 
 export type RoundModelState =
@@ -28,6 +44,12 @@ export type RoundModelState =
 
 export interface RoundModel {
   completed: boolean,
+  entries: {
+    //entryKey
+    [string]: {
+      order: number,
+    },
+  },
   milestones: {
     drawingsSubmitted: boolean,
     entriesRevealed: boolean,

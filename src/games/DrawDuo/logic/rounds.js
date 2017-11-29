@@ -1,36 +1,80 @@
-import {DrawDuoModel, RoundModelState} from './models';
+import {DrawDuoModel, DrawDuoRefModel, RoundModelState} from './models';
 import {
   DRAW_DUO_ROUND_STATE_COMPLETED,
   DRAW_DUO_ROUND_STATE_DRAWING, DRAW_DUO_ROUND_STATE_PENDING, DRAW_DUO_ROUND_STATE_RESULTS,
   DRAW_DUO_ROUND_STATE_VOTING
 } from './constants';
+import {randomIntFromInterval} from '../../../utils/numbers';
 
 export function isACurrentRound(drawDuo: DrawDuoModel) {
   return (drawDuo.currentRound);
 }
 
-export function setRound(drawDuo: DrawDuoModel, drawDuoRef: {}): void {
-
+export function setRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const nextRoundKey = getNextRound(drawDuo, drawDuoRef);
+  if (nextRoundKey) {
+    drawDuoRef.update({
+      currentRound: {
+        index: 0,
+        key: nextRoundKey,
+      }
+    });
+  } else {
+    console.warn('no next round available');
+  }
 }
 
-export function beginRound(drawDuo: DrawDuoModel, drawDuoRef: {}): void {
+function getNextRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): string {
+  const {rounds} = drawDuo;
+  let nextRoundKey = null;
 
+  for (let roundKey in rounds) {
+    if (rounds[roundKey].state !== DRAW_DUO_ROUND_STATE_COMPLETED) {
+      nextRoundKey = roundKey;
+      break;
+    }
+  }
+
+  return nextRoundKey;
 }
 
-export function completeRound(drawDuo: DrawDuoModel, drawDuoRef: {}): void {
-
+export function getCurrentRoundKey(drawDuo: DrawDuoModel) {
+  if (!drawDuo.currentRound) {
+    console.warn('no current round available');
+    return '';
+  }
+  return drawDuo.currentRound.key;
 }
 
-export function revealRoundResults(drawDuo: DrawDuoModel, drawDuoRef: {}): void {
-
+export function beginRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentRound = getCurrentRoundKey(drawDuo);
+  drawDuoRef.update({
+    [`/rounds/${currentRound}/state`]: DRAW_DUO_ROUND_STATE_DRAWING,
+  });
 }
 
-export function isANextRound(drawDuo: DrawDuoModel): void {
-
+export function completeRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentRound = getCurrentRoundKey(drawDuo);
+  drawDuoRef.update({
+    [`/rounds/${currentRound}/completed`]: true,
+    [`/rounds/${currentRound}/state`]: DRAW_DUO_ROUND_STATE_COMPLETED,
+  });
 }
 
-export function nextRound(drawDuo: DrawDuoModel, drawDuoRef: {}): void {
+export function revealRoundResults(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentRound = getCurrentRoundKey(drawDuo);
+  drawDuoRef.update({
+    [`rounds/${currentRound}/milestones/entriesRevealed`]: true,
+    [`rounds/${currentRound}/state`]: DRAW_DUO_ROUND_STATE_RESULTS,
+  })
+}
 
+export function isANextRound(drawDuo: DrawDuoModel): boolean {
+  return (getNextRound(drawDuo));
+}
+
+export function nextRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  setRound(drawDuo, drawDuoRef);
 }
 
 export function roundAllEntriesCompleted(drawDuo: DrawDuoModel): boolean {
@@ -57,29 +101,65 @@ export function getRoundCurrentState(drawDuo: DrawDuoModel): RoundModelState {
   return drawDuo.rounds[drawDuo.currentRound.key].state;
 }
 
-function beginRound(drawDuo: DrawDuoModel, drawDuoRef: {}) {
+export function beginRoundVoting(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
+
+  const currentRound = getCurrentRoundKey(drawDuo);
+  drawDuoRef.update({
+    [`/rounds/${currentRound}/state`]: DRAW_DUO_ROUND_STATE_VOTING,
+  });
 
 }
 
-export function beginRoundVoting(drawDuo: DrawDuoModel, drawDuoRef: {}) {
-
-}
-
-function nextRoundDrawingStep(drawDuo: DrawDuoModel, drawDuoRef: {}) {
+function nextRoundDrawingStep(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
 
   // confirm that drawings are submitted
   beginRoundVoting(drawDuo, drawDuoRef);
 
 }
 
-export function setRoundDrawingsSubmitted(drawDuo: DrawDuoModel, drawDuoRef: {}) {
+export function setRoundDrawingsSubmitted(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
 
 }
 
 export function roundDrawingsSubmitted(drawDuo: DrawDuoModel) {
-  return true;
+  const currentRoundKey = getCurrentRoundKey(drawDuo);
+  return (drawDuo.rounds[currentRoundKey].milestones.drawingsSubmitted);
 }
 
 export function roundDrawingTimerElapsed(drawDuo: DrawDuoModel) {
   return true;
+}
+
+export function generateRounds(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel, entries: {}, pairs: {}) {
+  const {numberOfRounds} = drawDuo.config;
+  const pairKeys = Object.keys(pairs);
+  const sortedEntryKeys = Object.keys(entries).sort((entryKeyA: string, entryKeyB: string) => {
+    return (entries[entryKeyA].order > entries[entryKeyB].order);
+  });
+  let rounds = {};
+  for (let i = 0, len = numberOfRounds; i < len; i++) {
+    const roundEntryKeys = sortedEntryKeys.slice((i * pairKeys.length), (pairKeys.length + (i * pairKeys.length)));
+    let roundEntries = {};
+    roundEntryKeys.forEach((entryKey: string) => {
+      roundEntries[entryKey] = {
+        order: randomIntFromInterval(0, 10),
+      };
+    });
+    const key = drawDuoRef.push().key;
+    rounds[key] = generateRound(roundEntries, i);
+  }
+  return rounds;
+}
+
+export function generateRound(entries: {}, index: number) {
+  return {
+    completed: false,
+    entries: entries,
+    milestones: {
+      drawingsSubmitted: false,
+      entriesRevealed: false,
+    },
+    order: index,
+    state: DRAW_DUO_ROUND_STATE_PENDING,
+  };
 }

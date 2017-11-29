@@ -4,23 +4,7 @@ import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {AppState} from '../../../../redux/index';
 import {withRouter} from 'react-router';
 import {
-  DRAW_DUO_CURRENT_STATE_COMPLETED,
-  DRAW_DUO_CURRENT_STATE_PLAYING, DRAW_DUO_ENTRY_CURRENT_STATE_COMPLETED, DRAW_DUO_ENTRY_CURRENT_STATE_GUESSING,
-  DRAW_DUO_ENTRY_CURRENT_STATE_RESULTS,
-  DRAW_DUO_ENTRY_CURRENT_STATE_VOTING,
-  DRAW_DUO_ROUND_CURRENT_STATE_COMPLETED,
-  DRAW_DUO_ROUND_CURRENT_STATE_DRAWING,
-  DRAW_DUO_ROUND_CURRENT_STATE_VOTING, DrawDuoGame, Entry
-} from '../../models';
-import {DRAW_DUO_CONFIG} from '../../config';
-import {generateEntry, generateInitialGameState, generateRound} from '../../functions';
-import {
-  generateAnswers, generateRandomOrderOfAnswers, isAnEntryAnswerRemaining, pushGuesses, pushVotes,
-  revealEntryAnswer
-} from '../../logic';
-import {
-  getGameCurrentState, setGameCompleted, setGameInitiating, setGamePlaying,
-  testPersistence
+  getGameCurrentState, initiateGame, populateGameData, setGameCompleted, setGameInitiating, setGamePlaying,
 } from '../../logic/game';
 import {DrawDuoModel, DrawDuoModelState, RoundModelState} from '../../logic/models';
 import {
@@ -44,14 +28,14 @@ import {
   completeEntry,
   getEntryCurrentState, isACurrentEntry, isNextEntry, isNextEntryAnswer, setEntry, setEntryAnswersRevealed,
   setNextEntryAnswer, startEntryGuessing, startEntryResults, startEntryVoting,
-  startNextEntry
+  startNextEntry, submitEntryPromptAnswer, submitEntryTestAnswers, submitEntryTestVotes
 } from '../../logic/entries';
 
-class DrawDuoGameHost extends Component {
+class DrawDuoGameHostNEW extends Component {
 
   initiated = false;
   drawDuoRef;
-  drawDuoSnapshot: DrawDuoGame;
+  drawDuoSnapshot: DrawDuoModel;
 
   props: {
     firebase: any,
@@ -82,6 +66,21 @@ class DrawDuoGameHost extends Component {
     });
   }
 
+  componentDidUpdate() {
+    if (!this.initiated) {
+      this.attemptToStart();
+    }
+  }
+
+  attemptToStart() {
+    const {session} = this.props;
+    if (!isLoaded(session) || this.initiated || !this.drawDuoSnapshot) {
+      return;
+    }
+    this.initiated = true;
+    this.initiateGame();
+  }
+
   sessionKeyMatchesKey(key: string) {
     const {match} = this.props;
     const sessionKey = match.params.id;
@@ -89,6 +88,15 @@ class DrawDuoGameHost extends Component {
   }
 
   // GAME
+
+  initiateGame(): void {
+
+    const drawDuo = this.drawDuoSnapshot;
+    const drawDuoRef = this.drawDuoRef;
+    initiateGame(drawDuo, drawDuoRef);
+    this.terminateAndCallNextGameStep();
+
+  }
 
   nextGameStep(): void {
 
@@ -100,7 +108,7 @@ class DrawDuoGameHost extends Component {
     switch (gameCurrentState) {
 
       case DRAW_DUO_STATE_PENDING:
-        this.setGameInitiating();
+        this.populateGameData();
         break;
       case DRAW_DUO_STATE_INITIATING:
         this.setGamePlaying();
@@ -119,12 +127,22 @@ class DrawDuoGameHost extends Component {
 
   }
 
-  setGameInitiating() {
+  populateGameData(): void {
+
+    const drawDuo = this.drawDuoSnapshot;
+    const drawDuoRef = this.drawDuoRef;
+
+    this.setGameInitiating();
+    populateGameData(drawDuo, drawDuoRef);
+    this.terminateAndCallNextGameStep();
+
+  }
+
+  setGameInitiating(): void {
 
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
     setGameInitiating(drawDuo, drawDuoRef);
-    this.terminateAndCallNextGameStep();
 
   }
 
@@ -142,6 +160,7 @@ class DrawDuoGameHost extends Component {
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
     setGameCompleted(drawDuo, drawDuoRef);
+    console.log('GAME IS COMPLETE', drawDuo);
 
   }
 
@@ -155,9 +174,12 @@ class DrawDuoGameHost extends Component {
 
     if (!isACurrentRound(drawDuo)) {
       this.setRound();
+      return;
     }
 
     const roundCurrentState: RoundModelState = getRoundCurrentState(drawDuo);
+
+    console.log('nextRoundStep', roundCurrentState);
 
     switch (roundCurrentState) {
 
@@ -241,6 +263,7 @@ class DrawDuoGameHost extends Component {
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
     setRound(drawDuo, drawDuoRef);
+    this.terminateAndCallNextGameStep();
 
   }
 
@@ -258,7 +281,7 @@ class DrawDuoGameHost extends Component {
     const drawDuoRef = this.drawDuoRef;
     beginRound(drawDuo, drawDuoRef);
 
-    const timer = 1000;
+    const timer = drawDuo.config.timers.drawing;
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
@@ -272,7 +295,7 @@ class DrawDuoGameHost extends Component {
     const drawDuoRef = this.drawDuoRef;
     revealRoundResults(drawDuo, drawDuoRef);
 
-    const timer = 1000;
+    const timer = drawDuo.config.timers.reveal;
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
     }, timer);
@@ -292,14 +315,18 @@ class DrawDuoGameHost extends Component {
 
   nextEntryStep(): void {
 
+
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
 
     if (!isACurrentEntry(drawDuo)) {
       this.setEntry();
+      return;
     }
 
     const entryCurrentState = getEntryCurrentState(drawDuo);
+
+    console.log('nextEntryStep', entryCurrentState);
 
     switch (entryCurrentState) {
       case DRAW_DUO_ENTRY_STATE_PENDING:
@@ -329,8 +356,10 @@ class DrawDuoGameHost extends Component {
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
     startEntryGuessing(drawDuo, drawDuoRef);
+    submitEntryPromptAnswer(drawDuo, drawDuoRef);
+    submitEntryTestAnswers(drawDuo, drawDuoRef);
 
-    const timer = 1000;
+    const timer = drawDuo.config.timers.guess;
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
@@ -343,8 +372,9 @@ class DrawDuoGameHost extends Component {
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
     startEntryVoting(drawDuo, drawDuoRef);
+    submitEntryTestVotes(drawDuo, drawDuoRef);
 
-    const timer = 1000;
+    const timer = drawDuo.config.timers.vote;
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
@@ -420,6 +450,7 @@ class DrawDuoGameHost extends Component {
 
     if (isNextEntry(drawDuo)) {
       startNextEntry(drawDuo, drawDuoRef);
+      this.terminateAndCallNextGameStep();
     } else {
       this.revealRoundResults();
     }
@@ -431,6 +462,7 @@ class DrawDuoGameHost extends Component {
     const drawDuo = this.drawDuoSnapshot;
     const drawDuoRef = this.drawDuoRef;
     setEntry(drawDuo, drawDuoRef);
+    this.terminateAndCallNextGameStep();
 
   }
 
@@ -456,7 +488,15 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedComponent = firebaseConnect((props, store) => {
-})(DrawDuoGameHost);
+  const sessionKey = props.match.params.id.toUpperCase();
+  let queries = [
+    {
+      path: `/sessions/${sessionKey}`,
+      storeAs: 'session',
+    }
+  ];
+  return queries;
+})(DrawDuoGameHostNEW);
 
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(wrappedComponent));
