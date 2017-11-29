@@ -19,6 +19,7 @@ import {
 } from '../../functions';
 import DrawDuoAnswer from '../../components/DrawDuoAnswer/DrawDuoAnswer';
 import DrawDuoEntryResults from '../../components/DrawDuoEntryResults/DrawDuoEntryResults';
+import {testPersistence} from '../../logic/game';
 
 class DrawDuoDisplayVoting extends Component {
 
@@ -145,7 +146,9 @@ class DrawDuoDisplayVoting extends Component {
               timeout={500}
               classNames='slide'
               key='selectAnswer'>
-              <div className='DrawDuoDisplayVoting__drawing__label__text DrawDuoDisplayVoting__drawing__label__text--prompt' key='prompt'>
+              <div
+                className='DrawDuoDisplayVoting__drawing__label__text DrawDuoDisplayVoting__drawing__label__text--prompt'
+                key='prompt'>
                 {currentEntry.prompt}
               </div>
             </CSSTransition>

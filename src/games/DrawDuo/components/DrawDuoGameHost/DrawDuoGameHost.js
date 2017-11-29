@@ -18,6 +18,7 @@ import {
   generateAnswers, generateRandomOrderOfAnswers, isAnEntryAnswerRemaining, pushGuesses, pushVotes,
   revealEntryAnswer
 } from '../../logic';
+import {testPersistence} from '../../logic/game';
 
 class DrawDuoGameHost extends Component {
 
