@@ -134,7 +134,7 @@ class DrawDuoGameHost extends Component {
 
   drawingsSubmitted() {
     const timer = DRAW_DUO_CONFIG.defaults.sleepTimer;
-    // return; // stop here for DRAWING_ROUND
+    if (this.sessionKeyMatchesKey('DRAWING_ROUND')) return; // stop here for DRAWING_ROUND
     setTimeout(() => {
       this.continueRound();
     }, timer);
@@ -202,8 +202,9 @@ class DrawDuoGameHost extends Component {
       [`entries/${currentEntry}/currentState`]: DRAW_DUO_ENTRY_CURRENT_STATE_GUESSING,
       [`entries/${currentEntry}/guessingStartTimestamp`]: 'NOW',
     });
+    if (this.sessionKeyMatchesKey('ENTRY_GUESSING')) return; // stop here for ENTRY_GUESSING
     const timer = DRAW_DUO_CONFIG.defaults.guessTimer;
-    pushGuesses(this.drawDuoRef, currentEntry);
+    pushGuesses(this.drawDuoRef, currentEntry, this.drawDuoSnapshot);
     setTimeout(() => {
       this.guessesSubmitted();
     }, timer);

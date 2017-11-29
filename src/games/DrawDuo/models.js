@@ -104,6 +104,11 @@ export interface DrawDuoGame {
   guesses: {},
 }
 
+export interface FullSession {
+  drawDuo: DrawDuoGame,
+  users: {},
+}
+
 const EXAMPLE_DRAW_DUO_GAME: DrawDuoGame = {
   currentState: 'playing',
   totalRounds: 2,

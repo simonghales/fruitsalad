@@ -173,8 +173,14 @@
 
 .DrawDuoDisplayVoting__drawingContainer
 {
-  position: relative;
-  margin:   0 40px;
+  position:   relative;
+  margin:     0 40px;
+  transition: transform 300ms ease;
+
+  @include isCompleted
+  {
+    transform: translateY(-50px);
+  }
 
   .DrawDuoArtwork__drawings
   {
@@ -182,7 +188,7 @@
 
     @include isCompleted
     {
-      transform: translateY(-50px);
+      transform: translateY(-80px);
     }
 
   }
@@ -216,6 +222,35 @@
       }
 
     }
+
+    @include isCompleted
+    {
+      border-width: 3px;
+
+      &:first-of-type
+      {
+        transform: scale(0.6) translateX(160px);
+
+        @media (max-width: 1440px)
+        {
+          transform: scale(0.6) translateX(150px);
+        }
+
+      }
+
+      &:last-of-type
+      {
+        transform: scale(0.6) translateX(-160px);
+
+        @media (max-width: 1440px)
+        {
+          transform: scale(0.6) translateX(-150px);
+        }
+
+      }
+
+    }
+
   }
 
 }
@@ -233,7 +268,7 @@
 
   @include isCompleted
   {
-    transform: translateY(-90px);
+    transform: translateY(-180px);
   }
 
 }

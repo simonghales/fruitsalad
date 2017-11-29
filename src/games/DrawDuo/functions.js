@@ -19,7 +19,7 @@ import {
   DRAW_DUO_ROUND_CURRENT_STATE_PENDING,
   DRAW_DUO_ROUND_CURRENT_STATE_VOTING,
   DrawDuoGame,
-  Entry, FormattedAnswer
+  Entry, FormattedAnswer, FullSession
 } from './models';
 import DrawDuoDisplayCompleted from './screens/DrawDuoDisplayCompleted/DrawDuoDisplayCompleted';
 import DrawDuoDisplayInitiating from './screens/DrawDuoDisplayInitiating/DrawDuoDisplayInitiating';
@@ -248,14 +248,20 @@ export function getSortedAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame)
   return sortedAnswers;
 }
 
-function getFormattedAnswer(answers, answerKey, guesses, currentEntry: Entry, answersTallied): FormattedAnswer {
-  const users = (answersTallied && answersTallied[answerKey] && answersTallied[answerKey].users) ? Object.keys(answersTallied[answerKey].users).map((userKey) => userKey) : [];
-  return {
+function getFormattedAnswer(answers, answerKey: string, guesses, currentEntry: Entry, answersTallied?) {
+  const guessKey = (answers[answerKey].guess) ? answers[answerKey].guess : '';
+  const guessText = (guesses[guessKey]) ? guesses[guessKey].guess : '';
+  const text = (answers[answerKey].guess) ? guessText : currentEntry.prompt;
+  let formattedAnswer = {
     ...answers[answerKey],
-    text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
+    text: text,
     key: answerKey,
-    users: users,
   };
+  if (answersTallied) {
+    const users = (answersTallied && answersTallied[answerKey] && answersTallied[answerKey].users) ? Object.keys(answersTallied[answerKey].users).map((userKey) => userKey) : [];
+    formattedAnswer.users = users;
+  }
+  return formattedAnswer;
 }
 
 function getSortedAnswerKeys(answers) {
@@ -274,11 +280,7 @@ export function splitAnswers(currentEntry: Entry, drawDuoState: DrawDuoGame) {
   let rightAnswers = [];
   let halfCount = Math.ceil(answerKeys.length / 2);
   answerKeys.forEach((answerKey) => {
-    const answer = {
-      ...answers[answerKey],
-      text: (answers[answerKey].guess) ? guesses[answers[answerKey].guess].guess : currentEntry.prompt,
-      key: answerKey,
-    };
+    const answer = getFormattedAnswer(answers, answerKey, guesses, currentEntry);
     if (leftAnswers.length < halfCount) {
       leftAnswers.push(answer);
     } else {
@@ -316,4 +318,110 @@ export function getAnswerRevealIndex(answerKey: string, currentEntry: Entry) {
   return sortedAnswersTalliedKeys.findIndex((key) => {
     return (key === answerKey);
   })
+}
+
+export function getNonPromptedPairs(drawDuoState: DrawDuoGame) {
+  const {pairs} = drawDuoState;
+  const currentEntryData: Entry = getCurrentEntryData(drawDuoState);
+  const filteredPairs = Object.keys(pairs).filter((pairKey) => {
+    return pairKey !== currentEntryData.pair;
+  }).map((pairKey) => {
+    return {
+      users: Object.keys(pairs[pairKey]),
+      key: pairKey,
+    };
+  });
+  return filteredPairs;
+}
+
+export function getPromptedPair(drawDuoState: DrawDuoGame) {
+  const {pairs} = drawDuoState;
+  const currentEntryData: Entry = getCurrentEntryData(drawDuoState);
+  const promptedPair = Object.keys(pairs).map((pairKey) => {
+    return {
+      users: Object.keys(pairs[pairKey]),
+      key: pairKey,
+    };
+  }).find((pair) => {
+    return pair.key === currentEntryData.pair;
+  });
+  return promptedPair;
+}
+
+export function getPairs(drawDuoState: DrawDuoGame) {
+  const {pairs} = drawDuoState;
+  const mappedPairs = Object.keys(pairs).map((pairKey) => {
+    return {
+      users: Object.keys(pairs[pairKey]),
+      key: pairKey,
+    };
+  });
+  return mappedPairs;
+}
+
+export function getPairedAnswers(session: FullSession): [] {
+  const {drawDuo, users} = session;
+  if (!drawDuo) return [];
+  const currentEntryData: Entry = getCurrentEntryData(drawDuo);
+  if (!currentEntryData) return [];
+  const filteredPairs = getNonPromptedPairs(drawDuo);
+  const mappedPairs = filteredPairs.map((pair) => {
+    return {
+      users: pair.users.map((userKey) => {
+        const userGuessKey = getUserGuessKey(userKey, drawDuo);
+        const userAnswer = getAnswerFromGuess(userGuessKey, drawDuo);
+        console.log('userGuessKey', userGuessKey);
+        console.log('userAnswer', userAnswer);
+        return {
+          answer: (userAnswer) ? userAnswer : null,
+          user: users[userKey],
+          key: userKey,
+        };
+      }),
+      key: pair.key,
+    }
+  });
+  return mappedPairs;
+}
+
+export function getUserGuessKey(userKey: string, drawDuoState: DrawDuoGame) {
+  const {guesses} = drawDuoState;
+  return Object.keys(guesses).find((guessKey) => {
+    return (guesses[guessKey].user === userKey);
+  });
+}
+
+export function getAnswerFromGuess(guessKey: string, drawDuoState: DrawDuoGame) {
+  const {guesses} = drawDuoState;
+  const currentEntryData: Entry = getCurrentEntryData(drawDuoState);
+  const {answers} = currentEntryData;
+  const filteredAnswers = Object.keys(answers).filter((answerKey) => {
+    return !answers[answerKey].prompt;
+  }).map((answerKey) => {
+    return {
+      guessKey: answers[answerKey].guess,
+      guess: guesses[answers[answerKey].guess],
+      key: answerKey,
+    };
+  });
+  return filteredAnswers.find((answer) => {
+    return (answer.guessKey === guessKey);
+  });
+}
+
+export function getUser(userKey: string, session: FullSession) {
+  if (!session || !session.users) return null;
+  return (session.users[userKey]) ? session.users[userKey] : null;
+}
+
+export function getAnswerGuessText(answer) {
+  if (!answer) return '';
+  if (!answer.guess) return '';
+  return getGuessText(answer.guess);
+}
+
+export function getGuessText(guess) {
+  if (!guess) return '';
+  if (!guess.guess) return '';
+  return guess.guess;
 }

@@ -1,5 +1,6 @@
-import {DrawDuoGame, Entry, Guess} from './models';
+import {DrawDuoGame, Entry, FullSession, Guess} from './models';
 import {randomIntFromInterval} from '../../utils/numbers';
+import {getNonPromptedPairs} from './functions';
 
 export function generateRandomOrderOfAnswers(drawDuoGameState: DrawDuoGame): string[] {
   const {currentEntry, entries} = drawDuoGameState;
@@ -76,16 +77,31 @@ const GUESSES = [
   '2 cats playing keyboard',
 ];
 
-export function pushGuesses(drawDuoRef, currentEntry: string) {
+export function pushGuesses(drawDuoRef, currentEntry: string, drawDuoGameState: DrawDuoGame) {
+
+  const {pairs} = drawDuoGameState;
+
   let guesses = {};
-  GUESSES.forEach((guess) => {
-    const key = drawDuoRef.push().key;
-    guesses[`/guesses/${key}`] = {
-      guess: guess,
-      user: Math.random().toString()
-    };
-    guesses[`/entries/${currentEntry}/guesses/${key}`] = true;
+
+  const nonPromptedPairs = getNonPromptedPairs(drawDuoGameState);
+
+  let guessIndex = 0;
+
+  nonPromptedPairs.forEach((pair) => {
+
+    for (let i = 0; i < 2; i++) {
+      const key = drawDuoRef.push().key;
+      const guess = (guessIndex < GUESSES.length - 1) ? GUESSES[guessIndex] : GUESSES[0];
+      guessIndex++;
+      guesses[`/guesses/${key}`] = {
+        guess: guess,
+        user: pair.users[i],
+      };
+      guesses[`/entries/${currentEntry}/guesses/${pair.users[i]}`] = key
+    }
+
   });
+
   drawDuoRef.update(guesses);
 }
 
@@ -116,7 +132,8 @@ export function generateAnswers(drawDuoRef, drawDuoGameState: DrawDuoGame) {
   let answers = {};
   let orderNumbers = Array.from({length: guessesKeys.length + 1}).map((item, index) => index + 1);
 
-  guessesKeys.forEach((guessKey) => {
+  guessesKeys.forEach((userKey) => {
+    const guessKey = currentEntryData.guesses[userKey];
     const key = drawDuoRef.push().key;
     const guess: Guess = guesses[guessKey];
     const randomNumber = randomIntFromInterval(0, orderNumbers.length - 1);
