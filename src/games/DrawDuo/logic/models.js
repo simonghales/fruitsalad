@@ -10,7 +10,9 @@ import {
 
 export interface DrawDuoRefModel {
   push(): void,
+
   update(): void,
+
   update(): void,
 }
 
@@ -150,4 +152,7 @@ export interface DrawDuoModel {
     [string]: RoundModel,
   },
   state: DrawDuoModelState,
+  timers: {
+    [string]: boolean,
+  },
 }

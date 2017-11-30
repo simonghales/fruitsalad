@@ -387,7 +387,12 @@ class DrawDuoGameHostNEW extends Component {
   completeEntry(): void {
 
     completeEntry(this.drawDuoSnapshot, this.drawDuoRef);
-    this.terminateAndCallNextGameStep();
+
+    const timer = this.drawDuoSnapshot.config.timers.completedEntry;
+
+    setTimeout(() => {
+      this.terminateAndCallNextGameStep();
+    }, timer);
 
   }
 
