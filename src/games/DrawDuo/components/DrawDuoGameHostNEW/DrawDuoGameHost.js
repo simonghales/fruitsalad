@@ -4,9 +4,11 @@ import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {AppState} from '../../../../redux/index';
 import {withRouter} from 'react-router';
 import {
-  getGameCurrentState, initiateGame, populateGameData, setGameCompleted, setGameInitiating, setGamePlaying,
+  clearTimerKey,
+  getGameCurrentState, initiateGame, isTimerKey, populateGameData, setGameCompleted, setGameInitiating, setGamePlaying,
+  setTimerKey,
 } from '../../logic/game';
-import {DrawDuoModel, DrawDuoModelState, RoundModelState} from '../../logic/models';
+import {DrawDuoModel, DrawDuoModelState, EntryModel, RoundModelState} from '../../logic/models';
 import {
   DRAW_DUO_ENTRY_STATE_COMPLETED,
   DRAW_DUO_ENTRY_STATE_GUESSING,
@@ -27,7 +29,7 @@ import {
 } from '../../logic/rounds';
 import {
   areEntryAnswersRevealed,
-  completeEntry, getCurrentEntryKey,
+  completeEntry, currentEntryAllAnswers, currentEntryAllVotes, getCurrentEntryKey,
   getEntryCurrentState, isACurrentEntry, isFinalEntryAnswer, isNextEntry, isNextEntryAnswer, setEntry,
   setEntryAnswersRevealed,
   setNextEntryAnswer, shuffleEntryAnswerRevealOrder, startEntryGuessing, startEntryResults, startEntryVoting,
@@ -72,13 +74,11 @@ class DrawDuoGameHostNEW extends Component {
   }
 
   setCurrentRoundListener() {
-    if (this.currentRoundRef) {
-      this.currentRoundRef.off();
-    }
+    this.disableCurrentRoundListener();
     const currentRoundKey = getCurrentRoundKey(this.drawDuoSnapshot);
     this.currentRoundRef = this.drawDuoRef.child(`/rounds/${currentRoundKey}`);
     this.currentRoundRef.on('value', snapshot => {
-      console.log('current entry', snapshot.val());
+      console.log('current round', snapshot.val());
     });
   }
 
@@ -88,16 +88,58 @@ class DrawDuoGameHostNEW extends Component {
     }
   }
 
-  setCurrentEntryListener() {
-    const {firebase, match} = this.props;
+  setCurrentEntryAnswersListener() {
+    this.disableCurrentEntryListener();
+    const currentEntryKey = getCurrentEntryKey(this.drawDuoSnapshot);
+    this.currentEntryRef = this.drawDuoRef.child(`/entries/${currentEntryKey}`);
+    this.currentEntryRef.on('value', snapshot => {
+      const currentEntry = snapshot.val();
+      this.checkCurrentEntryAnswers(currentEntry);
+    });
+  }
+
+  setCurrentEntryVotesListener() {
+    this.disableCurrentEntryListener();
+    const currentEntryKey = getCurrentEntryKey(this.drawDuoSnapshot);
+    this.currentEntryRef = this.drawDuoRef.child(`/entries/${currentEntryKey}`);
+    this.currentEntryRef.on('value', snapshot => {
+      const currentEntry = snapshot.val();
+      this.checkCurrentEntryVotes(currentEntry);
+    });
+  }
+
+  checkCurrentEntryAnswers(currentEntry: EntryModel) {
+    if (currentEntryAllAnswers(currentEntry, this.drawDuoSnapshot)) {
+      this.disableCurrentEntryListener();
+      this.clearTimerKey();
+      this.terminateAndCallNextGameStep();
+    }
+  }
+
+  checkCurrentEntryVotes(currentEntry: EntryModel) {
+    if (currentEntryAllVotes(currentEntry, this.drawDuoSnapshot)) {
+      this.disableCurrentEntryListener();
+      this.clearTimerKey();
+      this.terminateAndCallNextGameStep();
+    }
+  }
+
+  disableCurrentEntryListener() {
     if (this.currentEntryRef) {
       this.currentEntryRef.off();
     }
-    const currentEntryKey = getCurrentEntryKey(this.drawDuoSnapshot);
-    this.currentRoundRef = this.drawDuoRef.child(`/entries/${currentEntryKey}`);
-    this.currentRoundRef.on('value', snapshot => {
-      console.log('current entry', snapshot.val());
-    });
+  }
+
+  isTimerKey(timerKey: string): boolean {
+    return isTimerKey(timerKey, this.drawDuoSnapshot);
+  }
+
+  setTimerKey(): string {
+    return setTimerKey(this.drawDuoRef);
+  }
+
+  clearTimerKey() {
+    clearTimerKey(this.drawDuoRef);
   }
 
   componentDidUpdate() {
@@ -198,7 +240,7 @@ class DrawDuoGameHostNEW extends Component {
 
     const roundCurrentState: RoundModelState = getRoundCurrentState(this.drawDuoSnapshot);
 
-    console.log('nextRoundStep', roundCurrentState);
+    // console.log('nextRoundStep', roundCurrentState);
 
     switch (roundCurrentState) {
 
@@ -321,7 +363,7 @@ class DrawDuoGameHostNEW extends Component {
 
     const entryCurrentState = getEntryCurrentState(this.drawDuoSnapshot);
 
-    console.log('nextEntryStep', entryCurrentState);
+    // console.log('nextEntryStep', entryCurrentState);
 
     switch (entryCurrentState) {
       case DRAW_DUO_ENTRY_STATE_PENDING:
@@ -348,23 +390,41 @@ class DrawDuoGameHostNEW extends Component {
 
   startEntryGuessing(): void {
 
+    console.log('startEntryGuessing');
+
     startEntryGuessing(this.drawDuoSnapshot, this.drawDuoRef);
     submitEntryPromptAnswer(this.drawDuoSnapshot, this.drawDuoRef);
-    submitEntryTestAnswers(this.drawDuoSnapshot, this.drawDuoRef);
+
+    this.setCurrentEntryAnswersListener();
+
+    const timerKey = this.setTimerKey();
 
     const timer = this.drawDuoSnapshot.config.timers.guess;
 
     setTimeout(() => {
-      this.terminateAndCallNextGameStep();
+      submitEntryTestAnswers(this.drawDuoSnapshot, this.drawDuoRef);
+    }, timer / 2);
+
+    setTimeout(() => {
+      if (this.isTimerKey(timerKey)) {
+        this.disableCurrentEntryListener();
+        this.terminateAndCallNextGameStep();
+      } else {
+        console.log(`startEntryGuessing timer abandoned: ${timerKey}`);
+      }
     }, timer);
 
   }
 
   startEntryVoting(): void {
 
+    console.log('startEntryVoting');
+
     startEntryVoting(this.drawDuoSnapshot, this.drawDuoRef);
 
-    this.setCurrentRoundListener();
+    this.setCurrentEntryVotesListener();
+
+    const timerKey = this.setTimerKey();
 
     const timer = this.drawDuoSnapshot.config.timers.vote;
 
@@ -373,7 +433,12 @@ class DrawDuoGameHostNEW extends Component {
     }, timer / 2);
 
     setTimeout(() => {
-      this.terminateAndCallNextGameStep();
+      if (this.isTimerKey(timerKey)) {
+        this.disableCurrentEntryListener();
+        this.terminateAndCallNextGameStep();
+      } else {
+        console.log(`startEntryVoting timer abandoned: ${timerKey}`);
+      }
     }, timer);
 
   }

@@ -30,6 +30,53 @@ export function setEntry(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): vo
   }
 }
 
+export function currentEntryAllAnswers(currentEntry: EntryModel, drawDuo: DrawDuoModel): boolean {
+  const {pair} = currentEntry;
+  const {pairs} = drawDuo;
+  const filteredPairs = Object.keys(pairs).filter((pairKey: string) => {
+    return (pairKey !== pair)
+  });
+  let allSubmitted = true;
+  filteredPairs.forEach((pairKey: string) => {
+    Object.keys(pairs[pairKey]).forEach((userKey: string) => {
+      if (!userHasSubmittedAnswer(userKey, currentEntry)) {
+        allSubmitted = false;
+      }
+    });
+  });
+  return allSubmitted;
+}
+
+export function currentEntryAllVotes(currentEntry: EntryModel, drawDuo: DrawDuoModel): boolean {
+  const {pair} = currentEntry;
+  const {pairs} = drawDuo;
+  const filteredPairs = Object.keys(pairs).filter((pairKey: string) => {
+    return (pairKey !== pair)
+  });
+  let allSubmitted = true;
+  filteredPairs.forEach((pairKey: string) => {
+    Object.keys(pairs[pairKey]).forEach((userKey: string) => {
+      if (!userHasSubmittedVote(userKey, currentEntry)) {
+        allSubmitted = false;
+      }
+    });
+  });
+  return allSubmitted;
+}
+
+export function userHasSubmittedAnswer(userKey: string, currentEntry: EntryModel): boolean {
+  const {answers} = currentEntry;
+  return Object.keys(answers).map((answerKey) => {
+    return answers[answerKey].user;
+  }).includes(userKey);
+}
+
+export function userHasSubmittedVote(userKey: string, currentEntry: EntryModel): boolean {
+  const {votes} = currentEntry;
+  if (!votes) return false;
+  return Object.keys(votes).includes(userKey);
+}
+
 function getNextEntry(drawDuo: DrawDuoModel): string {
   const {entries} = drawDuo;
   const currentRoundKey = getCurrentRoundKey(drawDuo);
@@ -171,8 +218,10 @@ export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoR
       const randomNumber = randomIntFromInterval(0, answerKeys.length + 1);
       if (randomNumber > answerKeys.length - 1) {
         votes[`/entries/${currentEntryKey}/answers/${promptAnswerKey}/votes/${userKey}`] = true;
+        votes[`/entries/${currentEntryKey}/votes/${userKey}`] = promptAnswerKey;
       } else {
         votes[`/entries/${currentEntryKey}/answers/${answerKeys[randomNumber]}/votes/${userKey}`] = true;
+        votes[`/entries/${currentEntryKey}/votes/${userKey}`] = answerKeys[randomNumber];
       }
     }
   }

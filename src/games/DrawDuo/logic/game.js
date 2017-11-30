@@ -13,7 +13,7 @@ export function getGameCurrentState(drawDuo: DrawDuoModel): DrawDuoModelState {
 }
 
 export function populateGameData(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
-  const users = getDefaultUsers();
+  const users = getDefaultUsers(drawDuoRef);
   const pairs = generatePairs(users, drawDuoRef);
   const entries = generateEntries(drawDuo, drawDuoRef, pairs);
   const rounds = generateRounds(drawDuo, drawDuoRef, entries, pairs);
@@ -45,6 +45,24 @@ export function setGameCompleted(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefMo
 
 export function initiateGame(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   drawDuoRef.set(generateInitialGameState());
+}
+
+export function isTimerKey(timerKey: string, drawDuo: DrawDuoModel): boolean {
+  return (drawDuo.timer && drawDuo.timer === timerKey);
+}
+
+export function setTimerKey(drawDuoRef: DrawDuoRefModel): string {
+  const timerKey = drawDuoRef.push().key;
+  drawDuoRef.update({
+    timer: timerKey,
+  });
+  return timerKey;
+}
+
+export function clearTimerKey(drawDuoRef: DrawDuoRefModel) {
+  drawDuoRef.update({
+    timer: '',
+  });
 }
 
 function generateInitialGameState(): DrawDuoModel {

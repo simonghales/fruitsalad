@@ -13,7 +13,7 @@ export interface DrawDuoRefModel {
 
   update(): void,
 
-  update(): void,
+  set(): void,
 }
 
 export interface UserModel {
@@ -152,7 +152,5 @@ export interface DrawDuoModel {
     [string]: RoundModel,
   },
   state: DrawDuoModelState,
-  timers: {
-    [string]: boolean,
-  },
+  timer: string,
 }

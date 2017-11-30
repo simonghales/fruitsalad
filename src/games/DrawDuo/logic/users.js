@@ -1,41 +1,49 @@
 import {DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, UserModel} from './models';
 import {getCurrentEntryData} from './entries';
 
-export function getDefaultUsers() {
-  return {
-    0: {
-      image: '',
-      name: 'Simon',
-    },
-    1: {
-      image: '',
-      name: 'Chiao',
-    },
-    2: {
-      image: '',
-      name: 'Jono',
-    },
-    3: {
-      image: '',
-      name: 'James',
-    },
-    4: {
-      image: '',
-      name: 'Will',
-    },
-    5: {
-      image: '',
-      name: 'Karen',
-    },
-    6: {
-      image: '',
-      name: 'Geoff',
-    },
-    7: {
-      image: '',
-      name: 'Jeremy',
-    },
+const DEFAULT_USERS = [
+  {
+    image: '',
+    name: 'Simon',
+  },
+  {
+    image: '',
+    name: 'Chiao',
+  },
+  {
+    image: '',
+    name: 'Jono',
+  },
+  {
+    image: '',
+    name: 'James',
+  },
+  {
+    image: '',
+    name: 'Will',
+  },
+  {
+    image: '',
+    name: 'Karen',
+  },
+  {
+    image: '',
+    name: 'Geoff',
+  },
+  {
+    image: '',
+    name: 'Jeremy',
   }
+];
+
+export function getDefaultUsers(drawDuoRef: DrawDuoRefModel) {
+  const numberOfUsers = 8;
+  let users = {};
+  for (let i = 0; i < numberOfUsers; i++) {
+    const key = drawDuoRef.push().key;
+    users[key] = DEFAULT_USERS[i];
+  }
+  return users;
 }
 
 export function generatePairs(users: {
