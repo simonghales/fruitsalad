@@ -13,6 +13,7 @@ import {AppState} from '../../redux/index';
 import {UserIsAuthenticated} from '../../auth/UserIsAuthenticated/UserIsAuthenticated';
 import {Redirect, Switch} from 'react-router';
 import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplay/DrawDuoDisplay';
+import DrawDuoDisplayNEW from '../../games/DrawDuo/screens/DrawDuoDisplayNEW/DrawDuoDisplay';
 import DrawDuoHostWrapper from '../../games/DrawDuo/screens/DrawDuoHostWrapper/DrawDuoHostWrapper';
 import DrawDuoGameHostNEW from '../../games/DrawDuo/components/DrawDuoGameHostNEW/DrawDuoGameHost';
 
@@ -47,7 +48,7 @@ class App extends Component {
           <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
           <Route key='/display/:id' path='/display/:id' component={DrawDuoDisplay}/>
           <Route key='/host/:id' path='/host/:id' component={DrawDuoHostWrapper}/>
-          <Route key='/flow/:id' path='/flow/:id' component={DrawDuoGameHostNEW}/>
+          <Route key='/flow/:id' path='/flow/:id' component={DrawDuoDisplayNEW}/>
           <Route key='/drawDuo' path='/drawDuo' component={GamesScreen}/>
           <Route key='/games' path='/games' component={DrawDuoDisplay}/>
           <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
