@@ -19,14 +19,15 @@ import {
 } from '../../logic/constants';
 import {
   beginRound,
-  beginRoundVoting, completeRound, getRoundCurrentState, isACurrentRound, isANextRound, nextRound, revealRoundResults,
+  beginRoundVoting, completeRound, getCurrentRoundKey, getRoundCurrentState, isACurrentRound, isANextRound, nextRound,
+  revealRoundResults,
   roundAllEntriesCompleted,
   roundDrawingsSubmitted,
   roundDrawingTimerElapsed, setRound, setRoundDrawingsSubmitted
 } from '../../logic/rounds';
 import {
   areEntryAnswersRevealed,
-  completeEntry,
+  completeEntry, getCurrentEntryKey,
   getEntryCurrentState, isACurrentEntry, isFinalEntryAnswer, isNextEntry, isNextEntryAnswer, setEntry,
   setEntryAnswersRevealed,
   setNextEntryAnswer, shuffleEntryAnswerRevealOrder, startEntryGuessing, startEntryResults, startEntryVoting,
@@ -37,6 +38,8 @@ class DrawDuoGameHostNEW extends Component {
 
   initiated = false;
   drawDuoRef;
+  currentEntryRef;
+  currentRoundRef;
   drawDuoSnapshot: DrawDuoModel;
 
   props: {
@@ -65,6 +68,35 @@ class DrawDuoGameHostNEW extends Component {
         this.attemptToStart();
       }
 
+    });
+  }
+
+  setCurrentRoundListener() {
+    if (this.currentRoundRef) {
+      this.currentRoundRef.off();
+    }
+    const currentRoundKey = getCurrentRoundKey(this.drawDuoSnapshot);
+    this.currentRoundRef = this.drawDuoRef.child(`/rounds/${currentRoundKey}`);
+    this.currentRoundRef.on('value', snapshot => {
+      console.log('current entry', snapshot.val());
+    });
+  }
+
+  disableCurrentRoundListener() {
+    if (this.currentRoundRef) {
+      this.currentRoundRef.off();
+    }
+  }
+
+  setCurrentEntryListener() {
+    const {firebase, match} = this.props;
+    if (this.currentEntryRef) {
+      this.currentEntryRef.off();
+    }
+    const currentEntryKey = getCurrentEntryKey(this.drawDuoSnapshot);
+    this.currentRoundRef = this.drawDuoRef.child(`/entries/${currentEntryKey}`);
+    this.currentRoundRef.on('value', snapshot => {
+      console.log('current entry', snapshot.val());
     });
   }
 
@@ -331,9 +363,14 @@ class DrawDuoGameHostNEW extends Component {
   startEntryVoting(): void {
 
     startEntryVoting(this.drawDuoSnapshot, this.drawDuoRef);
-    submitEntryTestVotes(this.drawDuoSnapshot, this.drawDuoRef);
+
+    this.setCurrentRoundListener();
 
     const timer = this.drawDuoSnapshot.config.timers.vote;
+
+    setTimeout(() => {
+      submitEntryTestVotes(this.drawDuoSnapshot, this.drawDuoRef);
+    }, timer / 2);
 
     setTimeout(() => {
       this.terminateAndCallNextGameStep();
