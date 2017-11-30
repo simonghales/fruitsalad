@@ -16,6 +16,11 @@
   font-weight: 700;
 }
 
+@mixin drawDuoPlainHeadingFont
+{
+  font-family: 'Pacifico', sans-serif;
+}
+
 @mixin textShadow
 {
   text-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
@@ -71,6 +76,13 @@
   @include increasedLetterSpacing;
   font-size:   14px;
   font-weight: 600;
+}
+
+@mixin hugeDrawDuoHeading
+{
+  @include drawDuoPlainHeadingFont;
+  font-size:   62px;
+  line-height: 62px;
 }
 
 @mixin largeDrawDuoHeading

@@ -7,5 +7,46 @@
 
 .DrawDuoUser
 {
+  position: relative;
+
+  &:first-child
+  {
+    margin-right: 15px;
+  }
+
+  &:last-child
+  {
+    margin-left: 15px;
+  }
 
 }
+
+.DrawDuoUser__image
+{
+  width:            120px;
+  height:           120px;
+  border-radius:    50%;
+  background-color: #FFFFFF;
+}
+
+.DrawDuoUser__label
+{
+  @include drawDuoFont;
+  position:   absolute;
+  top:        100%;
+  width:      190px;
+  left:       -35px;
+  right:      -35px;
+  text-align: center;
+  margin-top: 20px;
+  font-size:  24px;
+
+  span
+  {
+    background-color: #FFFFFF;
+    border-radius:    10px;
+    padding:          4px 8px;
+  }
+
+}
+

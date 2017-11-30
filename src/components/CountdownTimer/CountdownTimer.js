@@ -45,7 +45,11 @@ class CountdownTimer extends Component {
   render() {
     const {secondsRemaining} = this.state;
     return (
-      <div className='CountdownTimer'>{secondsRemaining}</div>
+      <div className='CountdownTimer'>
+        <div className='CountdownTimer__text'>
+          {secondsRemaining}
+        </div>
+      </div>
     );
   }
 

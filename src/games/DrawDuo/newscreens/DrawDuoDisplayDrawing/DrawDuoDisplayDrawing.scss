@@ -17,10 +17,61 @@
   justify-content: center;
 }
 
+.DrawDuoDisplayDrawing__info
+{
+  text-align: center;
+}
+
+.DrawDuoDisplayDrawing__title
+{
+  @include hugeDrawDuoHeading;
+}
+
 .DrawDuoDisplayDrawing__label
 {
   @include mediumDrawDuoHeading;
-  margin-top: 20px;
+  margin: 50px 0 15px 0;
+
+  span
+  {
+    display:   inline-block;
+    margin:    0 6px;
+
+    @at-root
+    {
+
+      @keyframes driftUpAndDown
+      {
+        0%
+        {
+          transform: translateY(-10px);
+        }
+        100%
+        {
+          transform: translateY(10px);
+        }
+      }
+
+    }
+
+    animation: driftUpAndDown 750ms ease infinite alternate;
+
+    @for $i from 1 to 20
+    {
+
+      &:nth-child(#{$i})
+      {
+        animation-delay: ($i * 100ms);
+      }
+
+    }
+
+  }
+
+}
+
+.DrawDuoDisplayDrawing__countdown
+{
 }
 
 .DrawDuoDisplayDrawing__pairs

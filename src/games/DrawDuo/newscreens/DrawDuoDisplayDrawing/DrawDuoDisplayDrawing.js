@@ -18,15 +18,20 @@ class DrawDuoDisplayDrawing extends Component {
     return 60;
   }
 
+  getLabel() {
+    const label = 'Check your device for your prompt';
+    return label.split(' ').map((word: string, index) => (
+      <span key={index}>{word}</span>
+    ))
+  }
+
   render() {
     return (
       <div className='DrawDuoDisplayDrawing'>
         <div className='DrawDuoDisplayDrawing__content'>
           <div className='DrawDuoDisplayDrawing__info'>
-            <CountdownTimer timerDuration={this.getDrawingTimer()}/>
-            <div className='DrawDuoDisplayDrawing__label'>
-              Check your device for your prompt and get drawing!
-            </div>
+            <h2 className='DrawDuoDisplayDrawing__title'>Get Drawing!</h2>
+            <div className='DrawDuoDisplayDrawing__label'>{this.getLabel()}</div>
           </div>
           <div className='DrawDuoDisplayDrawing__pairs'>
             <DrawDuoPairs/>

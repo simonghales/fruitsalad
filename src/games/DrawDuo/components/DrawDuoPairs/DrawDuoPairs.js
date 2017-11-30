@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './DrawDuoPairs.css';
 import DrawDuoPair from '../DrawDuoPair/DrawDuoPair';
+import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 
 class DrawDuoPairs extends Component {
 
@@ -12,7 +13,13 @@ class DrawDuoPairs extends Component {
     return (
       <div className='DrawDuoPairs'>
         {
-          Array.from({length: 3}).map((item, index) => (
+          Array.from({length: 2}).map((item, index) => (
+            <DrawDuoPair key={index}/>
+          ))
+        }
+        <CountdownTimer timerDuration={60}/>
+        {
+          Array.from({length: 2}).map((item, index) => (
             <DrawDuoPair key={index}/>
           ))
         }

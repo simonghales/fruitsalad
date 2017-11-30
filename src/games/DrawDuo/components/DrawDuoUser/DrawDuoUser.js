@@ -10,7 +10,10 @@ class DrawDuoUser extends Component {
   render() {
     return (
       <div className='DrawDuoUser'>
-        USER
+        <div className='DrawDuoUser__image'></div>
+        <div className='DrawDuoUser__label'>
+          <span>Simon</span>
+        </div>
       </div>
     )
   }
