@@ -5,9 +5,37 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin submittedUser
+{
+
+  &.DrawDuoUser--submitted,
+  .DrawDuoUser--submitted &
+  {
+    @content;
+  }
+
+}
+
+@mixin notSubmittedUser
+{
+
+  &.DrawDuoUser--notSubmitted,
+  .DrawDuoUser--notSubmitted &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoUser
 {
-  position: relative;
+  position:   relative;
+  transition: transform 300ms ease;
+
+  @include notSubmittedUser
+  {
+    transform: translateY(20px);
+  }
 
   &:first-child
   {
@@ -27,6 +55,42 @@
   height:           120px;
   border-radius:    50%;
   background-color: #FFFFFF;
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  position:         relative;
+  box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
+  transition:       opacity 300ms ease;
+
+  @include notSubmittedUser
+  {
+    //opacity: 0.75;
+  }
+
+}
+
+.DrawDuoUser__submitted
+{
+  @include drawDuoPlainHeadingFont;
+  position:         absolute;
+  left:             -10px;
+  right:            -10px;
+  text-align:       center;
+  background-color: #FFFFFF;
+  padding:          5px;
+  text-transform:   uppercase;
+  border-radius:    3px;
+  transform:        rotate(-35deg) scale(0.95);
+  opacity:          0;
+  transition:       transform 300ms ease, opacity 300ms ease;
+  box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
+
+  @include submittedUser
+  {
+    opacity:   1;
+    transform: rotate(-45deg);
+  }
+
 }
 
 .DrawDuoUser__label
@@ -38,14 +102,15 @@
   left:       -35px;
   right:      -35px;
   text-align: center;
-  margin-top: 20px;
-  font-size:  24px;
+  margin-top: 30px;
+  font-size:  32px;
 
   span
   {
     background-color: #FFFFFF;
     border-radius:    10px;
-    padding:          4px 8px;
+    padding:          6px 16px;
+    box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
   }
 
 }

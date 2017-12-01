@@ -1,5 +1,13 @@
 @import "../settings/colors";
 
+@mixin truncate($width)
+{
+  white-space:   nowrap;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  width:         $width;
+}
+
 @mixin headingFont
 {
   font-family: 'Open Sans', sans-serif;

@@ -540,10 +540,10 @@ const mapDispatchToProps = (dispatch) => {
 const wrappedComponent = firebaseConnect((props, store) => {
   const sessionKey = props.match.params.id.toUpperCase();
   let queries = [
-    {
-      path: `/sessions/${sessionKey}`,
-      storeAs: 'session',
-    }
+    // {
+    //   path: `/sessions/${sessionKey}`,
+    //   storeAs: 'session',
+    // }
   ];
   return queries;
 })(DrawDuoGameHostNEW);

@@ -5,12 +5,13 @@ import {AppState} from '../../../../redux/index';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 import {DrawDuoGame} from '../../models';
 import DrawDuoPairs from '../../components/DrawDuoPairs/DrawDuoPairs';
+import {DrawDuoModel} from '../../logic/models';
 
 class DrawDuoDisplayDrawing extends Component {
 
   props: {
     session: {
-      drawDuo: DrawDuoGame,
+      drawDuo: DrawDuoModel,
     },
   };
 

@@ -86,3 +86,36 @@ export function getNonPromptedPairs(drawDuo: DrawDuoModel) {
   });
   return filteredPairs;
 }
+
+export function getPair(pairKey: string, pairs: {}) {
+  return (pairs && pairs[pairKey]) ? pairs[pairKey] : null;
+}
+
+export function getPairUsersKeys(pair: PairModel): string[] {
+  return (pair) ? Object.keys(pair) : [];
+}
+
+export function getPairs(drawDuo: DrawDuoModel) {
+  const {pairs} = drawDuo;
+  return (pairs) ? pairs : {};
+}
+
+export interface WrappedPair {
+  key: string,
+  pair: PairModel,
+}
+
+export function getPairsArrays(drawDuo: DrawDuoModel) {
+  const {pairs} = drawDuo;
+  if (!pairs) return [];
+  return Object.keys(pairs);
+}
+
+export function arePairResultsDifferent(pairResultsA, pairResultsB): boolean {
+  if (!pairResultsA || !pairResultsB) return true;
+  if (Object.keys(pairResultsA).join(',') === Object.keys(pairResultsB).join(',')) {
+    return false;
+  } else {
+    return true;
+  }
+}
