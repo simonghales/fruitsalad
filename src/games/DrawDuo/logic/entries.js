@@ -349,3 +349,13 @@ export function generateEntry(pair: PairModelKeyWrapped, index: number) {
     votes: {},
   };
 }
+
+export function getEntryByKey(entryKey: string, drawDuo: DrawDuoModel): EntryModel {
+  const {entries} = drawDuo;
+  return (entries && entries[entryKey]) ? entries[entryKey] : null;
+}
+
+export function doesPairOwnEntry(pairKey: string, entryKey: string, drawDuo: DrawDuoModel): boolean {
+  const entry = getEntryByKey(entryKey, drawDuo);
+  return (entry.pair === pairKey);
+}

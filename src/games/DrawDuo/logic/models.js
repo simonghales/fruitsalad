@@ -44,8 +44,20 @@ export type RoundModelState =
   | DRAW_DUO_ROUND_STATE_RESULTS
   | DRAW_DUO_ROUND_STATE_COMPLETED;
 
+export interface DrawingsModel {
+  [string]: DrawingModel,
+}
+
+export interface DrawingModel {
+  user: string,
+  pair: string,
+  entry: string,
+  image: string,
+}
+
 export interface RoundModel {
   completed: boolean,
+  drawings: DrawingsModel,
   entries: {
     //entryKey
     [string]: {
@@ -128,6 +140,14 @@ export type DrawDuoModelState =
   | DRAW_DUO_STATE_PLAYING
   | DRAW_DUO_STATE_COMPLETED;
 
+export interface UsersModel {
+  [string]: UserModel,
+}
+
+export interface PairsModel {
+  [string]: PairModel,
+}
+
 export interface DrawDuoModel {
   config: ConfigModel,
   currentEntry: {
@@ -142,15 +162,15 @@ export interface DrawDuoModel {
   entries: {
     [string]: EntryModel,
   },
-  users: {
-    [string]: UserModel,
-  },
-  pairs: {
-    [string]: PairModel,
-  },
+  users: UsersModel,
+  pairs: PairsModel,
   rounds: {
     [string]: RoundModel,
   },
   state: DrawDuoModelState,
   timer: string,
+}
+
+export interface SessionModel {
+  drawDuo: DrawDuoModel,
 }

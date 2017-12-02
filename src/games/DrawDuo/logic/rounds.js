@@ -1,10 +1,11 @@
-import {DrawDuoModel, DrawDuoRefModel, RoundModelState} from './models';
+import {DrawDuoModel, DrawDuoRefModel, RoundModel, RoundModelState} from './models';
 import {
   DRAW_DUO_ROUND_STATE_COMPLETED,
   DRAW_DUO_ROUND_STATE_DRAWING, DRAW_DUO_ROUND_STATE_PENDING, DRAW_DUO_ROUND_STATE_RESULTS,
   DRAW_DUO_ROUND_STATE_VOTING
 } from './constants';
 import {randomIntFromInterval} from '../../../utils/numbers';
+import {getUserEntryKey, getUserPairKey, getUsers} from './users';
 
 export function isACurrentRound(drawDuo: DrawDuoModel) {
   return (drawDuo.currentRound);
@@ -38,12 +39,17 @@ function getNextRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): strin
   return nextRoundKey;
 }
 
-export function getCurrentRoundKey(drawDuo: DrawDuoModel) {
+export function getCurrentRoundKey(drawDuo: DrawDuoModel): string {
   if (!drawDuo.currentRound) {
     console.warn('no current round available');
     return '';
   }
   return drawDuo.currentRound.key;
+}
+
+export function getCurrentRound(drawDuo: DrawDuoModel): RoundModel {
+  const currentRoundKey = getCurrentRoundKey(drawDuo);
+  return (currentRoundKey) ? drawDuo.rounds[currentRoundKey] : null;
 }
 
 export function beginRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
@@ -110,13 +116,6 @@ export function beginRoundVoting(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefMo
 
 }
 
-function nextRoundDrawingStep(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
-
-  // confirm that drawings are submitted
-  beginRoundVoting(drawDuo, drawDuoRef);
-
-}
-
 export function setRoundDrawingsSubmitted(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
 
 }
@@ -162,4 +161,39 @@ export function generateRound(entries: {}, index: number) {
     order: index,
     state: DRAW_DUO_ROUND_STATE_PENDING,
   };
+}
+
+export function submitRoundTestDrawings(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const users = getUsers(drawDuo);
+  for (let userKey in users) {
+    submitRoundUserTestDrawing(userKey, drawDuo, drawDuoRef);
+  }
+}
+
+export function submitRoundUserTestDrawing(userKey: string, drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
+  const entryKey = getUserEntryKey(userKey, drawDuo);
+  const pairKey = getUserPairKey(userKey, drawDuo);
+  const currentRoundKey = getCurrentRoundKey(drawDuo);
+  drawDuoRef.update({
+    [`/rounds/${currentRoundKey}/drawings/${userKey}`]: {
+      user: userKey,
+      pair: pairKey,
+      entry: entryKey,
+      image: '',
+    }
+  });
+}
+
+export function areAllRoundDrawingsSubmitted(round: RoundModel, drawDuo: DrawDuoModel): boolean {
+  const {drawings} = round;
+  const {users} = drawDuo;
+  if (!drawings || !users) return false;
+  let userKeysInDrawings = true;
+  for (let userKey in users) {
+    if (!drawings[userKey]) {
+      userKeysInDrawings = false;
+      break;
+    }
+  }
+  return userKeysInDrawings;
 }

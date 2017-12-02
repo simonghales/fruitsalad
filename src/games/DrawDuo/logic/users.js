@@ -1,5 +1,9 @@
-import {DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, UserModel} from './models';
-import {getCurrentEntryData} from './entries';
+import {
+  DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, PairsModel, RoundModel, UserModel,
+  UsersModel
+} from './models';
+import {doesPairOwnEntry, getCurrentEntryData} from './entries';
+import {getCurrentRound, getCurrentRoundKey} from './rounds';
 
 const DEFAULT_USERS = [
   {
@@ -87,7 +91,7 @@ export function getNonPromptedPairs(drawDuo: DrawDuoModel) {
   return filteredPairs;
 }
 
-export function getPair(pairKey: string, pairs: {}) {
+export function getPair(pairKey: string, pairs: PairsModel): PairModel {
   return (pairs && pairs[pairKey]) ? pairs[pairKey] : null;
 }
 
@@ -95,7 +99,7 @@ export function getPairUsersKeys(pair: PairModel): string[] {
   return (pair) ? Object.keys(pair) : [];
 }
 
-export function getPairs(drawDuo: DrawDuoModel) {
+export function getPairs(drawDuo: DrawDuoModel): PairsModel {
   const {pairs} = drawDuo;
   return (pairs) ? pairs : {};
 }
@@ -118,4 +122,47 @@ export function arePairResultsDifferent(pairResultsA, pairResultsB): boolean {
   } else {
     return true;
   }
+}
+
+export function getUsers(drawDuo: DrawDuoModel): UsersModel {
+  const {users} = drawDuo;
+  return (users) ? users : {};
+}
+
+export function getUser(userKey: string, users: UsersModel): UserModel {
+  return (users && users[userKey]) ? users[userKey] : null;
+}
+
+export function getUserEntryKey(userKey: string, drawDuo: DrawDuoModel) {
+  const currentRound: RoundModel = getCurrentRound(drawDuo);
+  const pairKey = getUserPairKey(userKey, drawDuo);
+  const {entries} = currentRound;
+  return Object.keys(entries).find((entryKey) => {
+    return doesPairOwnEntry(pairKey, entryKey, drawDuo);
+  });
+}
+
+export function getUserPairKey(userKey: string, drawDuo: DrawDuoModel) {
+  const {pairs} = drawDuo;
+  return Object.keys(pairs).find((pairKey) => {
+    return doesPairContainUser(userKey, pairKey, drawDuo);
+  });
+}
+
+export function doesPairContainUser(userKey: string, pairKey: string, drawDuo: DrawDuoModel): boolean {
+  const pair = getPairByKey(pairKey, drawDuo);
+  return (Object.keys(pair).find((pairUserKey: string) => {
+    return userKey === pairUserKey;
+  }));
+}
+
+export function getPairByKey(pairKey: string, drawDuo: DrawDuoModel): PairModel {
+  const {pairs} = drawDuo;
+  return (pairs && pairs[pairKey]) ? pairs[pairKey] : null;
+}
+
+export function hasUserSubmittedDrawing(userKey: string, drawDuo: DrawDuoModel): boolean {
+  const currentRound = getCurrentRound(drawDuo);
+  const {drawings} = currentRound;
+  return (drawings && drawings[userKey]);
 }

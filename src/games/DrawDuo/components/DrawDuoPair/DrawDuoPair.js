@@ -3,14 +3,14 @@ import './DrawDuoPair.css';
 import DrawDuoUser from '../DrawDuoUser/DrawDuoUser';
 import {AppState} from '../../../../redux/index';
 import {connect} from 'react-redux';
-import {DrawDuoModel} from '../../logic/models';
+import {DrawDuoModel, PairsModel} from '../../logic/models';
 import {arePairResultsDifferent, getPair, getPairs, getPairUsersKeys} from '../../logic/users';
 
 class DrawDuoPair extends Component {
 
   props: {
     pairKey: string,
-    pairs: {},
+    pairs: PairsModel,
   };
 
   constructor(props) {
