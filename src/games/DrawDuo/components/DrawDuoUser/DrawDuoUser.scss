@@ -5,6 +5,50 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin smallUser
+{
+
+  &.DrawDuoUser--size-small,
+  .DrawDuoUser--size-small &
+  {
+    @content;
+  }
+
+}
+
+@mixin mediumUser
+{
+
+  &.DrawDuoUser--size-medium,
+  .DrawDuoUser--size-medium &
+  {
+    @content;
+  }
+
+}
+
+@mixin horizontalAlignmentUser
+{
+
+  &.DrawDuoUser--alignment-horizontal,
+  .DrawDuoUser--alignment-horizontal &
+  {
+    @content;
+  }
+
+}
+
+@mixin verticalAlignmentUser
+{
+
+  &.DrawDuoUser--alignment-vertical,
+  .DrawDuoUser--alignment-vertical &
+  {
+    @content;
+  }
+
+}
+
 @mixin submittedUser
 {
 
@@ -47,6 +91,12 @@
     margin-left: 15px;
   }
 
+  @include horizontalAlignmentUser
+  {
+    display:     flex;
+    align-items: center;
+  }
+
 }
 
 .DrawDuoUser__image
@@ -65,6 +115,18 @@
   @include notSubmittedUser
   {
     //opacity: 0.75;
+  }
+
+  @include mediumUser
+  {
+    width:  125px;
+    height: 125px;
+  }
+
+  @include smallUser
+  {
+    width:  100px;
+    height: 100px;
   }
 
 }
@@ -97,14 +159,23 @@
 .DrawDuoUser__label
 {
   @include drawDuoFont;
-  position:   absolute;
-  top:        100%;
-  width:      220px;
-  left:       -35px;
-  right:      -35px;
-  text-align: center;
-  margin-top: 30px;
-  font-size:  36px;
+  font-size: 36px;
+
+  @include verticalAlignmentUser
+  {
+    position:   absolute;
+    top:        100%;
+    width:      220px;
+    left:       -35px;
+    right:      -35px;
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  @include horizontalAlignmentUser
+  {
+    margin-left: 15px;
+  }
 
   span
   {

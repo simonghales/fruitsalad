@@ -125,7 +125,7 @@ export function getCurrentEntryKey(drawDuo: DrawDuoModel) {
   return drawDuo.currentEntry.key;
 }
 
-export function getCurrentEntryData(drawDuo: DrawDuoModel) {
+export function getCurrentEntryData(drawDuo: DrawDuoModel): EntryModel {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   return drawDuo.entries[currentEntryKey];
 }
@@ -158,19 +158,19 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
 
   nonPromptedPairs.forEach((pair) => {
 
-    for (let i = 0; i < 2; i++) {
-      const key = drawDuoRef.push().key;
+    pair.users.forEach((userKey) => {
+      const key = userKey;
       const guess = (guessIndex < GUESSES.length - 1) ? GUESSES[guessIndex] : GUESSES[0];
       guessIndex++;
       answers[`/entries/${currentEntryKey}/answers/${key}`] = {
         text: guess,
         votes: {},
         prompt: false,
-        user: pair.users[i],
+        user: userKey,
         order: 0,
         revealOrder: 0,
       };
-    }
+    });
 
   });
 
@@ -189,9 +189,8 @@ function getPromptAnswerKey(drawDuo: DrawDuoModel) {
 export function submitEntryPromptAnswer(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   const currentEntry: EntryModel = getCurrentEntryData(drawDuo);
-  const key = drawDuoRef.push().key;
   drawDuoRef.update({
-    [`/entries/${currentEntryKey}/answers/${key}`]: {
+    [`/entries/${currentEntryKey}/answers/prompt`]: {
       text: currentEntry.prompt,
       votes: {},
       prompt: true,
@@ -357,6 +356,5 @@ export function getEntryByKey(entryKey: string, drawDuo: DrawDuoModel): EntryMod
 
 export function doesPairOwnEntry(pairKey: string, entryKey: string, drawDuo: DrawDuoModel): boolean {
   const entry = getEntryByKey(entryKey, drawDuo);
-  console.log('entry and pair', entry, pairKey);
   return (entry.pair === pairKey);
 }

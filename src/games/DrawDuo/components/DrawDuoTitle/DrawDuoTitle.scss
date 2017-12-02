@@ -1,0 +1,10 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoTitle
+{
+  @include hugeDrawDuoHeading;
+}

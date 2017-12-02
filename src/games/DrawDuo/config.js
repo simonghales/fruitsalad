@@ -11,14 +11,14 @@ import DrawDuoPending from './components/DrawDuoPending/DrawDuoPending';
 export const DRAW_DUO_CONFIG = {
   defaults: {
     numberOfRounds: 2,
-    drawingTimer: (10 * 1000),
-    guessTimer: (5 * 1000),
-    voteTimer: (5 * 1000),
-    revealTimer: (5 * 1000),
-    revealAnswerTimer: (3 * 1000),
-    revealFinalAnswerTimer: (5 * 1000),
-    completedEntryTimer: (5 * 1000),
-    sleepTimer: (1 * 1000),
+    drawingTimer: (60 * 1000),
+    guessTimer: (1 * 1000),
+    voteTimer: (1 * 1000),
+    revealTimer: (1 * 1000),
+    revealAnswerTimer: (1 * 1000),
+    revealFinalAnswerTimer: (1 * 1000),
+    completedEntryTimer: (1 * 1000),
+    sleepTimer: (2 * 1000),
   },
   userHeaderDisplayed: true,
   screens: {

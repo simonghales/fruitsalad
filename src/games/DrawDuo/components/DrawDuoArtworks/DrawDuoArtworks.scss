@@ -1,22 +1,14 @@
 @import "../../../../styles/settings/sizes";
-@import "../../../../styles/tools/animations";
 @import "../../../../styles/tools/buttons";
 @import "../../../../styles/tools/inputs";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
-.DrawDuoPairs
-{
-
-}
-
-.DrawDuoPairs__row
+.DrawDuoArtworks
 {
   display:         flex;
   justify-content: space-between;
-  align-items:     center;
-  width:           100vw;
-  margin-top:      150px;
+  width:           100%;
 
   &::before,
   &::after
@@ -28,9 +20,12 @@
     overflow: hidden;
   }
 
-  &:first-of-type
-  {
-    margin-top: 0;
-  }
+}
 
+.DrawDuoArtworks__drawing
+{
+  width:            40vw;
+  height:           40vw;
+  background-color: #FFFFFF;
+  box-shadow:       0 3px 25px rgba(0, 0, 0, 0.15);
 }

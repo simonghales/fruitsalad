@@ -96,6 +96,7 @@ export function generatePairs(users: {
 export function getNonPromptedPairs(drawDuo: DrawDuoModel) {
   const {pairs} = drawDuo;
   const currentEntryData: EntryModel = getCurrentEntryData(drawDuo);
+  if (!currentEntryData) return [];
   const filteredPairs = Object.keys(pairs).filter((pairKey) => {
     return pairKey !== currentEntryData.pair;
   }).map((pairKey) => {
@@ -182,4 +183,12 @@ export function hasUserSubmittedDrawing(userKey: string, drawDuo: DrawDuoModel):
   if (!currentRound) return false;
   const {drawings} = currentRound;
   return (drawings && drawings[userKey]);
+}
+
+export function hasUserSubmittedAnswer(userKey: string, drawDuo: DrawDuoModel): boolean {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) return false;
+  const {answers} = currentEntry;
+  console.log('answers', answers, userKey);
+  return (answers && answers[userKey]);
 }

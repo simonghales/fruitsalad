@@ -1,0 +1,46 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoAnimatedMessage
+{
+  @include largeDrawDuoHeading;
+
+  span
+  {
+    display:   inline-block;
+    margin:    0 6px;
+
+    @at-root
+    {
+
+      @keyframes driftUpAndDown
+      {
+        0%
+        {
+          transform: translateY(-5px);
+        }
+        100%
+        {
+          transform: translateY(5px);
+        }
+      }
+
+    }
+
+    animation: driftUpAndDown 750ms ease infinite alternate;
+
+    @for $i from 1 to 20
+    {
+
+      &:nth-child(#{$i})
+      {
+        animation-delay: ($i * 100ms);
+      }
+
+    }
+
+  }
+}

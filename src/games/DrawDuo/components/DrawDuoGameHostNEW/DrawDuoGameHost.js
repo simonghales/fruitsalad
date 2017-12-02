@@ -88,7 +88,13 @@ class DrawDuoGameHostNEW extends Component {
     if (areAllRoundDrawingsSubmitted(currentRound, this.drawDuoSnapshot)) {
       this.disableCurrentRoundListener();
       this.clearTimerKey();
-      this.terminateAndCallNextGameStep();
+
+      const timer = this.drawDuoSnapshot.config.timers.sleep;
+
+      setTimeout(() => {
+        this.terminateAndCallNextGameStep();
+      }, timer);
+
     }
   }
 
@@ -410,15 +416,16 @@ class DrawDuoGameHostNEW extends Component {
     startEntryGuessing(this.drawDuoSnapshot, this.drawDuoRef);
     submitEntryPromptAnswer(this.drawDuoSnapshot, this.drawDuoRef);
 
+    submitEntryTestAnswers(this.drawDuoSnapshot, this.drawDuoRef);
+      
+    if (this.sessionKeyMatchesKey('ENTRY_GUESSING')) return;
+
     this.setCurrentEntryAnswersListener();
 
     const timerKey = this.setTimerKey();
 
     const timer = this.drawDuoSnapshot.config.timers.guess;
 
-    setTimeout(() => {
-      submitEntryTestAnswers(this.drawDuoSnapshot, this.drawDuoRef);
-    }, timer / 2);
 
     setTimeout(() => {
       if (this.isTimerKey(timerKey)) {
@@ -436,6 +443,8 @@ class DrawDuoGameHostNEW extends Component {
     startEntryVoting(this.drawDuoSnapshot, this.drawDuoRef);
 
     this.setCurrentEntryVotesListener();
+
+    if (this.sessionKeyMatchesKey('ENTRY_VOTING')) return;
 
     const timerKey = this.setTimerKey();
 
@@ -481,6 +490,8 @@ class DrawDuoGameHostNEW extends Component {
     } else {
 
       setNextEntryAnswer(this.drawDuoSnapshot, this.drawDuoRef);
+
+      if (this.sessionKeyMatchesKey('ENTRY_SEMI_RESULTS')) return;
 
       const timer = (isFinalEntryAnswer(this.drawDuoSnapshot)) ? this.drawDuoSnapshot.config.timers.revealFinalAnswer : this.drawDuoSnapshot.config.timers.revealAnswer;
 

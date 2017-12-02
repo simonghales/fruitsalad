@@ -25,26 +25,35 @@ class DrawDuoPairs extends Component {
     return getDrawingTimer(session.drawDuo) / 1000;
   }
 
+  getRows(pairs) {
+    const rowMaxSize = 4;
+    return pairs.reduce((ar, it, i) => {
+      const ix = Math.floor(i / rowMaxSize);
+      if (!ar[ix]) {
+        ar[ix] = [];
+      }
+      ar[ix].push(it);
+      return ar;
+    }, []);
+  }
+
   render() {
     const {session} = this.props;
     const pairs = getPairsArrays(session.drawDuo);
-    // let rightPairs = getPairsArrays(session.drawDuo);
-    // const leftPairs = rightPairs.splice(0, Math.ceil(rightPairs.length / 2));
+    const rows = this.getRows(pairs);
     return (
       <div className='DrawDuoPairs'>
-        <div className='DrawDuoPairs__row'>
-          {
-            pairs.map((pairKey: string, index) => (
-              <DrawDuoPair pairKey={pairKey} key={pairKey}/>
-            ))
-          }
-        </div>
-        {/*<CountdownTimer timerDuration={this.getTimerDuration()}/>*/}
-        {/*{*/}
-        {/*rightPairs.map((pairKey: string, index) => (*/}
-        {/*<DrawDuoPair pairKey={pairKey} key={pairKey}/>*/}
-        {/*))*/}
-        {/*}*/}
+        {
+          rows.map((row, index) => (
+            <div className='DrawDuoPairs__row' key={index}>
+              {
+                row.map((pairKey: string) => (
+                  <DrawDuoPair pairKey={pairKey} key={pairKey}/>
+                ))
+              }
+            </div>
+          ))
+        }
       </div>
     )
   }

@@ -320,9 +320,17 @@ export function getAnswerRevealIndex(answerKey: string, currentEntry: Entry) {
   })
 }
 
-export function getNonPromptedPairs(drawDuoState: DrawDuoGame) {
+export function getNonPromptedPairs(drawDuoState: DrawDuoGame): [] {
+  if (!drawDuoState) {
+    console.warn('no draw duo state');
+    return [];
+  }
   const {pairs} = drawDuoState;
   const currentEntryData: Entry = getCurrentEntryData(drawDuoState);
+  if (!currentEntryData) {
+    console.warn('no currentEntryData');
+    return [];
+  }
   const filteredPairs = Object.keys(pairs).filter((pairKey) => {
     return pairKey !== currentEntryData.pair;
   }).map((pairKey) => {

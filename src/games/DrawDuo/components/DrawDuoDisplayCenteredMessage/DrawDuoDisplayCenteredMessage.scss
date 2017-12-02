@@ -5,32 +5,15 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
-.DrawDuoPairs
+.DrawDuoDisplayCenteredMessage
 {
-
-}
-
-.DrawDuoPairs__row
-{
+  @include hugeDrawDuoHeading;
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
   display:         flex;
-  justify-content: space-between;
   align-items:     center;
-  width:           100vw;
-  margin-top:      150px;
-
-  &::before,
-  &::after
-  {
-    content:  '';
-    display:  block;
-    width:    0;
-    height:   0;
-    overflow: hidden;
-  }
-
-  &:first-of-type
-  {
-    margin-top: 0;
-  }
-
+  justify-content: center;
 }

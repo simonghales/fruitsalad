@@ -104,6 +104,7 @@ function isNextRoundAvailable(): boolean {
 }
 
 export function getRoundCurrentState(drawDuo: DrawDuoModel): RoundModelState {
+  if (!drawDuo || !drawDuo.rounds || !drawDuo.currentRound) return null;
   return drawDuo.rounds[drawDuo.currentRound.key].state;
 }
 
@@ -177,7 +178,6 @@ export function submitRoundUserTestDrawing(userKey: string, drawDuo: DrawDuoMode
   const entryKey = getUserEntryKey(userKey, drawDuo);
   const pairKey = getUserPairKey(userKey, drawDuo);
   const currentRoundKey = getCurrentRoundKey(drawDuo);
-  console.log('submit drawing', entryKey, pairKey, currentRoundKey);
   drawDuoRef.update({
     [`/rounds/${currentRoundKey}/drawings/${userKey}`]: {
       user: userKey,
