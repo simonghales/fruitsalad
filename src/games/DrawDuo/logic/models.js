@@ -93,10 +93,12 @@ export type EntryModelState =
   | DRAW_DUO_ENTRY_STATE_RESULTS
   | DRAW_DUO_ENTRY_STATE_COMPLETED;
 
+export interface AnswersModel {
+  [string]: AnswerModel,
+}
+
 export interface EntryModel {
-  answers: {
-    [string]: AnswerModel,
-  },
+  answers: AnswersModel,
   answersRevealOrder: {
     [string]: {
       order: number,

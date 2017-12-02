@@ -4,6 +4,17 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin mediumSize
+{
+
+  &.DrawDuoArtworkPiece--size-medium,
+  .DrawDuoArtworkPiece--size-medium &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoArtworkPiece
 {
   position: relative;
@@ -15,6 +26,13 @@
   height:           33vw;
   background-color: #FFFFFF;
   box-shadow:       0 3px 25px rgba(0, 0, 0, 0.15);
+
+  @include mediumSize
+  {
+    width:  20vw;
+    height: 20vw;
+  }
+
 }
 
 .DrawDuoArtworkPiece__attribution

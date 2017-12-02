@@ -120,3 +120,35 @@
   font-size:   32px;
   line-height: 32px;
 }
+
+@mixin hugeReadableText
+{
+  @include headingFont;
+  font-size:   44px;
+  line-height: 48px;
+  font-weight: 600;
+}
+
+@mixin largeReadableText
+{
+  @include headingFont;
+  font-size:   38px;
+  line-height: 42px;
+  font-weight: 600;
+}
+
+@mixin mediumReadableText
+{
+  @include headingFont;
+  font-size:   32px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+@mixin smallReadableText
+{
+  @include headingFont;
+  font-size:   24px;
+  line-height: 30px;
+  font-weight: 600;
+}

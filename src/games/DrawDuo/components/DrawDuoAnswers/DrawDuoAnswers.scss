@@ -1,0 +1,34 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoAnswers
+{
+  display:     flex;
+  align-items: center;
+  width:       100%;
+  height:      100%;
+}
+
+.DrawDuoAnswers__column
+{
+  flex:            1;
+  height:          100%;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: space-around;
+  margin:          0 25px;
+
+  &:first-of-type
+  {
+    margin-left: 0;
+  }
+
+  &:last-of-type
+  {
+    margin-right: 0;
+  }
+
+}

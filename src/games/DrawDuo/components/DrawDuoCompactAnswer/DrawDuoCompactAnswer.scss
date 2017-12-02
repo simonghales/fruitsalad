@@ -1,0 +1,66 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+@mixin shortAnswer
+{
+
+  &.DrawDuoCompactAnswer--length-short,
+  .DrawDuoCompactAnswer--length-short &
+  {
+    @content;
+  }
+
+}
+
+@mixin mediumAnswer
+{
+
+  &.DrawDuoCompactAnswer--length-medium,
+  .DrawDuoCompactAnswer--length-medium &
+  {
+    @content;
+  }
+
+}
+
+@mixin longAnswer
+{
+
+  &.DrawDuoCompactAnswer--length-long,
+  .DrawDuoCompactAnswer--length-long &
+  {
+    @content;
+  }
+
+}
+
+.DrawDuoCompactAnswer
+{
+  @include largeReadableText;
+  text-align: center;
+
+  @include shortAnswer
+  {
+    @include hugeReadableText;
+  }
+
+  @include mediumAnswer
+  {
+    @include mediumReadableText;
+  }
+
+  @include longAnswer
+  {
+    @include smallReadableText;
+  }
+
+  &:first-of-type
+  {
+    margin-top: 0;
+  }
+
+}

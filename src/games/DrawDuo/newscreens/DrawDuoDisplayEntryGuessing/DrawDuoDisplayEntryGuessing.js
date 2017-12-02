@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './DrawDuoDisplayRound.css';
+import './DrawDuoDisplayEntryGuessing.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
@@ -11,8 +11,6 @@ import DrawDuoTitle from '../../components/DrawDuoTitle/DrawDuoTitle';
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesIndicators/DrawDuoUserGuessesIndicators';
 import {getCurrentPairKey} from '../../logic/users';
-import DrawDuoDisplayEntryGuessing from '../DrawDuoDisplayEntryGuessing/DrawDuoDisplayEntryGuessing';
-import DrawDuoDisplayEntryVoting from '../DrawDuoDisplayEntryVoting/DrawDuoDisplayEntryVoting';
 
 class DrawDuoDisplayRound extends Component {
 
@@ -24,10 +22,21 @@ class DrawDuoDisplayRound extends Component {
 
   render() {
     const {session} = this.props;
+    const currentPairKey = getCurrentPairKey(session.drawDuo);
+    console.log('currentPairKey', currentPairKey);
     return (
       <div className='DrawDuoDisplayRound'>
-        {/*<DrawDuoDisplayEntryGuessing/>*/}
-        <DrawDuoDisplayEntryVoting/>
+        <header className='DrawDuoDisplayRound__header'>
+          <div className='DrawDuoDisplayRound__header__content'>
+            <DrawDuoTitle>Describe the drawings!</DrawDuoTitle>
+            <DrawDuoAnimatedMessage label='Answer via your device'/>
+          </div>
+        </header>
+        <div className='DrawDuoDisplayRound__content'>
+          <DrawDuoArtworks pairKey={currentPairKey}/>
+          <DrawDuoUserGuessesIndicators/>
+        </div>
+        <footer className='DrawDuoDisplayRound__footer'></footer>
       </div>
     )
   }

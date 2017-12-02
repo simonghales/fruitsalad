@@ -1,0 +1,72 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+@import "../../../../styles/tools/textures";
+
+.DrawDuoDisplayEntryVoting
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-direction:  column;
+}
+
+.DrawDuoDisplayEntryVoting__header
+{
+  display:     flex;
+  align-items: center;
+  flex:        1;
+  text-align:  center;
+}
+
+.DrawDuoDisplayEntryVoting__header__content
+{
+  position: relative;
+
+  .DrawDuoAnimatedMessage
+  {
+    position:   absolute;
+    margin-top: 10px;
+    left:       0;
+    right:      0;
+    text-align: center;
+  }
+
+}
+
+.DrawDuoDisplayEntryVoting__footer
+{
+  display:     flex;
+  align-items: center;
+  flex:        1;
+}
+
+.DrawDuoDisplayEntryVoting__content
+{
+  position:    relative;
+  height:      33vw;
+  width:       100%;
+  display:     flex;
+  align-items: center;
+
+  .DrawDuoArtworkPiece
+  {
+    margin: 0 50px;
+  }
+
+}
+
+.DrawDuoDisplayEntryVoting__answers
+{
+  flex:        1;
+  height:      100%;
+  display:     flex;
+  align-items: center;
+}

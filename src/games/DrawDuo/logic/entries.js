@@ -154,18 +154,15 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
 
   const nonPromptedPairs = getNonPromptedPairs(drawDuo);
 
-  let guessIndex = 0;
-
   nonPromptedPairs.forEach((pair) => {
 
     pair.users.forEach((userKey) => {
 
       const offset = randomIntFromInterval(0, 50);
       setTimeout(() => {
-        submitTestAnswer(userKey, guessIndex, currentEntryKey, drawDuoRef);
+        submitTestAnswer(userKey, currentEntryKey, drawDuoRef);
       }, offset * 100);
-      guessIndex++;
-      
+
     });
 
   });
@@ -174,8 +171,9 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
 
 }
 
-function submitTestAnswer(userKey: string, guessIndex: number, currentEntryKey: string, drawDuoRef: DrawDuoRefModel) {
+function submitTestAnswer(userKey: string, currentEntryKey: string, drawDuoRef: DrawDuoRefModel) {
   const key = userKey;
+  const guessIndex = randomIntFromInterval(0, GUESSES.length - 1);
   const guess = (guessIndex < GUESSES.length - 1) ? GUESSES[guessIndex] : GUESSES[0];
   drawDuoRef.update({
     [`/entries/${currentEntryKey}/answers/${key}`]: {
@@ -277,9 +275,22 @@ export function shuffleEntryAnswerRevealOrder(drawDuo: DrawDuoModel, drawDuoRef:
 
 }
 
+export function shuffleAnswers(drawDuo: DrawDuoModel) {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const currentEntry = getCurrentEntryData(drawDuo);
+  const {answers} = currentEntry;
+  let shuffledAnswers = {};
+  for (let answerKey in answers) {
+    shuffledAnswers[`/entries/${currentEntryKey}/answers/${answerKey}/order`] = randomIntFromInterval(0, 50);
+  }
+  return shuffledAnswers;
+}
+
 export function startEntryVoting(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const shuffledAnswers = shuffleAnswers(drawDuo);
   drawDuoRef.update({
+    ...shuffledAnswers,
     [`entries/${currentEntryKey}/milestones/answersSubmitted`]: true,
     [`entries/${currentEntryKey}/state`]: DRAW_DUO_ENTRY_STATE_VOTING,
   });
@@ -368,4 +379,9 @@ export function getEntryByKey(entryKey: string, drawDuo: DrawDuoModel): EntryMod
 export function doesPairOwnEntry(pairKey: string, entryKey: string, drawDuo: DrawDuoModel): boolean {
   const entry = getEntryByKey(entryKey, drawDuo);
   return (entry.pair === pairKey);
+}
+
+export function getAnswers(drawDuo: DrawDuoModel) {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  return (currentEntry) ? currentEntry.answers : {};
 }
