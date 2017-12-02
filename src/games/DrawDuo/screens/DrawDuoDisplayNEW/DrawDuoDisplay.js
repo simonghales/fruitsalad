@@ -21,7 +21,7 @@ class DrawDuoDisplay extends Component {
     const {session} = this.props;
     return (
       <div className='DrawDuoDisplay'>
-        <DrawDuoGameHostNEW/>
+        {/*<DrawDuoGameHostNEW/>*/}
         {
           isLoaded(session) && <DrawDuoDisplayDrawing/>
         }

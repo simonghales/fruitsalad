@@ -49,6 +49,7 @@ class App extends Component {
           <Route key='/display/:id' path='/display/:id' component={DrawDuoDisplay}/>
           <Route key='/host/:id' path='/host/:id' component={DrawDuoHostWrapper}/>
           <Route key='/flow/:id' path='/flow/:id' component={DrawDuoDisplayNEW}/>
+          <Route key='/flowHost/:id' path='/flowHost/:id' component={DrawDuoGameHostNEW}/>
           <Route key='/drawDuo' path='/drawDuo' component={GamesScreen}/>
           <Route key='/games' path='/games' component={DrawDuoDisplay}/>
           <Route key='/test' path='/test' component={UserIsAuthenticated(() => (

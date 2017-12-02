@@ -6,6 +6,7 @@ import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer
 import {AppState} from '../../../../redux/index';
 import {DrawDuoModel} from '../../logic/models';
 import {getPairs, getPairsArrays, WrappedPair} from '../../logic/users';
+import {getDrawingTimer} from '../../logic/game';
 
 class DrawDuoPairs extends Component {
 
@@ -19,23 +20,31 @@ class DrawDuoPairs extends Component {
     super(props);
   }
 
+  getTimerDuration() {
+    const {session} = this.props;
+    return getDrawingTimer(session.drawDuo) / 1000;
+  }
+
   render() {
     const {session} = this.props;
-    let rightPairs = getPairsArrays(session.drawDuo);
-    const leftPairs = rightPairs.splice(0, Math.ceil(rightPairs.length / 2));
+    const pairs = getPairsArrays(session.drawDuo);
+    // let rightPairs = getPairsArrays(session.drawDuo);
+    // const leftPairs = rightPairs.splice(0, Math.ceil(rightPairs.length / 2));
     return (
       <div className='DrawDuoPairs'>
-        {
-          leftPairs.map((pairKey: string, index) => (
-            <DrawDuoPair pairKey={pairKey} key={pairKey}/>
-          ))
-        }
-        <CountdownTimer timerDuration={60}/>
-        {
-          rightPairs.map((pairKey: string, index) => (
-            <DrawDuoPair pairKey={pairKey} key={pairKey}/>
-          ))
-        }
+        <div className='DrawDuoPairs__row'>
+          {
+            pairs.map((pairKey: string, index) => (
+              <DrawDuoPair pairKey={pairKey} key={pairKey}/>
+            ))
+          }
+        </div>
+        {/*<CountdownTimer timerDuration={this.getTimerDuration()}/>*/}
+        {/*{*/}
+        {/*rightPairs.map((pairKey: string, index) => (*/}
+        {/*<DrawDuoPair pairKey={pairKey} key={pairKey}/>*/}
+        {/*))*/}
+        {/*}*/}
       </div>
     )
   }

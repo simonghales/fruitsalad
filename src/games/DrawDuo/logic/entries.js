@@ -357,5 +357,6 @@ export function getEntryByKey(entryKey: string, drawDuo: DrawDuoModel): EntryMod
 
 export function doesPairOwnEntry(pairKey: string, entryKey: string, drawDuo: DrawDuoModel): boolean {
   const entry = getEntryByKey(entryKey, drawDuo);
+  console.log('entry and pair', entry, pairKey);
   return (entry.pair === pairKey);
 }

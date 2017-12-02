@@ -338,9 +338,7 @@ class DrawDuoGameHostNEW extends Component {
 
     const timerKey = this.setTimerKey();
 
-    setTimeout(() => {
-      submitRoundTestDrawings(this.drawDuoSnapshot, this.drawDuoRef);
-    }, timer / 2);
+    submitRoundTestDrawings(this.drawDuoSnapshot, this.drawDuoRef);
 
     setTimeout(() => {
       if (this.isTimerKey(timerKey)) {
@@ -555,10 +553,10 @@ const mapDispatchToProps = (dispatch) => {
 const wrappedComponent = firebaseConnect((props, store) => {
   const sessionKey = props.match.params.id.toUpperCase();
   let queries = [
-    // {
-    //   path: `/sessions/${sessionKey}`,
-    //   storeAs: 'session',
-    // }
+    {
+      path: `/sessions/${sessionKey}`,
+      storeAs: 'session',
+    }
   ];
   return queries;
 })(DrawDuoGameHostNEW);

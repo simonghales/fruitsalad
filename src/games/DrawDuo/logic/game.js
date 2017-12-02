@@ -90,3 +90,7 @@ function generateInitialGameState(): DrawDuoModel {
     state: DRAW_DUO_STATE_PENDING,
   };
 }
+
+export function getDrawingTimer(drawDuo: DrawDuoModel) {
+  return drawDuo.config.timers.drawing;
+}

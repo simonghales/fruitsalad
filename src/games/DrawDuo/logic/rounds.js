@@ -133,7 +133,7 @@ export function generateRounds(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefMode
   const {numberOfRounds} = drawDuo.config;
   const pairKeys = Object.keys(pairs);
   const sortedEntryKeys = Object.keys(entries).sort((entryKeyA: string, entryKeyB: string) => {
-    return (entries[entryKeyA].order > entries[entryKeyB].order);
+    return entries[entryKeyA].order - entries[entryKeyB].order;
   });
   let rounds = {};
   for (let i = 0, len = numberOfRounds; i < len; i++) {
@@ -166,7 +166,10 @@ export function generateRound(entries: {}, index: number) {
 export function submitRoundTestDrawings(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const users = getUsers(drawDuo);
   for (let userKey in users) {
-    submitRoundUserTestDrawing(userKey, drawDuo, drawDuoRef);
+    const offset = randomIntFromInterval(0, 50);
+    setTimeout(() => {
+      submitRoundUserTestDrawing(userKey, drawDuo, drawDuoRef);
+    }, offset * 100);
   }
 }
 
@@ -174,6 +177,7 @@ export function submitRoundUserTestDrawing(userKey: string, drawDuo: DrawDuoMode
   const entryKey = getUserEntryKey(userKey, drawDuo);
   const pairKey = getUserPairKey(userKey, drawDuo);
   const currentRoundKey = getCurrentRoundKey(drawDuo);
+  console.log('submit drawing', entryKey, pairKey, currentRoundKey);
   drawDuoRef.update({
     [`/rounds/${currentRoundKey}/drawings/${userKey}`]: {
       user: userKey,

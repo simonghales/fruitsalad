@@ -37,11 +37,27 @@ const DEFAULT_USERS = [
   {
     image: '',
     name: 'Jeremy',
+  },
+  {
+    image: '',
+    name: 'Guest 1',
+  },
+  {
+    image: '',
+    name: 'Guest 2',
+  },
+  {
+    image: '',
+    name: 'Guest 3',
+  },
+  {
+    image: '',
+    name: 'Guest 4',
   }
 ];
 
 export function getDefaultUsers(drawDuoRef: DrawDuoRefModel) {
-  const numberOfUsers = 8;
+  const numberOfUsers = 12;
   let users = {};
   for (let i = 0; i < numberOfUsers; i++) {
     const key = drawDuoRef.push().key;
@@ -163,6 +179,7 @@ export function getPairByKey(pairKey: string, drawDuo: DrawDuoModel): PairModel 
 
 export function hasUserSubmittedDrawing(userKey: string, drawDuo: DrawDuoModel): boolean {
   const currentRound = getCurrentRound(drawDuo);
+  if (!currentRound) return false;
   const {drawings} = currentRound;
   return (drawings && drawings[userKey]);
 }

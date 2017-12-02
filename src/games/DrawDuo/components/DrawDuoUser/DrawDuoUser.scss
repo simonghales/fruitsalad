@@ -51,8 +51,8 @@
 
 .DrawDuoUser__image
 {
-  width:            120px;
-  height:           120px;
+  width:            150px;
+  height:           150px;
   border-radius:    50%;
   background-color: #FFFFFF;
   display:          flex;
@@ -77,13 +77,14 @@
   right:            -10px;
   text-align:       center;
   background-color: #FFFFFF;
-  padding:          5px;
+  padding:          8px;
   text-transform:   uppercase;
   border-radius:    3px;
   transform:        rotate(-35deg) scale(0.95);
   opacity:          0;
   transition:       transform 300ms ease, opacity 300ms ease;
   box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
+  font-size:        18px;
 
   @include submittedUser
   {
@@ -98,18 +99,18 @@
   @include drawDuoFont;
   position:   absolute;
   top:        100%;
-  width:      190px;
+  width:      220px;
   left:       -35px;
   right:      -35px;
   text-align: center;
   margin-top: 30px;
-  font-size:  32px;
+  font-size:  36px;
 
   span
   {
     background-color: #FFFFFF;
     border-radius:    10px;
-    padding:          6px 16px;
+    padding:          6px 18px;
     box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
   }
 
