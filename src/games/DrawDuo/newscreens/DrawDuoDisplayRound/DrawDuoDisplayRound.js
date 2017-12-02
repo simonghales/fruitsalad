@@ -13,6 +13,7 @@ import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesInd
 import {getCurrentPairKey} from '../../logic/users';
 import DrawDuoDisplayEntryGuessing from '../DrawDuoDisplayEntryGuessing/DrawDuoDisplayEntryGuessing';
 import DrawDuoDisplayEntryVoting from '../DrawDuoDisplayEntryVoting/DrawDuoDisplayEntryVoting';
+import {getEntryDisplayComponentFromGameState} from '../../logic/screens';
 
 class DrawDuoDisplayRound extends Component {
 
@@ -26,8 +27,7 @@ class DrawDuoDisplayRound extends Component {
     const {session} = this.props;
     return (
       <div className='DrawDuoDisplayRound'>
-        {/*<DrawDuoDisplayEntryGuessing/>*/}
-        <DrawDuoDisplayEntryVoting/>
+        {getEntryDisplayComponentFromGameState(session.drawDuo)}
       </div>
     )
   }

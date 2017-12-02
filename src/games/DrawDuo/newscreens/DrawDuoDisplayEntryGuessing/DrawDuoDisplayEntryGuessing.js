@@ -12,7 +12,7 @@ import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/Draw
 import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesIndicators/DrawDuoUserGuessesIndicators';
 import {getCurrentPairKey} from '../../logic/users';
 
-class DrawDuoDisplayRound extends Component {
+class DrawDuoDisplayEntryGuessing extends Component {
 
   props: {
     session: {
@@ -25,18 +25,18 @@ class DrawDuoDisplayRound extends Component {
     const currentPairKey = getCurrentPairKey(session.drawDuo);
     console.log('currentPairKey', currentPairKey);
     return (
-      <div className='DrawDuoDisplayRound'>
-        <header className='DrawDuoDisplayRound__header'>
-          <div className='DrawDuoDisplayRound__header__content'>
+      <div className='DrawDuoDisplayEntryGuessing'>
+        <header className='DrawDuoDisplayEntryGuessing__header'>
+          <div className='DrawDuoDisplayEntryGuessing__header__content'>
             <DrawDuoTitle>Describe the drawings!</DrawDuoTitle>
             <DrawDuoAnimatedMessage label='Answer via your device'/>
           </div>
         </header>
-        <div className='DrawDuoDisplayRound__content'>
+        <div className='DrawDuoDisplayEntryGuessing__content'>
           <DrawDuoArtworks pairKey={currentPairKey}/>
           <DrawDuoUserGuessesIndicators/>
         </div>
-        <footer className='DrawDuoDisplayRound__footer'></footer>
+        <footer className='DrawDuoDisplayEntryGuessing__footer'></footer>
       </div>
     )
   }
@@ -53,4 +53,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoDisplayRound);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoDisplayEntryGuessing);

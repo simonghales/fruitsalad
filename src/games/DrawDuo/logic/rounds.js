@@ -167,10 +167,10 @@ export function generateRound(entries: {}, index: number) {
 export function submitRoundTestDrawings(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const users = getUsers(drawDuo);
   for (let userKey in users) {
-    const offset = randomIntFromInterval(0, 50);
+    const offset = randomIntFromInterval(0, 15);
     setTimeout(() => {
       submitRoundUserTestDrawing(userKey, drawDuo, drawDuoRef);
-    }, offset * 100);
+    }, offset * 500);
   }
 }
 

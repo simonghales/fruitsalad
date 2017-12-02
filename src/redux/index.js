@@ -3,6 +3,7 @@ import {reactReduxFirebase, firebaseReducer} from 'react-redux-firebase';
 import firebase from 'firebase';
 import sessionReducer, {initialSessionState, SessionState} from './reducers/session/reducer';
 import drawDuoReducer, {DrawDuoState, initialDrawDuoState} from './reducers/drawDuo/reducer';
+import {SessionModel} from '../games/DrawDuo/logic/models';
 
 declare var process: any;
 
@@ -38,7 +39,7 @@ const rootReducer = combineReducers({
 
 export interface AppState {
   drawDuo: DrawDuoState,
-  session: SessionState,
+  session: SessionModel,
   firebase: {},
 }
 

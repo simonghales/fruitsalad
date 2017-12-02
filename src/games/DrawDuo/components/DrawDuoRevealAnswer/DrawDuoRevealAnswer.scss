@@ -1,0 +1,135 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+@mixin isBeingRevealed
+{
+
+  &.DrawDuoRevealAnswer--isBeingRevealed,
+  .DrawDuoRevealAnswer--isBeingRevealed &
+  {
+    @content;
+  }
+
+}
+
+@mixin shortAnswer
+{
+
+  &.DrawDuoRevealAnswer--length-short,
+  .DrawDuoRevealAnswer--length-short &
+  {
+    @content;
+  }
+
+}
+
+@mixin mediumAnswer
+{
+
+  &.DrawDuoRevealAnswer--length-medium,
+  .DrawDuoRevealAnswer--length-medium &
+  {
+    @content;
+  }
+
+}
+
+@mixin longAnswer
+{
+
+  &.DrawDuoRevealAnswer--length-long,
+  .DrawDuoRevealAnswer--length-long &
+  {
+    @content;
+  }
+
+}
+
+.DrawDuoRevealAnswer
+{
+  @include largeReadableText;
+  text-align:      center;
+  width:           100%;
+  position:        absolute;
+  left:            0;
+  right:           0;
+  top:             0;
+  bottom:          0;
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+
+  opacity:         0;
+  transform:       translateY(100%);
+  transition:      opacity 300ms ease, transform 300ms ease;
+
+  @include isBeingRevealed
+  {
+    opacity:   1;
+    transform: translateY(0);
+  }
+
+  @include shortAnswer
+  {
+    @include hugeReadableText;
+  }
+
+  @include mediumAnswer
+  {
+    @include mediumReadableText;
+  }
+
+  @include longAnswer
+  {
+    @include smallReadableText;
+  }
+
+}
+
+.DrawDuoRevealAnswer__content
+{
+  position: relative;
+  width:    100%;
+}
+
+.DrawDuoRevealAnswer__voters
+{
+  position:        absolute;
+  bottom:          100%;
+  margin-bottom:   20px;
+  display:         flex;
+  justify-content: center;
+  left:            0;
+  right:           0;
+
+  .DrawDuoUser
+  {
+    margin: 0 15px;
+  }
+
+}
+
+.DrawDuoRevealAnswer__owner
+{
+  position:        absolute;
+  top:             100%;
+  left:            0;
+  right:           0;
+  margin-top:      20px;
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+}
+
+.DrawDuoRevealAnswer__owner__text
+{
+  @include drawDuoHeadingFont;
+}
+
+.DrawDuoRevealAnswer__answer
+{
+}

@@ -1,8 +1,10 @@
 @import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
 @import "../../../../styles/tools/buttons";
 @import "../../../../styles/tools/inputs";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
+@import "../../../../styles/tools/transitions";
 
 .DrawDuoAnswers
 {
@@ -29,6 +31,33 @@
   &:last-of-type
   {
     margin-right: 0;
+  }
+
+}
+
+.DrawDuoAnswers__answer
+{
+
+  .DrawDuoAnswers__column--left &
+  {
+    @include slideInRightAnimationDefaults;
+    @include slideInRightAnimation($animation: slideInRightReduced);
+  }
+
+  .DrawDuoAnswers__column--right &
+  {
+    @include slideInLeftAnimationDefaults;
+    @include slideInLeftAnimation($animation: slideInLeftReduced);
+  }
+
+  @for $i from 1 to 10
+  {
+
+    &:nth-child(#{$i})
+    {
+      animation-delay: ($i * 150ms);
+    }
+
   }
 
 }

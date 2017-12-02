@@ -5,6 +5,39 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin revealedAnswer
+{
+
+  &.DrawDuoCompactAnswer--answerHasBeenRevealed,
+  .DrawDuoCompactAnswer--answerHasBeenRevealed &
+  {
+    @content;
+  }
+
+}
+
+@mixin revealedAnswerLeft
+{
+
+  &.DrawDuoCompactAnswer--answerHasBeenRevealed.DrawDuoCompactAnswer--direction-left,
+  .DrawDuoCompactAnswer--answerHasBeenRevealed.DrawDuoCompactAnswer--direction-left &
+  {
+    @content;
+  }
+
+}
+
+@mixin revealedAnswerRight
+{
+
+  &.DrawDuoCompactAnswer--answerHasBeenRevealed.DrawDuoCompactAnswer--direction-right,
+  .DrawDuoCompactAnswer--answerHasBeenRevealed.DrawDuoCompactAnswer--direction-right &
+  {
+    @content;
+  }
+
+}
+
 @mixin shortAnswer
 {
 
@@ -56,6 +89,16 @@
   @include longAnswer
   {
     @include smallReadableText;
+  }
+
+  @include revealedAnswerLeft
+  {
+    @include slideOutLeftAnimation;
+  }
+
+  @include revealedAnswerRight
+  {
+    @include slideOutRightAnimation;
   }
 
   &:first-of-type

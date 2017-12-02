@@ -128,7 +128,13 @@ class DrawDuoGameHostNEW extends Component {
     if (currentEntryAllAnswers(currentEntry, this.drawDuoSnapshot)) {
       this.disableCurrentEntryListener();
       this.clearTimerKey();
-      this.terminateAndCallNextGameStep();
+
+      const timer = this.drawDuoSnapshot.config.timers.sleep;
+
+      setTimeout(() => {
+        this.terminateAndCallNextGameStep();
+      }, timer);
+
     }
   }
 
@@ -468,6 +474,7 @@ class DrawDuoGameHostNEW extends Component {
 
     shuffleEntryAnswerRevealOrder(this.drawDuoSnapshot, this.drawDuoRef);
     startEntryResults(this.drawDuoSnapshot, this.drawDuoRef);
+
     this.terminateAndCallNextGameStep();
 
   }
@@ -512,6 +519,8 @@ class DrawDuoGameHostNEW extends Component {
   completeEntry(): void {
 
     completeEntry(this.drawDuoSnapshot, this.drawDuoRef);
+
+    if (this.sessionKeyMatchesKey('ENTRY_RESULTS')) return;
 
     const timer = this.drawDuoSnapshot.config.timers.completedEntry;
 

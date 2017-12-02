@@ -13,6 +13,7 @@ import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesInd
 import {getCurrentPairKey, getPair, getPairs, getPairUsersKeys} from '../../logic/users';
 import DrawDuoArtworkPiece from '../../components/DrawDuoArtworkPiece/DrawDuoArtworkPiece';
 import DrawDuoAnswers from '../../components/DrawDuoAnswers/DrawDuoAnswers';
+import DrawDuoRevealAnswers from '../../components/DrawDuoRevealAnswers/DrawDuoRevealAnswers';
 
 class DrawDuoDisplayEntryVoting extends Component {
 
@@ -49,7 +50,9 @@ class DrawDuoDisplayEntryVoting extends Component {
           <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[1]) ? usersKeys[1] : ''}
                                userSize='small'/>
         </div>
-        <footer className='DrawDuoDisplayEntryVoting__footer'></footer>
+        <footer className='DrawDuoDisplayEntryVoting__footer'>
+          <DrawDuoRevealAnswers/>
+        </footer>
       </div>
     )
   }

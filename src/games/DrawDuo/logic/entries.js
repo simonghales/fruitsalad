@@ -13,6 +13,7 @@ export function isACurrentEntry(drawDuo: DrawDuoModel) {
 }
 
 export function getEntryCurrentState(drawDuo: DrawDuoModel): EntryModelState {
+  if (!drawDuo || !drawDuo.currentEntry) return null;
   return drawDuo.entries[drawDuo.currentEntry.key].state;
 }
 
@@ -158,10 +159,10 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
 
     pair.users.forEach((userKey) => {
 
-      const offset = randomIntFromInterval(0, 50);
+      const offset = randomIntFromInterval(0, 10);
       setTimeout(() => {
         submitTestAnswer(userKey, currentEntryKey, drawDuoRef);
-      }, offset * 100);
+      }, offset * 500);
 
     });
 
@@ -254,11 +255,12 @@ export function shuffleEntryAnswerRevealOrder(drawDuo: DrawDuoModel, drawDuoRef:
   }
 
   let orderNumbers = Array.from({length: Object.keys(orderedAnswers).length}).map((item, index) => index);
+  let answersCount = Object.keys(orderedAnswers).length;
 
   for (let answerKey in orderedAnswers) {
     let order = -1;
     if (answers[answerKey].prompt) {
-      order = orderNumbers.length - 1;
+      order = answersCount - 1;
     } else {
       const orderIndex = randomIntFromInterval(0, orderNumbers.length - 1 - 1); // only the prompt can pick the last index
       order = orderNumbers[orderIndex]; // only the prompt can pick the last index
@@ -384,4 +386,45 @@ export function doesPairOwnEntry(pairKey: string, entryKey: string, drawDuo: Dra
 export function getAnswers(drawDuo: DrawDuoModel) {
   const currentEntry = getCurrentEntryData(drawDuo);
   return (currentEntry) ? currentEntry.answers : {};
+}
+
+export function hasAnswerBeenRevealed(answerKey: string, drawDuo: DrawDuoModel): boolean {
+  if (!drawDuo) return false;
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) return false;
+  const {currentAnswerRevealIndex} = currentEntry;
+  const sortedRevealAnswersOrder = getSortedRevealAnswersOrder(currentEntry);
+  const answerIndex = sortedRevealAnswersOrder.findIndex(key => key === answerKey);
+  return (answerIndex !== -1 && answerIndex <= currentAnswerRevealIndex);
+}
+
+export function isAnswerBeingRevealed(answerKey: string, drawDuo: DrawDuoModel): boolean {
+  if (!drawDuo) return false;
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) return false;
+  const {currentAnswerRevealIndex} = currentEntry;
+  const sortedRevealAnswersOrder = getSortedRevealAnswersOrder(currentEntry);
+  const answerIndex = sortedRevealAnswersOrder.findIndex(key => key === answerKey);
+  return (answerIndex === currentAnswerRevealIndex);
+}
+
+export function getSortedRevealAnswersOrder(entry: EntryModel) {
+  const {answersRevealOrder} = entry;
+  return (answersRevealOrder) ? Object.keys(answersRevealOrder).sort((keyA, keyB) => {
+    return answersRevealOrder[keyA].order - answersRevealOrder[keyB].order;
+  }) : [];
+}
+
+export function getSortedRevealAnswers(drawDuo: DrawDuoModel) {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) return [];
+  const {answersRevealOrder, answers} = currentEntry;
+  return (answersRevealOrder) ? Object.keys(answersRevealOrder).sort((keyA, keyB) => {
+    return answersRevealOrder[keyA].order - answersRevealOrder[keyB].order;
+  }).map((key) => {
+    return {
+      answer: answers[key],
+      key: key,
+    };
+  }) : [];
 }
