@@ -21,7 +21,6 @@ class DrawDuoUserGuessesIndicators extends Component {
   render() {
     const {session} = this.props;
     const pairs = getNonPromptedPairs(session.drawDuo);
-    console.log('pairs', pairs);
     return (
       <div className='DrawDuoUserGuessesIndicators'>
         {

@@ -417,7 +417,7 @@ class DrawDuoGameHostNEW extends Component {
     submitEntryPromptAnswer(this.drawDuoSnapshot, this.drawDuoRef);
 
     submitEntryTestAnswers(this.drawDuoSnapshot, this.drawDuoRef);
-      
+
     if (this.sessionKeyMatchesKey('ENTRY_GUESSING')) return;
 
     this.setCurrentEntryAnswersListener();
@@ -425,7 +425,6 @@ class DrawDuoGameHostNEW extends Component {
     const timerKey = this.setTimerKey();
 
     const timer = this.drawDuoSnapshot.config.timers.guess;
-
 
     setTimeout(() => {
       if (this.isTimerKey(timerKey)) {

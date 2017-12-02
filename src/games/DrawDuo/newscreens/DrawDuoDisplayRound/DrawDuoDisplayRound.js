@@ -10,6 +10,7 @@ import DrawDuoArtworks from '../../components/DrawDuoArtworks/DrawDuoArtworks';
 import DrawDuoTitle from '../../components/DrawDuoTitle/DrawDuoTitle';
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesIndicators/DrawDuoUserGuessesIndicators';
+import {getCurrentPairKey} from '../../logic/users';
 
 class DrawDuoDisplayRound extends Component {
 
@@ -20,6 +21,9 @@ class DrawDuoDisplayRound extends Component {
   };
 
   render() {
+    const {session} = this.props;
+    const currentPairKey = getCurrentPairKey(session.drawDuo);
+    console.log('currentPairKey', currentPairKey);
     return (
       <div className='DrawDuoDisplayRound'>
         <header className='DrawDuoDisplayRound__header'>
@@ -29,7 +33,7 @@ class DrawDuoDisplayRound extends Component {
           </div>
         </header>
         <div className='DrawDuoDisplayRound__content'>
-          <DrawDuoArtworks/>
+          <DrawDuoArtworks pairKey={currentPairKey}/>
           <DrawDuoUserGuessesIndicators/>
         </div>
         <footer className='DrawDuoDisplayRound__footer'></footer>

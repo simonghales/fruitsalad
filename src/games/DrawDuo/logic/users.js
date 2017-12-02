@@ -2,7 +2,7 @@ import {
   DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, PairsModel, RoundModel, UserModel,
   UsersModel
 } from './models';
-import {doesPairOwnEntry, getCurrentEntryData} from './entries';
+import {doesPairOwnEntry, getCurrentEntryData, getCurrentEntryKey} from './entries';
 import {getCurrentRound, getCurrentRoundKey} from './rounds';
 
 const DEFAULT_USERS = [
@@ -189,6 +189,18 @@ export function hasUserSubmittedAnswer(userKey: string, drawDuo: DrawDuoModel): 
   const currentEntry = getCurrentEntryData(drawDuo);
   if (!currentEntry) return false;
   const {answers} = currentEntry;
-  console.log('answers', answers, userKey);
   return (answers && answers[userKey]);
+}
+
+export function getCurrentPairKey(drawDuo: DrawDuoModel): string {
+  if (!drawDuo) {
+    console.warn('drawDuo not available');
+    return '';
+  }
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) {
+    console.warn('no current entry');
+    return '';
+  }
+  return currentEntry.pair;
 }

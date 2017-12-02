@@ -159,23 +159,34 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
   nonPromptedPairs.forEach((pair) => {
 
     pair.users.forEach((userKey) => {
-      const key = userKey;
-      const guess = (guessIndex < GUESSES.length - 1) ? GUESSES[guessIndex] : GUESSES[0];
+
+      const offset = randomIntFromInterval(0, 50);
+      setTimeout(() => {
+        submitTestAnswer(userKey, guessIndex, currentEntryKey, drawDuoRef);
+      }, offset * 100);
       guessIndex++;
-      answers[`/entries/${currentEntryKey}/answers/${key}`] = {
-        text: guess,
-        votes: {},
-        prompt: false,
-        user: userKey,
-        order: 0,
-        revealOrder: 0,
-      };
+      
     });
 
   });
 
   drawDuoRef.update(answers);
 
+}
+
+function submitTestAnswer(userKey: string, guessIndex: number, currentEntryKey: string, drawDuoRef: DrawDuoRefModel) {
+  const key = userKey;
+  const guess = (guessIndex < GUESSES.length - 1) ? GUESSES[guessIndex] : GUESSES[0];
+  drawDuoRef.update({
+    [`/entries/${currentEntryKey}/answers/${key}`]: {
+      text: guess,
+      votes: {},
+      prompt: false,
+      user: userKey,
+      order: 0,
+      revealOrder: 0,
+    }
+  });
 }
 
 function getPromptAnswerKey(drawDuo: DrawDuoModel) {
