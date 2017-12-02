@@ -40,8 +40,9 @@ class DrawDuoAnswers extends Component {
         <div className='DrawDuoAnswers__column DrawDuoAnswers__column--left'>
           {
             leftAnswers.map((answerWrapper, index) => (
-              <div className='DrawDuoAnswers__answer'>
-                <DrawDuoCompactAnswer answerWrapper={answerWrapper} key={answerWrapper.key} direction='left' session={session}/>
+              <div className='DrawDuoAnswers__answer' key={index}>
+                <DrawDuoCompactAnswer answerWrapper={answerWrapper} key={answerWrapper.key} direction='left'
+                                      session={session}/>
               </div>
             ))
           }
@@ -49,8 +50,9 @@ class DrawDuoAnswers extends Component {
         <div className='DrawDuoAnswers__column DrawDuoAnswers__column--right'>
           {
             rightAnswers.map((answerWrapper, index) => (
-              <div className='DrawDuoAnswers__answer'>
-                <DrawDuoCompactAnswer answerWrapper={answerWrapper} key={answerWrapper.key} direction='right' session={session}/>
+              <div className='DrawDuoAnswers__answer' key={index}>
+                <DrawDuoCompactAnswer answerWrapper={answerWrapper} key={answerWrapper.key} direction='right'
+                                      session={session}/>
               </div>
             ))
           }

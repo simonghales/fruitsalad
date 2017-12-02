@@ -108,13 +108,32 @@
 
   .DrawDuoUser
   {
+    @include slideInUpAnimationDefaults;
+
+    @include isBeingRevealed
+    {
+      @include slideInUpAnimation($animationSpeed: 500ms);
+    }
+
     margin: 0 15px;
+
+    @for $i from 1 to 20
+    {
+
+      &:nth-child(#{$i})
+      {
+        animation-delay: (($i - 1) * 250ms) + 500ms;
+      }
+
+    }
+
   }
 
 }
 
 .DrawDuoRevealAnswer__owner
 {
+  @include slideInDownAnimationDefaults;
   position:        absolute;
   top:             100%;
   left:            0;
@@ -123,6 +142,12 @@
   display:         flex;
   justify-content: center;
   align-items:     center;
+
+  @include isBeingRevealed
+  {
+    @include slideInDownAnimation($animationSpeed: 500ms, $animationDelay: 2000ms);
+  }
+
 }
 
 .DrawDuoRevealAnswer__owner__text

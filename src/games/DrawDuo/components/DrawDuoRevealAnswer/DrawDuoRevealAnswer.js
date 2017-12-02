@@ -67,7 +67,7 @@ class DrawDuoRevealAnswer extends Component {
           <div className='DrawDuoRevealAnswer__voters'>
             {
               voters.map((key) => (
-                <DrawDuoUser userKey={key} submittedDisplay={false} alignment='horizontal' size='tiny'/>
+                <DrawDuoUser userKey={key} submittedDisplay={false} alignment='horizontal' size='tiny' key={key}/>
               ))
             }
           </div>

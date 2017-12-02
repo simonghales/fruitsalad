@@ -74,9 +74,9 @@ export function getEntryDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
     case DRAW_DUO_ENTRY_STATE_GUESSING:
       return <DrawDuoDisplayEntryGuessing/>;
     case DRAW_DUO_ENTRY_STATE_VOTING:
-      return <DrawDuoDisplayEntryVoting/>;
+      return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
     case DRAW_DUO_ENTRY_STATE_RESULTS:
-      return <DrawDuoDisplayEntryVoting/>;
+      return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
     case DRAW_DUO_ENTRY_STATE_COMPLETED:
       return null;
     default:

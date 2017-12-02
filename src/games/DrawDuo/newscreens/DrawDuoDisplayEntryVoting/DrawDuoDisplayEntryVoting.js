@@ -14,10 +14,12 @@ import {getCurrentPairKey, getPair, getPairs, getPairUsersKeys} from '../../logi
 import DrawDuoArtworkPiece from '../../components/DrawDuoArtworkPiece/DrawDuoArtworkPiece';
 import DrawDuoAnswers from '../../components/DrawDuoAnswers/DrawDuoAnswers';
 import DrawDuoRevealAnswers from '../../components/DrawDuoRevealAnswers/DrawDuoRevealAnswers';
+import {DRAW_DUO_ENTRY_STATE_RESULTS, DRAW_DUO_ENTRY_STATE_VOTING} from '../../logic/constants';
 
 class DrawDuoDisplayEntryVoting extends Component {
 
   props: {
+    state: string,
     session: {
       drawDuo: DrawDuoModel,
     },
@@ -31,14 +33,32 @@ class DrawDuoDisplayEntryVoting extends Component {
     return getPairUsersKeys(pair);
   }
 
+  isResults() {
+    const {state} = this.props;
+    return (state === DRAW_DUO_ENTRY_STATE_RESULTS);
+  }
+
+  isVoting() {
+    const {state} = this.props;
+    return (state === DRAW_DUO_ENTRY_STATE_VOTING);
+  }
+
+  renderTitle() {
+    return (this.isResults()) ? 'Here are the results' : 'Select an answer!';
+  }
+
   render() {
     const usersKeys = this.getUserKeys();
     return (
       <div className='DrawDuoDisplayEntryVoting'>
         <header className='DrawDuoDisplayEntryVoting__header'>
           <div className='DrawDuoDisplayEntryVoting__header__content'>
-            <DrawDuoTitle>Select an answer!</DrawDuoTitle>
-            <DrawDuoAnimatedMessage label='Select via your device'/>
+            <DrawDuoTitle>{this.renderTitle()}</DrawDuoTitle>
+            {
+              (this.isVoting()) && (
+                <DrawDuoAnimatedMessage label='Select via your device'/>
+              )
+            }
           </div>
         </header>
         <div className='DrawDuoDisplayEntryVoting__content'>

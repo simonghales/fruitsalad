@@ -212,18 +212,20 @@ export function submitEntryPromptAnswer(drawDuo: DrawDuoModel, drawDuoRef: DrawD
 
 export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
 
-  const {pairs} = drawDuo;
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   const currentEntry: EntryModel = getCurrentEntryData(drawDuo);
   const {answers} = currentEntry;
   const answerKeys = Object.keys(answers);
   const promptAnswerKey = getPromptAnswerKey(drawDuo);
 
+  const nonPromptedPairs = getNonPromptedPairs(drawDuo);
+
   let votes = {};
 
-  for (let pairKey in pairs) {
-    if (pairKey === currentEntry.pair) continue;
-    for (let userKey in pairs[pairKey]) {
+  nonPromptedPairs.forEach((pair) => {
+
+    pair.users.forEach((userKey) => {
+
       const randomNumber = randomIntFromInterval(0, answerKeys.length + 1);
       if (randomNumber > answerKeys.length - 1) {
         votes[`/entries/${currentEntryKey}/answers/${promptAnswerKey}/votes/${userKey}`] = true;
@@ -232,8 +234,10 @@ export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoR
         votes[`/entries/${currentEntryKey}/answers/${answerKeys[randomNumber]}/votes/${userKey}`] = true;
         votes[`/entries/${currentEntryKey}/votes/${userKey}`] = answerKeys[randomNumber];
       }
-    }
-  }
+
+    });
+
+  });
 
   drawDuoRef.update(votes);
 
