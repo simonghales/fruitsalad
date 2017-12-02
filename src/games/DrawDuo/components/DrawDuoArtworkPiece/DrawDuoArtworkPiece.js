@@ -10,6 +10,7 @@ import {UserModel, UsersModel} from '../../logic/models';
 class DrawDuoArtworkPiece extends Component {
 
   props: {
+    hideUser?: boolean,
     size?: string,
     userKey: string,
     userSize?: string,
@@ -20,11 +21,14 @@ class DrawDuoArtworkPiece extends Component {
   }
 
   render() {
-    const {size = 'default', userKey, userSize = 'medium'} = this.props;
+    const {hideUser = false, size = 'default', userKey, userSize = 'medium'} = this.props;
     return (
       <div className={classNames([
         'DrawDuoArtworkPiece',
-        `DrawDuoArtworkPiece--size-${size}`
+        `DrawDuoArtworkPiece--size-${size}`,
+        {
+          'DrawDuoArtworkPiece--hideUser': hideUser,
+        }
       ])}>
         <div className='DrawDuoArtworkPiece__drawing'></div>
         <div className='DrawDuoArtworkPiece__attribution'>

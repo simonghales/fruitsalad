@@ -512,6 +512,7 @@ class DrawDuoGameHostNEW extends Component {
   setEntryAnswersRevealed(): void {
 
     setEntryAnswersRevealed(this.drawDuoSnapshot, this.drawDuoRef);
+    if (this.sessionKeyMatchesKey('ENTRY_RESULTS')) return;
     this.terminateAndCallNextGameStep();
 
   }
@@ -520,7 +521,7 @@ class DrawDuoGameHostNEW extends Component {
 
     completeEntry(this.drawDuoSnapshot, this.drawDuoRef);
 
-    if (this.sessionKeyMatchesKey('ENTRY_RESULTS')) return;
+    if (this.sessionKeyMatchesKey('ENTRY_COMPLETED')) return;
 
     const timer = this.drawDuoSnapshot.config.timers.completedEntry;
 

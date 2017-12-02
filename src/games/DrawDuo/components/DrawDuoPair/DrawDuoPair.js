@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './DrawDuoPair.css';
+import classNames from 'classnames';
 import DrawDuoUser from '../DrawDuoUser/DrawDuoUser';
 import {AppState} from '../../../../redux/index';
 import {connect} from 'react-redux';
@@ -9,8 +10,10 @@ import {arePairResultsDifferent, getPair, getPairs, getPairUsersKeys} from '../.
 class DrawDuoPair extends Component {
 
   props: {
+    alignment?: string,
     pairKey: string,
     pairs: PairsModel,
+    userProps?: {},
   };
 
   constructor(props) {
@@ -22,14 +25,17 @@ class DrawDuoPair extends Component {
   }
 
   render() {
-    const {pairKey, pairs} = this.props;
+    const {alignment = 'horizontal', pairKey, pairs, userProps = {}} = this.props;
     const pair = getPair(pairKey, pairs);
     const usersKeys = getPairUsersKeys(pair);
     return (
-      <div className='DrawDuoPair'>
+      <div className={classNames([
+        'DrawDuoPair',
+        `DrawDuoPair--alignment-${alignment}`,
+      ])}>
         {
           usersKeys.map((userKey, index) => (
-            <DrawDuoUser userKey={userKey} key={userKey}/>
+            <DrawDuoUser userKey={userKey} key={userKey} {...userProps}/>
           ))
         }
       </div>

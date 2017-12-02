@@ -17,6 +17,7 @@ import DrawDuoDisplayRound from '../newscreens/DrawDuoDisplayRound/DrawDuoDispla
 import {getEntryCurrentState} from './entries';
 import DrawDuoDisplayEntryGuessing from '../newscreens/DrawDuoDisplayEntryGuessing/DrawDuoDisplayEntryGuessing';
 import DrawDuoDisplayEntryVoting from '../newscreens/DrawDuoDisplayEntryVoting/DrawDuoDisplayEntryVoting';
+import DrawDuoDisplayEntryCompleted from '../newscreens/DrawDuoDisplayEntryCompleted/DrawDuoDisplayEntryCompleted';
 
 export function getDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
@@ -78,7 +79,7 @@ export function getEntryDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
     case DRAW_DUO_ENTRY_STATE_RESULTS:
       return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
     case DRAW_DUO_ENTRY_STATE_COMPLETED:
-      return null;
+      return <DrawDuoDisplayEntryCompleted state={entryCurrentState}/>;
     default:
       console.warn(`unable to match entryCurrentState: ${entryCurrentState}`);
       return null;

@@ -251,7 +251,7 @@ export function shuffleEntryAnswerRevealOrder(drawDuo: DrawDuoModel, drawDuoRef:
   let orderedAnswers = {};
 
   for (let answerKey in answers) {
-    if (answers[answerKey].votes) {
+    if (answers[answerKey].votes || answers[answerKey].prompt) {
       orderedAnswers[answerKey] = {
         order: 0,
       }

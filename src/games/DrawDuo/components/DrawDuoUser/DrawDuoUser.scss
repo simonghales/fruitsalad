@@ -5,6 +5,39 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin showEntryAction
+{
+
+  &.DrawDuoUser--showEntryAction,
+  .DrawDuoUser--showEntryAction &
+  {
+    @content;
+  }
+
+}
+
+@mixin pairMargin
+{
+
+  &.DrawDuoUser--pairMargin,
+  .DrawDuoUser--pairMargin &
+  {
+    @content;
+  }
+
+}
+
+@mixin pointsDisplay
+{
+
+  &.DrawDuoUser--pointsDisplay,
+  .DrawDuoUser--pointsDisplay &
+  {
+    @content;
+  }
+
+}
+
 @mixin tinyUser
 {
 
@@ -103,14 +136,19 @@
     transform: translateY(20px);
   }
 
-  &:first-child
+  @include pairMargin
   {
-    margin-right: 15px;
-  }
 
-  &:last-child
-  {
-    margin-left: 15px;
+    &:first-child
+    {
+      margin-right: 15px;
+    }
+
+    &:last-child
+    {
+      margin-left: 15px;
+    }
+
   }
 
   @include horizontalAlignmentUser
@@ -159,6 +197,7 @@
 
 }
 
+.DrawDuoUser__points,
 .DrawDuoUser__submitted
 {
   @include drawDuoPlainHeadingFont;
@@ -176,7 +215,25 @@
   box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
   font-size:        18px;
 
+}
+
+.DrawDuoUser__submitted
+{
+
   @include submittedUser
+  {
+    opacity:   1;
+    transform: rotate(-45deg);
+  }
+
+}
+
+.DrawDuoUser__points
+{
+  font-size:   28px;
+  line-height: 24px;
+
+  @include pointsDisplay
   {
     opacity:   1;
     transform: rotate(-45deg);
@@ -188,6 +245,16 @@
 {
   @include drawDuoFont;
   font-size: 36px;
+
+  @include showEntryAction
+  {
+    //display:         flex;
+    //flex-direction:  column;
+    //justify-content: center;
+    height:    100%;
+    flex:      1;
+    min-width: 0;
+  }
 
   @include verticalAlignmentUser
   {
@@ -216,7 +283,27 @@
     border-radius:    10px;
     padding:          6px 18px;
     box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
+
+    @include showEntryAction
+    {
+      display: inline-block;
+      padding: 16px 18px;
+    }
+
   }
 
 }
 
+.DrawDuoUser__label__text
+{
+
+}
+
+.DrawDuoUser__label__action
+{
+  @include smallReadableText;
+  @include truncate(auto);
+  margin-top:  20px;
+  max-width:   280px;
+  line-height: 30px;
+}

@@ -1,4 +1,5 @@
 import {
+  AnswerModel,
   DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, PairsModel, RoundModel, UserModel,
   UsersModel
 } from './models';
@@ -203,4 +204,18 @@ export function getCurrentPairKey(drawDuo: DrawDuoModel): string {
     return '';
   }
   return currentEntry.pair;
+}
+
+export function getUserAnswer(userKey: string, drawDuo: DrawDuoModel): AnswerModel {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  const pairKey = getUserPairKey(userKey, drawDuo);
+  if (!currentEntry) {
+    console.warn('no current entry');
+    return null;
+  }
+  const {answers} = currentEntry;
+  const answerKey = Object.keys(answers).find((key) => {
+    return (answers[key].user === userKey || pairKey === currentEntry.pair && answers[key].prompt);
+  });
+  return (answers[answerKey]) ? answers[answerKey] : null;
 }

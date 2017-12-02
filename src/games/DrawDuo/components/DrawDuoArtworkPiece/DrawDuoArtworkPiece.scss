@@ -4,6 +4,17 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin hideUser
+{
+
+  &.DrawDuoArtworkPiece--hideUser,
+  .DrawDuoArtworkPiece--hideUser &
+  {
+    @content;
+  }
+
+}
+
 @mixin mediumSize
 {
 
@@ -43,4 +54,10 @@
   display:         flex;
   justify-content: center;
   margin-top:      50px;
+
+  @include hideUser
+  {
+    display: none;
+  }
+
 }

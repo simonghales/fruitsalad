@@ -1,0 +1,51 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+@import "../../../../styles/tools/textures";
+
+.DrawDuoDisplayEntryCompleted
+{
+  position: fixed;
+  top:      0;
+  left:     0;
+  right:    0;
+  bottom:   0;
+  display:  flex;
+}
+
+.DrawDuoDisplayEntryCompleted__drawings
+{
+  height:          100%;
+  display:         flex;
+  flex-direction:  column;
+  justify-content: center;
+  //align-items: center;
+  margin:          0 50px;
+
+  .DrawDuoArtworkPiece
+  {
+    margin: 25px 0;
+  }
+
+  /*&::before,
+  &::after
+  {
+    content:  '';
+    display:  block;
+    width:    0;
+    height:   0;
+    overflow: hidden;
+  }*/
+
+}
+
+.DrawDuoDisplayEntryCompleted__users
+{
+  flex:         1;
+  height:       100%;
+  display:      flex;
+  align-items:  center;
+  margin-right: 50px;
+}

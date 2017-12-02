@@ -3,8 +3,8 @@ import './DrawDuoUser.css';
 import classNames from 'classnames';
 import {AppState} from '../../../../redux/index';
 import {connect} from 'react-redux';
-import {getUser, getUsers, hasUserSubmittedDrawing} from '../../logic/users';
-import {SessionModel, UserModel, UsersModel} from '../../logic/models';
+import {getUser, getUserAnswer, getUsers, hasUserSubmittedDrawing} from '../../logic/users';
+import {AnswerModel, SessionModel, UserModel, UsersModel} from '../../logic/models';
 
 class DrawDuoUser extends Component {
 
@@ -14,7 +14,10 @@ class DrawDuoUser extends Component {
     users: UsersModel,
     session: SessionModel,
     size?: string,
+    showEntryAction?: boolean,
+    pointsDisplay?: boolean,
     submittedDisplay: boolean,
+    pairMargin?: boolean,
   };
 
   constructor(props) {
@@ -25,8 +28,28 @@ class DrawDuoUser extends Component {
   //   return false;
   // }
 
+  renderAction() {
+    const {userKey, session} = this.props;
+    const userAnswer: AnswerModel = getUserAnswer(userKey, session.drawDuo);
+    return (
+      <div className='DrawDuoUser__label__action'>
+        "{userAnswer.text}"
+      </div>
+    );
+  }
+
   render() {
-    const {alignment = 'vertical', userKey, users, session, size = 'default', submittedDisplay = true} = this.props;
+    const {
+      alignment = 'vertical',
+      pairMargin = true,
+      pointsDisplay = false,
+      userKey,
+      users,
+      session,
+      showEntryAction = false,
+      size = 'default',
+      submittedDisplay = true
+    } = this.props;
     const user: UserModel = getUser(userKey, users);
     const userHasSubmitted = hasUserSubmittedDrawing(userKey, session.drawDuo);
     return (
@@ -35,15 +58,24 @@ class DrawDuoUser extends Component {
         `DrawDuoUser--alignment-${alignment}`,
         `DrawDuoUser--size-${size}`,
         {
+          'DrawDuoUser--pairMargin': pairMargin,
+          'DrawDuoUser--pointsDisplay': pointsDisplay,
+          'DrawDuoUser--showEntryAction': showEntryAction,
           'DrawDuoUser--submitted': submittedDisplay && userHasSubmitted,
           'DrawDuoUser--notSubmitted': submittedDisplay && !userHasSubmitted,
         }
       ])}>
         <div className='DrawDuoUser__image'>
           <div className='DrawDuoUser__submitted'>Submitted</div>
+          <div className='DrawDuoUser__points'>1500</div>
         </div>
         <div className='DrawDuoUser__label'>
-          <span>{user && user.name}</span>
+          <div className='DrawDuoUser__label__text'>
+            <span>{user && user.name}</span>
+          </div>
+          {
+            showEntryAction && this.renderAction()
+          }
         </div>
       </div>
     )

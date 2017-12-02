@@ -5,7 +5,55 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin verticalAlignment
+{
+
+  &.DrawDuoPair--alignment-vertical,
+  .DrawDuoPair--alignment-vertical &
+  {
+    @content;
+  }
+
+}
+
+@mixin horizontalAlignment
+{
+
+  &.DrawDuoPair--alignment-horizontal,
+  .DrawDuoPair--alignment-horizontal &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoPair
 {
-  display: flex;
+
+  @include horizontalAlignment
+  {
+    display: flex;
+  }
+
+  @include verticalAlignment
+  {
+
+    .DrawDuoUser
+    {
+      margin: 25px 0;
+
+      &:first-of-type
+      {
+        margin-top: 0;
+      }
+
+      &:last-of-type
+      {
+        margin-bottom: 0;
+      }
+
+    }
+
+  }
+
 }

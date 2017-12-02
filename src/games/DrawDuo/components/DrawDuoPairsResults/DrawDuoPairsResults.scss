@@ -1,0 +1,30 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/animations";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+
+.DrawDuoPairsResults
+{
+  width: 100%;
+}
+
+.DrawDuoPairsResults__row
+{
+  display:     flex;
+  align-items: center;
+  margin-top:  110px;
+  width:       100%;
+
+  &:first-of-type
+  {
+    margin-top: 0;
+  }
+
+  .DrawDuoPair
+  {
+    flex: 1;
+  }
+
+}
