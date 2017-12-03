@@ -1,0 +1,45 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.AppLoadingScreen
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.AppLoadingScreen__content
+{
+  text-align: center;
+}
+
+.AppLoadingScreen__title
+{
+  font-size:     48px;
+  line-height:   52px;
+  font-weight:   500;
+  text-align:    center;
+  margin-bottom: 10px;
+}
+
+.AppLoadingScreen__subtitle
+{
+  @include smallFaintText;
+  text-align:  center;
+  margin:      0 20px;
+  line-height: 20px;
+}
+
+.AppLoadingScreen__loading
+{
+  @include smallFaintText;
+  margin-top: 10px;
+}

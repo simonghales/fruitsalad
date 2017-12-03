@@ -40,9 +40,9 @@ class SessionScreenHub extends Component {
 
   render() {
 
-    const {gameInPlay, joined, match, session, sessionUsers} = this.props;
+    const {match, session, sessionUsers} = this.props;
 
-    if (gameInPlay) {
+    if (isLoaded(session) && session.state === 'playing') {
       return (
         <Redirect to={{
           pathname: `/session/${match.params.id}`,

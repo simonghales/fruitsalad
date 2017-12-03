@@ -15,6 +15,7 @@ import {Redirect, Switch} from 'react-router';
 import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplayNEW/DrawDuoDisplay';
 import DrawDuoHostWrapper from '../../games/DrawDuo/components/DrawDuoGameHostNEW/DrawDuoGameHost';
 import SessionRedirect from '../../screens/SessionRedirect/SessionRedirect';
+import AppLoadingScreen from '../../screens/AppLoadingScreen/AppLoadingScreen';
 
 class App extends Component {
 
@@ -42,14 +43,8 @@ class App extends Component {
     const {isAuthed} = this.props;
 
     if (!isAuthed) {
-      return (
-        <div>
-          LOADING...
-        </div>
-      )
+      return <AppLoadingScreen/>
     }
-
-    // todo - if not auth, display temporary something...
 
     return (
       <div className='App'>
@@ -64,7 +59,6 @@ class App extends Component {
           ))}/>
           <Route key='/:id' path='/:id' component={SessionRedirect}/>
         </Switch>
-        {/*<Route key='/session/:id' path='/session/:id' component={SessionScreen}/>*/}
       </div>
     );
   }

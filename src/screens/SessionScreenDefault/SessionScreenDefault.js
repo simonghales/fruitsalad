@@ -12,12 +12,13 @@ import MainLayout from '../../components/MainLayout/MainLayout';
 import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
+import {AppState} from '../../redux/index';
+import {isLoaded} from 'react-redux-firebase';
 
 class SessionScreenDefault extends Component {
 
   props: {
     gameInPlay: boolean,
-    joined: boolean,
     match: any,
     setInvalidSessionEnforced(): void,
   };
@@ -36,7 +37,7 @@ class SessionScreenDefault extends Component {
 
   render() {
 
-    const {gameInPlay, joined, match} = this.props;
+    const {gameInPlay, match} = this.props;
 
     if (!gameInPlay) {
       console.log('redirecting to hub...');
@@ -66,9 +67,10 @@ class SessionScreenDefault extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
+  const session = state.firebase.data.session;
   return {
-    gameInPlay: state.session.gameInPlay,
-    joined: state.session.joined,
+    session: session,
+    gameInPlay: isLoaded(session) && session.state === 'playing',
   };
 };
 

@@ -56,7 +56,7 @@ class SessionScreenHost extends Component {
     const {match} = this.props;
     const sessionKey = match.params.id;
 
-    const sessionRef = this.context.store.firebase.ref(`/sessions/${sessionKey}`)
+    const sessionRef = this.context.store.firebase.ref(`/sessions/${sessionKey}`);
 
     sessionRef.once('value', snapshot => {
       console.log('sessionRef', sessionRef);
@@ -88,7 +88,8 @@ class SessionScreenHost extends Component {
           id: currentUser.uid,
           name: 'The Host',
         })
-      }
+      },
+      state: 'pending',
     }))
       .then((response) => {
         this.setState({

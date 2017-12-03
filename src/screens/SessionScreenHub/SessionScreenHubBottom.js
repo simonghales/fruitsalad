@@ -11,13 +11,14 @@ import SessionCodePreview from '../../components/SessionCodePreview/SessionCodeP
 import SessionQuitButton from '../../components/SessionQuitButton/SessionQuitButton';
 import {SessionState, setGameInPlay} from '../../redux/reducers/session/reducer';
 import {AppState} from '../../redux/index';
+import {firebaseConnect} from 'react-redux-firebase';
 
 class SessionScreenHubBottom extends Component {
 
   props: {
     history: any,
+    firebase: {},
     match: any,
-    setGameInPlay(): void,
   };
 
   state: {};
@@ -44,9 +45,16 @@ class SessionScreenHubBottom extends Component {
   }
 
   start() {
-    const {history, match, setGameInPlay} = this.props;
-    setGameInPlay();
-    history.push(`/session/${match.params.id}`);
+    const {firebase, match} = this.props;
+    const sessionKey = match.params.id;
+
+    const sessionRef = firebase.ref(`/sessions/${sessionKey}`);
+
+    sessionRef.update({
+      'drawDuo': true,
+      'state': 'playing',
+    });
+
   }
 
   render() {
@@ -78,9 +86,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setGameInPlay: () => dispatch(setGameInPlay()),
-  };
+  return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHubBottom));
+export default firebaseConnect()(connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHubBottom)));
