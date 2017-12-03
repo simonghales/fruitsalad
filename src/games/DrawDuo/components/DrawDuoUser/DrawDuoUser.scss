@@ -104,6 +104,28 @@
 
 }
 
+@mixin verticalAlignmentUserSmall
+{
+
+  &.DrawDuoUser--alignment-vertical.DrawDuoUser--size-small,
+  .DrawDuoUser--alignment-vertical.DrawDuoUser--size-small &
+  {
+    @content;
+  }
+
+}
+
+@mixin verticalAlignmentUserMedium
+{
+
+  &.DrawDuoUser--alignment-vertical.DrawDuoUser--size-medium,
+  .DrawDuoUser--alignment-vertical.DrawDuoUser--size-medium &
+  {
+    @content;
+  }
+
+}
+
 @mixin submittedUser
 {
 
@@ -278,11 +300,21 @@
   {
     position:   absolute;
     top:        100%;
-    width:      220px;
+    width:      150px + 70px;
     left:       -35px;
     right:      -35px;
     margin-top: 30px;
     text-align: center;
+  }
+
+  @include verticalAlignmentUserSmall
+  {
+    width: 100px + 70px;
+  }
+
+  @include verticalAlignmentUserMedium
+  {
+    width: 125px + 70px;
   }
 
   @include horizontalAlignmentUser

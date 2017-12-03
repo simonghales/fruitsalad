@@ -58,8 +58,8 @@ const DEFAULT_USERS = [
 ];
 
 export function getDefaultUsers(drawDuoRef: DrawDuoRefModel) {
-  // const numberOfUsers = 12;
-  const numberOfUsers = 4;
+  const numberOfUsers = 12;
+  // const numberOfUsers = 4;
   let users = {};
   for (let i = 0; i < numberOfUsers; i++) {
     const key = drawDuoRef.push().key;

@@ -23,7 +23,6 @@ class DrawDuoDisplayEntryGuessing extends Component {
   render() {
     const {session} = this.props;
     const currentPairKey = getCurrentPairKey(session.drawDuo);
-    console.log('currentPairKey', currentPairKey);
     return (
       <div className='DrawDuoDisplayEntryGuessing'>
         <header className='DrawDuoDisplayEntryGuessing__header'>

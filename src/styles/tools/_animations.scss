@@ -167,9 +167,9 @@
   transform: translateY(100%);
 }
 
-@mixin slideInUpAnimation($animationSpeed: 1000ms)
+@mixin slideInUpAnimation($animationSpeed: 1000ms, $animationDelay: 0ms)
 {
-  animation: slideInUp #{$animationSpeed} cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: slideInUp #{$animationSpeed} #{$animationDelay} cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
 }
 
 @keyframes slideInDown
