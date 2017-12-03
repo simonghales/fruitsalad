@@ -4,9 +4,32 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin hugeSize
+{
+
+  &.DrawDuoAnimatedMessage--size-huge,
+  .DrawDuoAnimatedMessage--size-huge &
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoAnimatedMessage
 {
   @include largeDrawDuoHeading;
+
+  @include hugeSize
+  {
+    @include largeHugeDrawDuoHeading;
+    letter-spacing: 2px;
+
+    span
+    {
+      margin: 0 10px;
+    }
+
+  }
 
   span
   {

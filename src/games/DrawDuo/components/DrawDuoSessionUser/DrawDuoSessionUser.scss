@@ -1,0 +1,46 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+@import "../../../../styles/tools/textures";
+
+.DrawDuoSessionUser
+{
+  position:       relative;
+  padding-bottom: 50px;
+}
+
+.DrawDuoSessionUser__image
+{
+  width:            200px;
+  height:           200px;
+  background-color: #ffffff;
+  border-radius:    50%;
+  box-shadow:       0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.DrawDuoSessionUser__label
+{
+  $extraWidth: 50px;
+  @include drawDuoFont;
+  font-size:   48px;
+  line-height: 54px;
+  position:    absolute;
+  left:        -($extraWidth / 2);
+  right:       -($extraWidth / 2);
+  width:       200px + $extraWidth;
+  text-align:  center;
+  margin-top:  -20px;
+
+  span
+  {
+    background-color: #ffffff;
+    display:          inline-block;
+    padding:          12px 30px;
+    border-radius:    10px;
+    box-shadow:       0 2px 10px rgba(0, 0, 0, 0.15);
+  }
+
+}
+

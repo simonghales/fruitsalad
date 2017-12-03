@@ -1,0 +1,62 @@
+@import "../../../../styles/settings/sizes";
+@import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/layout";
+@import "../../../../styles/tools/text";
+@import "../../../../styles/tools/textures";
+
+.DrawDuoDisplayPending
+{
+  position:       fixed;
+  top:            0;
+  left:           0;
+  right:          0;
+  bottom:         0;
+  display:        flex;
+  flex-direction: column;
+}
+
+.DrawDuoDisplayPending__header
+{
+  height:          20vh;
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+  position:        relative;
+
+  .DrawDuoAnimatedMessage
+  {
+    position:   absolute;
+    left:       0;
+    right:      0;
+    bottom:     0;
+    text-align: center;
+  }
+
+}
+
+.DrawDuoDisplayPending__header__title
+{
+  @include hugeDrawDuoHeading;
+  text-align: center;
+}
+
+.DrawDuoDisplayPending__content
+{
+  flex:     1;
+  overflow: hidden;
+}
+
+.DrawDuoDisplayPending__footer
+{
+  height:          20vh;
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+  text-align:      center;
+}
+
+.DrawDuoDisplayPending__footer__prompt
+{
+
+}

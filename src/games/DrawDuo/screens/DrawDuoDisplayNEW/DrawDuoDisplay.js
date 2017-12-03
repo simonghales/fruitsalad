@@ -10,6 +10,8 @@ import {SessionModel} from '../../logic/models';
 import {getDisplayComponentFromGameStateNEW} from '../../functions';
 import {getDisplayComponentFromGameState} from '../../logic/screens';
 import DrawDuoDisplayCenteredMessage from '../../components/DrawDuoDisplayCenteredMessage/DrawDuoDisplayCenteredMessage';
+import DrawDuoDisplayPending from '../../newscreens/DrawDuoDisplayPending/DrawDuoDisplayPending';
+import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 
 class DrawDuoDisplay extends Component {
 
@@ -36,15 +38,19 @@ class DrawDuoDisplay extends Component {
         <DrawDuoDisplayCenteredMessage>
           {
             !sessionLoaded && (
-              <h3>loading {match.params.id} session</h3>
+              <DrawDuoAnimatedMessage label={`loading ${match.params.id} session`} size='huge'/>
             )
           }
           {
             sessionLoaded && sessionEmpty && (
-              <h3>{match.params.id} not found</h3>
+              <DrawDuoAnimatedMessage label={`${match.params.id} not found`} size='huge'/>
             )
           }
         </DrawDuoDisplayCenteredMessage>
+      )
+    } else if (!session.drawDuo) {
+      return (
+        <DrawDuoDisplayPending/>
       )
     } else {
       return getDisplayComponentFromGameState(session.drawDuo);

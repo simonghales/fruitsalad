@@ -175,4 +175,15 @@ export interface DrawDuoModel {
 
 export interface SessionModel {
   drawDuo: DrawDuoModel,
+  users: SessionUsersModel,
+}
+
+export interface SessionUsersModel {
+  [string]: SessionUserModel,
+}
+
+export interface SessionUserModel {
+  id: string,
+  image: string,
+  name: string,
 }

@@ -93,6 +93,13 @@
   line-height: 62px;
 }
 
+@mixin largeHugeDrawDuoHeading
+{
+  @include drawDuoHeadingFont;
+  font-size:   48px;
+  line-height: 48px;
+}
+
 @mixin largeDrawDuoHeading
 {
   @include drawDuoHeadingFont;
