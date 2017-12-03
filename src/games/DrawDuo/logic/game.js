@@ -14,7 +14,7 @@ export function getGameCurrentState(drawDuo: DrawDuoModel): DrawDuoModelState {
 
 export function populateGameData(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const users = getDefaultUsers(drawDuoRef);
-  const pairs = generatePairs(users, drawDuoRef);
+  const pairs = generatePairs(users, drawDuoRef, drawDuo.config.pairSize);
   const entries = generateEntries(drawDuo, drawDuoRef, pairs);
   const rounds = generateRounds(drawDuo, drawDuoRef, entries, pairs);
   drawDuoRef.update({
@@ -68,7 +68,8 @@ export function clearTimerKey(drawDuoRef: DrawDuoRefModel) {
 function generateInitialGameState(): DrawDuoModel {
   return {
     config: {
-      numberOfRounds: 2,
+      pairSize: DRAW_DUO_CONFIG.defaults.pairSize,
+      numberOfRounds: DRAW_DUO_CONFIG.defaults.numberOfRounds,
       timers: {
         drawing: DRAW_DUO_CONFIG.defaults.drawingTimer,
         guess: DRAW_DUO_CONFIG.defaults.guessTimer,

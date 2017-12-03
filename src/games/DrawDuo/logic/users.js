@@ -70,10 +70,11 @@ export function getDefaultUsers(drawDuoRef: DrawDuoRefModel) {
 
 export function generatePairs(users: {
   [string]: UserModel,
-}, drawDuoRef: DrawDuoRefModel): PairModelWrapper {
+}, drawDuoRef: DrawDuoRefModel, pairSize = 2): PairModelWrapper {
 
   const userKeys = Object.keys(users);
-  const pairs = [], size = 2;
+  // const pairs = [], size = 2;
+  const pairs = [], size = pairSize;
   let mappedPairs: PairModelWrapper = {};
 
   while (userKeys.length > 0) {
