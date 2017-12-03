@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './DrawDuoUserGuessesIndicators.css';
-import DrawDuoArtworkPiece from '../DrawDuoArtworkPiece/DrawDuoArtworkPiece';
-import DrawDuoUser from '../DrawDuoUser/DrawDuoUser';
+import classNames from 'classnames';
 import DrawDuoPairSlots from '../DrawDuoPairSlots/DrawDuoPairSlots';
 import {SessionModel} from '../../logic/models';
 import {AppState} from '../../../../redux/index';
@@ -11,6 +10,7 @@ import {getNonPromptedPairs} from '../../logic/users';
 class DrawDuoUserGuessesIndicators extends Component {
 
   props: {
+    alignment: string,
     session: SessionModel,
   };
 
@@ -19,10 +19,13 @@ class DrawDuoUserGuessesIndicators extends Component {
   }
 
   render() {
-    const {session} = this.props;
+    const {alignment, session} = this.props;
     const pairs = getNonPromptedPairs(session.drawDuo);
     return (
-      <div className='DrawDuoUserGuessesIndicators'>
+      <div className={classNames([
+        'DrawDuoUserGuessesIndicators',
+        `DrawDuoUserGuessesIndicators--alignment-${alignment}`
+      ])}>
         {
           pairs.map((pair) => (
             <DrawDuoPairSlots pairKey={pair.key} key={pair.key}/>

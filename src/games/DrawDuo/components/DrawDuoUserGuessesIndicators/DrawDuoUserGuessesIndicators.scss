@@ -4,6 +4,37 @@
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
+@mixin centerAlignment
+{
+
+  &.DrawDuoUserGuessesIndicators--alignment-center,
+  .DrawDuoUserGuessesIndicators--alignment-center &
+  {
+    @content;
+  }
+
+}
+
+@mixin rightAlignment
+{
+
+  &.DrawDuoUserGuessesIndicators--alignment-right
+  {
+    @content;
+  }
+
+}
+
+@mixin showEntryAction
+{
+
+  &.DrawDuoUserGuessesIndicators--alignment-right
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoUserGuessesIndicators
 {
   position:        absolute;
@@ -15,4 +46,10 @@
   justify-content: center;
   align-items:     center;
   flex-direction:  column;
+
+  &.DrawDuoUserGuessesIndicators--alignment-right
+  {
+    left: 50%;
+  }
+
 }

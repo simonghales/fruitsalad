@@ -5,12 +5,12 @@ import {AppState} from '../../../../redux/index';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 import {DrawDuoGame} from '../../models';
 import DrawDuoPairs from '../../components/DrawDuoPairs/DrawDuoPairs';
-import {DrawDuoModel} from '../../logic/models';
+import {DrawDuoModel, PairModel} from '../../logic/models';
 import DrawDuoArtworks from '../../components/DrawDuoArtworks/DrawDuoArtworks';
 import DrawDuoTitle from '../../components/DrawDuoTitle/DrawDuoTitle';
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesIndicators/DrawDuoUserGuessesIndicators';
-import {getCurrentPairKey} from '../../logic/users';
+import {getCurrentPairKey, getPairByKey} from '../../logic/users';
 
 class DrawDuoDisplayEntryGuessing extends Component {
 
@@ -20,9 +20,15 @@ class DrawDuoDisplayEntryGuessing extends Component {
     },
   };
 
+  getIndicatorsAlignment(pair: PairModel): string {
+    const users = Object.keys(pair);
+    return (users.length === 2) ? 'center' : 'right';
+  }
+
   render() {
     const {session} = this.props;
     const currentPairKey = getCurrentPairKey(session.drawDuo);
+    const pair = getPairByKey(currentPairKey, session.drawDuo);
     return (
       <div className='DrawDuoDisplayEntryGuessing'>
         <header className='DrawDuoDisplayEntryGuessing__header'>
@@ -33,7 +39,7 @@ class DrawDuoDisplayEntryGuessing extends Component {
         </header>
         <div className='DrawDuoDisplayEntryGuessing__content'>
           <DrawDuoArtworks pairKey={currentPairKey}/>
-          <DrawDuoUserGuessesIndicators/>
+          <DrawDuoUserGuessesIndicators alignment={this.getIndicatorsAlignment(pair)}/>
         </div>
         <footer className='DrawDuoDisplayEntryGuessing__footer'></footer>
       </div>
