@@ -58,7 +58,7 @@ const DEFAULT_USERS = [
 ];
 
 export function getDefaultUsers(drawDuoRef: DrawDuoRefModel) {
-  const numberOfUsers = 12;
+  const numberOfUsers = 5;
   // const numberOfUsers = 4;
   let users = {};
   for (let i = 0; i < numberOfUsers; i++) {
@@ -82,14 +82,12 @@ export function generatePairs(users: {
 
   pairs.forEach((pair) => {
     const key = drawDuoRef.push().key;
-    mappedPairs[key] = {
-      [pair[0]]: {
+    mappedPairs[key] = {};
+    pair.forEach((userKey) => {
+      mappedPairs[key][userKey] = {
         score: 0,
-      },
-      [pair[1]]: {
-        score: 0,
-      },
-    };
+      };
+    });
   });
 
   return mappedPairs;
