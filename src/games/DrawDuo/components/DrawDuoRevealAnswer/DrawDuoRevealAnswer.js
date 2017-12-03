@@ -50,7 +50,7 @@ class DrawDuoRevealAnswer extends Component {
 
     const {answerWrapper, session} = this.props;
     const {answer} = answerWrapper;
-    const voters = Object.keys(answer.votes);
+    const voters = (answer.votes) ? Object.keys(answer.votes) : [];
     const answerisBeingRevealed = isAnswerBeingRevealed(answerWrapper.key, session.drawDuo);
 
     return (

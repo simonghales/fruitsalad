@@ -51,7 +51,7 @@ class DrawDuoPairsResults extends Component {
                   <DrawDuoPair pairKey={pairKey} key={pairKey} alignment='vertical' userProps={{
                     alignment: 'horizontal',
                     pairMargin: false,
-                    pointsDisplay: true,
+                    pointsDisplay: 'entry',
                     submittedDisplay: false,
                     showEntryAction: true,
                   }}/>

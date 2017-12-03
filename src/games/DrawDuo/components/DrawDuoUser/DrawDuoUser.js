@@ -3,7 +3,10 @@ import './DrawDuoUser.css';
 import classNames from 'classnames';
 import {AppState} from '../../../../redux/index';
 import {connect} from 'react-redux';
-import {getUser, getUserAnswer, getUsers, hasUserSubmittedDrawing} from '../../logic/users';
+import {
+  getUser, getUserAnswer, getUserCurrentEntryPoints, getUserCurrentScore, getUsers,
+  hasUserSubmittedDrawing
+} from '../../logic/users';
 import {AnswerModel, SessionModel, UserModel, UsersModel} from '../../logic/models';
 
 class DrawDuoUser extends Component {
@@ -15,7 +18,7 @@ class DrawDuoUser extends Component {
     session: SessionModel,
     size?: string,
     showEntryAction?: boolean,
-    pointsDisplay?: boolean,
+    pointsDisplay?: 'entry' | 'total',
     submittedDisplay: boolean,
     pairMargin?: boolean,
   };
@@ -38,11 +41,20 @@ class DrawDuoUser extends Component {
     );
   }
 
+  renderPoints() {
+    const {pointsDisplay, userKey, session} = this.props;
+    const userPoints = (pointsDisplay === 'total') ? getUserCurrentScore(userKey, '', session.drawDuo) : getUserCurrentEntryPoints(userKey, session.drawDuo);
+    if (!userPoints || userPoints === 0) return null;
+    return (
+      <div className='DrawDuoUser__points'>{userPoints}</div>
+    );
+  }
+
   render() {
     const {
       alignment = 'vertical',
       pairMargin = true,
-      pointsDisplay = false,
+      pointsDisplay = '',
       userKey,
       users,
       session,
@@ -67,7 +79,9 @@ class DrawDuoUser extends Component {
       ])}>
         <div className='DrawDuoUser__image'>
           <div className='DrawDuoUser__submitted'>Submitted</div>
-          <div className='DrawDuoUser__points'>1500</div>
+          {
+            pointsDisplay && this.renderPoints()
+          }
         </div>
         <div className='DrawDuoUser__label'>
           <div className='DrawDuoUser__label__text'>

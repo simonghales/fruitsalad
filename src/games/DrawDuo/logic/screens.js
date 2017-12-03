@@ -18,6 +18,8 @@ import {getEntryCurrentState} from './entries';
 import DrawDuoDisplayEntryGuessing from '../newscreens/DrawDuoDisplayEntryGuessing/DrawDuoDisplayEntryGuessing';
 import DrawDuoDisplayEntryVoting from '../newscreens/DrawDuoDisplayEntryVoting/DrawDuoDisplayEntryVoting';
 import DrawDuoDisplayEntryCompleted from '../newscreens/DrawDuoDisplayEntryCompleted/DrawDuoDisplayEntryCompleted';
+import DrawDuoDisplayRoundResults from '../newscreens/DrawDuoDisplayRoundResults/DrawDuoDisplayRoundResults';
+import DrawDuoDisplayGameCompleted from '../newscreens/DrawDuoDisplayGameCompleted/DrawDuoDisplayGameCompleted';
 
 export function getDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
@@ -33,7 +35,7 @@ export function getDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
     case DRAW_DUO_STATE_PLAYING:
       return getGamePlayingDisplayComponentFromGameState(drawDuo);
     case DRAW_DUO_STATE_COMPLETED:
-      return null;
+      return <DrawDuoDisplayGameCompleted/>;
     default:
       console.warn(`unable to match gameCurrentState: ${gameCurrentState}`);
       return null;
@@ -55,7 +57,9 @@ export function getGamePlayingDisplayComponentFromGameState(drawDuo: DrawDuoMode
       return <DrawDuoDisplayDrawing/>;
     case DRAW_DUO_ROUND_STATE_VOTING:
       return <DrawDuoDisplayRound/>;
-    case DRAW_DUO_ROUND_STATE_RESULTS || DRAW_DUO_ROUND_STATE_COMPLETED:
+    case DRAW_DUO_ROUND_STATE_RESULTS:
+      return <DrawDuoDisplayRoundResults/>;
+    case DRAW_DUO_ROUND_STATE_COMPLETED:
       return null;
     default:
       console.warn(`unable to match roundCurrentState: ${roundCurrentState}`);

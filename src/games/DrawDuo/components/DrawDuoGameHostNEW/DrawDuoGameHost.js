@@ -31,7 +31,8 @@ import {
 import {
   areEntryAnswersRevealed,
   completeEntry, currentEntryAllAnswers, currentEntryAllVotes, getCurrentEntryKey,
-  getEntryCurrentState, isACurrentEntry, isFinalEntryAnswer, isNextEntry, isNextEntryAnswer, setEntry,
+  getEntryCurrentState, giveUsersScoresFromEntry, isACurrentEntry, isFinalEntryAnswer, isNextEntry, isNextEntryAnswer,
+  setEntry,
   setEntryAnswersRevealed,
   setNextEntryAnswer, shuffleEntryAnswerRevealOrder, startEntryGuessing, startEntryResults, startEntryVoting,
   startNextEntry, submitEntryPromptAnswer, submitEntryTestAnswers, submitEntryTestVotes
@@ -346,6 +347,8 @@ class DrawDuoGameHostNEW extends Component {
 
     const timer = this.drawDuoSnapshot.config.timers.drawing;
 
+    if (this.sessionKeyMatchesKey('ROUND_DRAWING')) return;
+
     this.setCurrentRoundDrawingsListener();
 
     const timerKey = this.setTimerKey();
@@ -365,7 +368,14 @@ class DrawDuoGameHostNEW extends Component {
 
   revealRoundResults(): void {
 
+    if (!isANextRound(this.drawDuoSnapshot)) {
+      this.completeRound();
+      return;
+    }
+
     revealRoundResults(this.drawDuoSnapshot, this.drawDuoRef);
+
+    if (this.sessionKeyMatchesKey('ROUND_RESULTS')) return;
 
     const timer = this.drawDuoSnapshot.config.timers.reveal;
     setTimeout(() => {
@@ -519,6 +529,7 @@ class DrawDuoGameHostNEW extends Component {
 
   completeEntry(): void {
 
+    giveUsersScoresFromEntry(this.drawDuoSnapshot, this.drawDuoRef);
     completeEntry(this.drawDuoSnapshot, this.drawDuoRef);
 
     if (this.sessionKeyMatchesKey('ENTRY_COMPLETED')) return;

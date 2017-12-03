@@ -5,7 +5,7 @@
 @import "../../../../styles/tools/text";
 @import "../../../../styles/tools/textures";
 
-.DrawDuoDisplayDrawing
+.DrawDuoDisplayGameCompleted
 {
   position:       fixed;
   top:            0;
@@ -18,7 +18,7 @@
   //justify-content: center;
 }
 
-.DrawDuoDisplayDrawing__info
+.DrawDuoDisplayGameCompleted__info
 {
   text-align:      center;
   position:        relative;
@@ -38,23 +38,23 @@
 
 }
 
-.DrawDuoDisplayDrawing__title
+.DrawDuoDisplayGameCompleted__title
 {
   @include hugeDrawDuoHeading;
 }
 
-.DrawDuoDisplayDrawing__content
+.DrawDuoDisplayGameCompleted__content
 {
   flex:        3;
   display:     flex;
   align-items: center;
 }
 
-.DrawDuoDisplayDrawing__countdown
+.DrawDuoDisplayGameCompleted__countdown
 {
 }
 
-.DrawDuoDisplayDrawing__pairs
+.DrawDuoDisplayGameCompleted__pairs
 {
   margin-top: -50px;
 }

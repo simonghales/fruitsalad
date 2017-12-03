@@ -5,7 +5,7 @@ import DrawDuoPair from '../DrawDuoPair/DrawDuoPair';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 import {AppState} from '../../../../redux/index';
 import {DrawDuoModel} from '../../logic/models';
-import {getPairs, getPairsArrays, WrappedPair} from '../../logic/users';
+import {getPairs, getPairsArrays, getPairsArraysSortedByScore, WrappedPair} from '../../logic/users';
 import {getDrawingTimer} from '../../logic/game';
 
 class DrawDuoPairs extends Component {
@@ -14,6 +14,8 @@ class DrawDuoPairs extends Component {
     session: {
       drawDuo: DrawDuoModel,
     },
+    sort?: 'score',
+    userProps?: {},
   };
 
   constructor(props) {
@@ -38,8 +40,8 @@ class DrawDuoPairs extends Component {
   }
 
   render() {
-    const {session} = this.props;
-    const pairs = getPairsArrays(session.drawDuo);
+    const {session, sort, userProps} = this.props;
+    const pairs = (sort && sort === 'score') ? getPairsArraysSortedByScore(session.drawDuo) : getPairsArrays(session.drawDuo);
     const rows = this.getRows(pairs);
     return (
       <div className='DrawDuoPairs'>
@@ -48,7 +50,7 @@ class DrawDuoPairs extends Component {
             <div className='DrawDuoPairs__row' key={index}>
               {
                 row.map((pairKey: string) => (
-                  <DrawDuoPair pairKey={pairKey} key={pairKey}/>
+                  <DrawDuoPair pairKey={pairKey} key={pairKey} userProps={userProps}/>
                 ))
               }
             </div>

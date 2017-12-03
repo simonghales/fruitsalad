@@ -58,7 +58,8 @@ const DEFAULT_USERS = [
 ];
 
 export function getDefaultUsers(drawDuoRef: DrawDuoRefModel) {
-  const numberOfUsers = 12;
+  // const numberOfUsers = 12;
+  const numberOfUsers = 4;
   let users = {};
   for (let i = 0; i < numberOfUsers; i++) {
     const key = drawDuoRef.push().key;
@@ -131,6 +132,21 @@ export function getPairsArrays(drawDuo: DrawDuoModel) {
   const {pairs} = drawDuo;
   if (!pairs) return [];
   return Object.keys(pairs);
+}
+
+export function getPairTotalScore(pairKey: string, pairs: PairsModel): number {
+  const pair = pairs[pairKey];
+  return Object.keys(pair).reduce((score, userKey) => {
+    return score + pair[userKey].score;
+  }, 0)
+}
+
+export function getPairsArraysSortedByScore(drawDuo: DrawDuoModel) {
+  const {pairs} = drawDuo;
+  if (!pairs) return [];
+  return Object.keys(pairs).sort((keyA, keyB) => {
+    return getPairTotalScore(keyB, pairs) - getPairTotalScore(keyA, pairs);
+  });
 }
 
 export function arePairResultsDifferent(pairResultsA, pairResultsB): boolean {
@@ -218,4 +234,42 @@ export function getUserAnswer(userKey: string, drawDuo: DrawDuoModel): AnswerMod
     return (answers[key].user === userKey || pairKey === currentEntry.pair && answers[key].prompt);
   });
   return (answers[answerKey]) ? answers[answerKey] : null;
+}
+
+export function getUserVotedAnswer(userKey: string, drawDuo: DrawDuoModel): AnswerModel {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) {
+    console.warn('no current entry');
+    return null;
+  }
+  return (currentEntry.votes[userKey]) ? currentEntry.answers[currentEntry.votes[userKey]] : null;
+}
+
+export function getUserCurrentEntryPoints(userKey: string, drawDuo: DrawDuoModel): number {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  if (!currentEntry) {
+    console.warn('no current entry');
+    return 0;
+  }
+  let userScore = 0;
+  const userAnswer = getUserAnswer(userKey, drawDuo);
+  if (userAnswer) {
+    if (userAnswer.votes) {
+      for (let key in userAnswer.votes) {
+        const pointsValue = (userAnswer.prompt) ? 1000 : 500;
+        userScore = userScore + pointsValue;
+      }
+    }
+  }
+  const userVotedAnswer = getUserVotedAnswer(userKey, drawDuo);
+  if (userVotedAnswer && userVotedAnswer.prompt) {
+    userScore = userScore + 1000;
+  }
+  return userScore;
+}
+
+export function getUserCurrentScore(userKey: string, pairKey: string, drawDuo: DrawDuoModel): number {
+  pairKey = (pairKey === '') ? getUserPairKey(userKey, drawDuo) : pairKey;
+  const {pairs} = drawDuo;
+  return (pairs && pairs[pairKey] && pairs[pairKey][userKey]) ? pairs[pairKey][userKey].score : 0;
 }

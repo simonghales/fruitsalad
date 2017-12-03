@@ -5,7 +5,7 @@ import {
   DRAW_DUO_ENTRY_STATE_VOTING
 } from './constants';
 import {getCurrentRoundKey} from './rounds';
-import {getNonPromptedPairs} from './users';
+import {getNonPromptedPairs, getUserCurrentEntryPoints, getUserCurrentScore} from './users';
 import {randomIntFromInterval} from '../../../utils/numbers';
 
 export function isACurrentEntry(drawDuo: DrawDuoModel) {
@@ -226,7 +226,7 @@ export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoR
 
     pair.users.forEach((userKey) => {
 
-      const randomNumber = randomIntFromInterval(0, answerKeys.length + 1);
+      const randomNumber = randomIntFromInterval(0, answerKeys.length + 4);
       if (randomNumber > answerKeys.length - 1) {
         votes[`/entries/${currentEntryKey}/answers/${promptAnswerKey}/votes/${userKey}`] = true;
         votes[`/entries/${currentEntryKey}/votes/${userKey}`] = promptAnswerKey;
@@ -328,6 +328,19 @@ export function completeEntry(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel
   drawDuoRef.update({
     [`entries/${currentEntryKey}/state`]: DRAW_DUO_ENTRY_STATE_COMPLETED,
   });
+}
+
+export function giveUsersScoresFromEntry(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  let scores = {};
+  const {pairs} = drawDuo;
+  for (let pairKey in pairs) {
+    for (let userKey in pairs[pairKey]) {
+      const newPoints = getUserCurrentEntryPoints(userKey, drawDuo);
+      const currentScore = getUserCurrentScore(userKey, pairKey, drawDuo);
+      scores[`pairs/${pairKey}/${userKey}/score`] = newPoints + currentScore;
+    }
+  }
+  drawDuoRef.update(scores);
 }
 
 export function startNextEntry(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
