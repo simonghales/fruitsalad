@@ -16,7 +16,7 @@ class SessionRedirect extends Component {
 
     return (
       <Redirect to={{
-        pathname: `/session/${match.params.id}`,
+        pathname: `/session/${match.params.id}/join`,
       }}/>
     );
   }
