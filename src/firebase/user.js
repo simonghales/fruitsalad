@@ -22,3 +22,9 @@ export function addUser(sessionKey: string, id: string, name: string, imageUrl: 
     image: imageUrl,
   }));
 }
+
+export function uploadDrawingImage(image: string, firebase: any) {
+  return firebase.storage().ref('/drawings').putString(image, 'base64', {
+    contentType: 'image/png',
+  });
+}

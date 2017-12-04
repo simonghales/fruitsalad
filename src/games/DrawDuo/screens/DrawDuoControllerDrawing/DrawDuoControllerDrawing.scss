@@ -1,5 +1,6 @@
 @import "../../../../styles/settings/sizes";
 @import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/drawing";
 @import "../../../../styles/tools/inputs";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
@@ -33,6 +34,13 @@
   background-color: #FFFFFF;
   border:           1px solid #F0F0F0;
   height:           calc(100vw - 40px);
+  position:         relative;
+
+  canvas
+  {
+    @include canvasReset;
+  }
+
 }
 
 .DrawDuoControllerDrawing__buttonWrapper

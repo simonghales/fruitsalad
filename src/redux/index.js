@@ -40,7 +40,11 @@ const rootReducer = combineReducers({
 export interface AppState {
   drawDuo: DrawDuoState,
   session: SessionModel,
-  firebase: {},
+  firebase: {
+    data: {
+      session: SessionModel,
+    }
+  },
 }
 
 export const store = createStoreWithFirebase(rootReducer, {

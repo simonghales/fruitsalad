@@ -188,6 +188,20 @@ export function submitRoundUserTestDrawing(userKey: string, drawDuo: DrawDuoMode
   });
 }
 
+export function submitRoundUserDrawing(image: string, userKey: string, drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
+  const entryKey = getUserEntryKey(userKey, drawDuo);
+  const pairKey = getUserPairKey(userKey, drawDuo);
+  const currentRoundKey = getCurrentRoundKey(drawDuo);
+  drawDuoRef.update({
+    [`/rounds/${currentRoundKey}/drawings/${userKey}`]: {
+      user: userKey,
+      pair: pairKey,
+      entry: entryKey,
+      image: image,
+    }
+  });
+}
+
 export function areAllRoundDrawingsSubmitted(round: RoundModel, drawDuo: DrawDuoModel): boolean {
   const {drawings} = round;
   const {users} = drawDuo;

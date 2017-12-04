@@ -5,7 +5,10 @@ import {
   DRAW_DUO_ENTRY_STATE_VOTING
 } from './constants';
 import {getCurrentRoundKey} from './rounds';
-import {getNonPromptedPairs, getUserCurrentEntryPoints, getUserCurrentScore} from './users';
+import {
+  getNonPromptedPairs, getUserCurrentEntryPoints, getUserCurrentScore, getUserEntryKey,
+  getUserPairKey
+} from './users';
 import {randomIntFromInterval} from '../../../utils/numbers';
 
 export function isACurrentEntry(drawDuo: DrawDuoModel) {
@@ -444,4 +447,10 @@ export function getSortedRevealAnswers(drawDuo: DrawDuoModel) {
       key: key,
     };
   }) : [];
+}
+
+export function getUserEntry(userKey: string, drawDuo: DrawDuoModel) {
+  // const pairKey = getUserPairKey(userKey, drawDuo);
+  const entryKey = getUserEntryKey(userKey, drawDuo);
+  return getEntryByKey(entryKey, drawDuo);
 }

@@ -1,4 +1,4 @@
-import {DrawDuoModel, DrawDuoModelState, DrawDuoRefModel} from './models';
+import {DrawDuoModel, DrawDuoModelState, DrawDuoRefModel, SessionUsersModel} from './models';
 import {
   DRAW_DUO_STATE_COMPLETED, DRAW_DUO_STATE_INITIATING, DRAW_DUO_STATE_PENDING,
   DRAW_DUO_STATE_PLAYING
@@ -12,8 +12,8 @@ export function getGameCurrentState(drawDuo: DrawDuoModel): DrawDuoModelState {
   return drawDuo.state;
 }
 
-export function populateGameData(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
-  const users = getDefaultUsers(drawDuoRef);
+export function populateGameData(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel, sessionUsers: SessionUsersModel): void {
+  const users = (sessionUsers) ? sessionUsers : getDefaultUsers(drawDuoRef);
   const pairs = generatePairs(users, drawDuoRef, drawDuo.config.pairSize);
   const entries = generateEntries(drawDuo, drawDuoRef, pairs);
   const rounds = generateRounds(drawDuo, drawDuoRef, entries, pairs);

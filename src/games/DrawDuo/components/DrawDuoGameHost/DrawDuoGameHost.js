@@ -8,7 +8,10 @@ import {
   getGameCurrentState, initiateGame, isTimerKey, populateGameData, setGameCompleted, setGameInitiating, setGamePlaying,
   setTimerKey,
 } from '../../logic/game';
-import {DrawDuoModel, DrawDuoModelState, EntryModel, RoundModel, RoundModelState} from '../../logic/models';
+import {
+  DrawDuoModel, DrawDuoModelState, EntryModel, RoundModel, RoundModelState,
+  SessionModel
+} from '../../logic/models';
 import {
   DRAW_DUO_ENTRY_STATE_COMPLETED,
   DRAW_DUO_ENTRY_STATE_GUESSING,
@@ -53,7 +56,7 @@ class DrawDuoGameHostNEW extends Component {
         id?: string,
       },
     },
-    session: any,
+    session: SessionModel,
   };
 
   constructor(props) {
@@ -225,7 +228,7 @@ class DrawDuoGameHostNEW extends Component {
   populateGameData(): void {
 
     this.setGameInitiating();
-    populateGameData(this.drawDuoSnapshot, this.drawDuoRef);
+    populateGameData(this.drawDuoSnapshot, this.drawDuoRef, this.props.session.users);
     this.terminateAndCallNextGameStep();
 
   }

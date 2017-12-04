@@ -1,5 +1,6 @@
 @import "../../styles/settings/sizes";
 @import "../../styles/tools/buttons";
+@import "../../styles/tools/drawing";
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
@@ -42,15 +43,7 @@
 
   canvas
   {
-    outline:                     none;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
-
-    &:focus
-    {
-      outline:                     none;
-      -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
-    }
-
+    @include canvasReset;
   }
 
 }
