@@ -8,7 +8,6 @@ import {AppState} from '../../redux/index';
 class SessionInPlay extends Component {
 
   props: {
-    gameInPlay: boolean,
     match: any,
   };
 
@@ -24,9 +23,7 @@ class SessionInPlay extends Component {
 }
 
 const mapStateToProps = (state: AppState) => {
-  return {
-    gameInPlay: state.session.gameInPlay,
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => {

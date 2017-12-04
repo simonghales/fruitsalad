@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
-import './DrawDuoControllerResults.css';
+import './DrawDuoControllerPending.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import DrawDuoCenteredMessage from '../../components/DrawDuoCenteredMessage/DrawDuoCenteredMessage';
 
-class DrawDuoControllerResults extends Component {
+class DrawDuoControllerPending extends Component {
 
   props: {};
 
   render() {
     return (
-      <div className='DrawDuoControllerResults'>
+      <div className='DrawDuoControllerPending'>
         <DrawDuoCenteredMessage>
-          Watch the TV for the results
+          Watch the TV
         </DrawDuoCenteredMessage>
       </div>
     )
@@ -27,4 +27,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoControllerResults);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoControllerPending);

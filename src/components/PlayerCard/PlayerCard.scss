@@ -1,5 +1,6 @@
 @import "../../styles/settings/sizes";
 @import "../../styles/tools/buttons";
+@import "../../styles/tools/images";
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
@@ -28,13 +29,11 @@
 
 .PlayerCard__image
 {
-  background-color:    #FFFFFF;
-  background-image:    url('../../assets/images/fruits/banana/banana_portrait.png');
-  background-size:     cover;
-  background-position: center;
-  height:              calc(50vw - 30px);
-  border:              2px solid #F0F0F0;
-  border-radius:       50%;
+  @include bananaBackground('../../');
+  background-color: #FFFFFF;
+  height:           calc(50vw - 30px);
+  border:           2px solid #F0F0F0;
+  border-radius:    50%;
 }
 
 .PlayerCard__image__drawing

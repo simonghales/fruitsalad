@@ -20,6 +20,12 @@ import DrawDuoDisplayEntryVoting from '../newscreens/DrawDuoDisplayEntryVoting/D
 import DrawDuoDisplayEntryCompleted from '../newscreens/DrawDuoDisplayEntryCompleted/DrawDuoDisplayEntryCompleted';
 import DrawDuoDisplayRoundResults from '../newscreens/DrawDuoDisplayRoundResults/DrawDuoDisplayRoundResults';
 import DrawDuoDisplayGameCompleted from '../newscreens/DrawDuoDisplayGameCompleted/DrawDuoDisplayGameCompleted';
+import DrawDuoControllerCompleted from '../screens/DrawDuoControllerCompleted/DrawDuoControllerCompleted';
+import DrawDuoControllerDrawing from '../screens/DrawDuoControllerDrawing/DrawDuoControllerDrawing';
+import DrawDuoControllerResults from '../screens/DrawDuoControllerResults/DrawDuoControllerResults';
+import DrawDuoControllerGuessing from '../screens/DrawDuoControllerGuessing/DrawDuoControllerGuessing';
+import DrawDuoControllerVoting from '../screens/DrawDuoControllerVoting/DrawDuoControllerVoting';
+import DrawDuoControllerPending from '../screens/DrawDuoControllerPending/DrawDuoControllerPending';
 
 export function getDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
@@ -68,6 +74,53 @@ export function getGamePlayingDisplayComponentFromGameState(drawDuo: DrawDuoMode
   }
 }
 
+export function getControllerComponentFromGameState(drawDuo: DrawDuoModel) {
+  if (!drawDuo) return null;
+
+  const gameCurrentState: DrawDuoModelState = getGameCurrentState(drawDuo);
+
+  switch (gameCurrentState) {
+
+    case DRAW_DUO_STATE_PENDING:
+      return <DrawDuoControllerPending/>;
+    case DRAW_DUO_STATE_INITIATING:
+      return <DrawDuoControllerPending/>;
+    case DRAW_DUO_STATE_PLAYING:
+      return getGamePlayingControllerComponentFromGameState(drawDuo);
+    case DRAW_DUO_STATE_COMPLETED:
+      return <DrawDuoControllerCompleted/>;
+    default:
+      console.warn(`unable to match gameCurrentState: ${gameCurrentState}`);
+      return null;
+
+  }
+
+}
+
+export function getGamePlayingControllerComponentFromGameState(drawDuo: DrawDuoModel) {
+  if (!drawDuo) return null;
+
+  const roundCurrentState: RoundModelState = getRoundCurrentState(drawDuo);
+
+  switch (roundCurrentState) {
+
+    case DRAW_DUO_ROUND_STATE_PENDING:
+      return null;
+    case DRAW_DUO_ROUND_STATE_DRAWING:
+      return <DrawDuoControllerDrawing/>;
+    case DRAW_DUO_ROUND_STATE_VOTING:
+      return getEntryDisplayComponentFromGameState(drawDuo);
+    case DRAW_DUO_ROUND_STATE_RESULTS:
+      return <DrawDuoControllerResults/>;
+    case DRAW_DUO_ROUND_STATE_COMPLETED:
+      return <DrawDuoControllerPending/>;
+    default:
+      console.warn(`unable to match roundCurrentState: ${roundCurrentState}`);
+      return null;
+
+  }
+}
+
 export function getEntryDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
 
@@ -75,15 +128,15 @@ export function getEntryDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
 
   switch (entryCurrentState) {
     case DRAW_DUO_ENTRY_STATE_PENDING:
-      return null;
+      return <DrawDuoControllerPending/>;
     case DRAW_DUO_ENTRY_STATE_GUESSING:
-      return <DrawDuoDisplayEntryGuessing/>;
+      return <DrawDuoControllerGuessing/>;
     case DRAW_DUO_ENTRY_STATE_VOTING:
-      return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
+      return <DrawDuoControllerVoting/>;
     case DRAW_DUO_ENTRY_STATE_RESULTS:
-      return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
+      return <DrawDuoControllerResults/>;
     case DRAW_DUO_ENTRY_STATE_COMPLETED:
-      return <DrawDuoDisplayEntryCompleted state={entryCurrentState}/>;
+      return <DrawDuoControllerResults/>;
     default:
       console.warn(`unable to match entryCurrentState: ${entryCurrentState}`);
       return null;

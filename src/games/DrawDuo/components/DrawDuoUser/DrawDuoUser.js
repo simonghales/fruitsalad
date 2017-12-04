@@ -78,6 +78,13 @@ class DrawDuoUser extends Component {
         }
       ])}>
         <div className='DrawDuoUser__image'>
+          {
+            (user.image) && (
+              <div className='DrawDuoUser__image__drawing' style={{
+                backgroundImage: `url(${user.image})`
+              }}></div>
+            )
+          }
           <div className='DrawDuoUser__submitted'>Submitted</div>
           {
             pointsDisplay && this.renderPoints()

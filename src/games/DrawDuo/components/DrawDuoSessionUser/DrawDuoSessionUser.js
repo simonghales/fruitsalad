@@ -12,7 +12,15 @@ class DrawDuoSessionUser extends Component {
     const {user} = this.props;
     return (
       <div className='DrawDuoSessionUser'>
-        <div className='DrawDuoSessionUser__image'></div>
+        <div className='DrawDuoSessionUser__image'>
+          {
+            (user.image) && (
+              <div className='DrawDuoSessionUser__image__drawing' style={{
+                backgroundImage: `url(${user.image})`
+              }}></div>
+            )
+          }
+        </div>
         <div className='DrawDuoSessionUser__label'>
           <span>
           {user.name}

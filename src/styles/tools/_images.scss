@@ -1,0 +1,19 @@
+@mixin backgroundImage
+{
+  background-size:     cover;
+  background-position: center;
+  background-repeat:   no-repeat;
+}
+
+@mixin fullBlock
+{
+  display: block;
+  width:   100%;
+  height:  100%;
+}
+
+@mixin bananaBackground($relativePath: './')
+{
+  @include backgroundImage;
+  background-image: url('#{$relativePath}assets/images/fruits/banana/banana_portrait.png');
+}

@@ -10,8 +10,8 @@ import {getCurrentScreen} from '../../../../redux/reducers/drawDuo/state';
 import {getComponentFromCurrentScreen} from '../../config';
 import DrawDuoGameHost from '../DrawDuoGameHost/DrawDuoGameHost';
 import {DrawDuoGame} from '../../models';
-import {getControllerComponentFromGameState} from '../../functions';
 import {isLoaded} from 'react-redux-firebase';
+import {getControllerComponentFromGameState} from '../../logic/screens';
 
 class DrawDuoHub extends Component {
 

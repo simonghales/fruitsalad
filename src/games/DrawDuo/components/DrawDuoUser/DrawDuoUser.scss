@@ -1,6 +1,7 @@
 @import "../../../../styles/settings/sizes";
 @import "../../../../styles/tools/animations";
 @import "../../../../styles/tools/buttons";
+@import "../../../../styles/tools/images";
 @import "../../../../styles/tools/inputs";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
@@ -183,6 +184,7 @@
 
 .DrawDuoUser__image
 {
+  @include bananaBackground('../../../../');
   width:            150px;
   height:           150px;
   border-radius:    50%;
@@ -217,6 +219,11 @@
     height: 65px;
   }
 
+}
+
+.DrawDuoUser__image__drawing
+{
+  @include fullBlock;
 }
 
 .DrawDuoUser__points,

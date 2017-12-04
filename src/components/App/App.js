@@ -16,6 +16,7 @@ import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplayNEW/DrawDu
 import DrawDuoHostWrapper from '../../games/DrawDuo/components/DrawDuoGameHostNEW/DrawDuoGameHost';
 import SessionRedirect from '../../screens/SessionRedirect/SessionRedirect';
 import AppLoadingScreen from '../../screens/AppLoadingScreen/AppLoadingScreen';
+import DrawDuoController from '../../games/DrawDuo/newscreens/DrawDuoController/DrawDuoController';
 
 class App extends Component {
 
@@ -57,6 +58,7 @@ class App extends Component {
           <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
             <div>test</div>
           ))}/>
+          <Route key='/controller/:id' path='/controller/:id' component={DrawDuoController}/>
           <Route key='/:id' path='/:id' component={SessionRedirect}/>
         </Switch>
       </div>
