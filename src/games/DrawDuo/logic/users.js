@@ -284,3 +284,13 @@ export function getUserCurrentScore(userKey: string, pairKey: string, drawDuo: D
   const {pairs} = drawDuo;
   return (pairs && pairs[pairKey] && pairs[pairKey][userKey]) ? pairs[pairKey][userKey].score : 0;
 }
+
+export function getUserDrawing(userKey: string, drawDuo: DrawDuoModel) {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const currentRound = getCurrentRound(drawDuo);
+  const {drawings} = currentRound;
+  const matchedDrawingKey = Object.keys(drawings).find((key) => {
+    return (drawings[key].user === userKey && drawings[key].entry === currentEntryKey);
+  })
+  return (drawings[matchedDrawingKey]) ? drawings[matchedDrawingKey] : null;
+}

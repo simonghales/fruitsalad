@@ -1,6 +1,7 @@
 @import "../../../../styles/settings/sizes";
 @import "../../../../styles/tools/buttons";
 @import "../../../../styles/tools/inputs";
+@import "../../../../styles/tools/images";
 @import "../../../../styles/tools/layout";
 @import "../../../../styles/tools/text";
 
@@ -33,6 +34,7 @@
 
 .DrawDuoArtworkPiece__drawing
 {
+  @include backgroundImage;
   width:            33vw;
   height:           33vw;
   background-color: #FFFFFF;
