@@ -19,6 +19,7 @@ export interface DrawDuoRefModel {
 export interface UserModel {
   name: string,
   image: string,
+  bot: boolean,
 }
 
 export interface PairModelWrapper {
@@ -186,4 +187,5 @@ export interface SessionUserModel {
   id: string,
   image: string,
   name: string,
+  bot: boolean,
 }

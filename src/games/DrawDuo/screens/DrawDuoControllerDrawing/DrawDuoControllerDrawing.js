@@ -65,14 +65,21 @@ class DrawDuoControllerDrawing extends Component {
 
     uploadDrawingImage(image, firebase)
       .then(({downloadURL}) => {
-        console.log('uploaded drawing', downloadURL);
         submitRoundUserDrawing(downloadURL, userKey, session.drawDuo, ref);
+        this.setState({
+          submitting: false,
+          submitted: true,
+        });
       });
 
   }
 
   render() {
     const {userEntry} = this.props;
+    const {submitting, submitted} = this.state;
+    if (submitting || submitted) return (
+      <div>SUBMITTED...</div>
+    );
     return (
       <div className='DrawDuoControllerDrawing'>
         <div className='DrawDuoControllerDrawing__content'>

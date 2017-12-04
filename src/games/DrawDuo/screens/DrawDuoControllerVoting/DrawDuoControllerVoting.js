@@ -10,6 +10,10 @@ import {
 } from '../../models';
 import {getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers} from '../../functions';
 import DrawDuoVoteOption from '../../components/DrawDuoVoteOption/DrawDuoVoteOption';
+import {firebaseConnect} from 'react-redux-firebase';
+import {getAnswers, isUserEntryParticipant, submitUserEntryVote} from '../../logic/entries';
+import {AnswersModel} from '../../logic/models';
+import {withRouter} from 'react-router';
 
 class DrawDuoControllerVoting extends Component {
 
@@ -17,37 +21,31 @@ class DrawDuoControllerVoting extends Component {
     session: {
       drawDuo: DrawDuoGame,
     },
+    userIsEntryParticipant: boolean,
+    answers: AnswersModel,
+    submitVote(answerKey: string): void,
   };
 
   state: {
-    sortedAnswers: FormattedAnswer[],
+    selectedAnswerKey: string,
     voteSubmitted: boolean,
   };
 
   constructor(props) {
     super(props);
-    const currentEntry = getCurrentEntryData(props.session.drawDuo);
-    const sortedAnswers = getSortedAnswers(currentEntry, props.session.drawDuo);
     this.state = {
       selectedAnswerKey: '',
-      sortedAnswers: sortedAnswers,
       voteSubmitted: false,
     };
     this.voteOnAnswer = this.voteOnAnswer.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const currentEntry = getCurrentEntryData(nextProps.session.drawDuo);
-    const sortedAnswers = getSortedAnswers(currentEntry, nextProps.session.drawDuo);
-    this.setState({
-      sortedAnswers: sortedAnswers,
-    });
-  }
-
   voteOnAnswer(answer: FormattedAnswer) {
     const {voteSubmitted} = this.state;
+    const {submitVote} = this.props;
     if (voteSubmitted) return;
     console.log('answer', answer);
+    submitVote(answer.key);
     this.setState({
       selectedAnswerKey: answer.key,
       voteSubmitted: true,
@@ -60,7 +58,26 @@ class DrawDuoControllerVoting extends Component {
   }
 
   render() {
-    const {selectedAnswerKey, sortedAnswers, voteSubmitted} = this.state;
+    const {answers} = this.props;
+    const {selectedAnswerKey, voteSubmitted} = this.state;
+
+    const sortedAnswers = Object.keys(answers).sort((answerKeyA, answerKeyB) => {
+      return answers[answerKeyA].order - answers[answerKeyB].order;
+    }).map((key) => {
+      return {
+        ...answers[key],
+        key,
+      }
+    });
+
+    const {userIsEntryParticipant} = this.props;
+
+    if (userIsEntryParticipant) {
+      return (
+        <div>You drew this, so keep quiet!</div>
+      )
+    }
+
     return (
       <div className={classNames([
         'DrawDuoControllerVoting',
@@ -84,15 +101,24 @@ class DrawDuoControllerVoting extends Component {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, props) => {
+  const {firebase, match} = props;
   const session = state.firebase.data.session;
+  const currentUser = firebase.auth().currentUser;
+  const sessionKey = match.params.id;
   return {
+    userIsEntryParticipant: isUserEntryParticipant(currentUser.uid, session.drawDuo),
     session: session,
+    answers: getAnswers(session.drawDuo),
+    submitVote: (answerKey: string) => {
+      const ref = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
+      submitUserEntryVote(currentUser.uid, answerKey, session.drawDuo, ref)
+    }
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawDuoControllerVoting);
+export default firebaseConnect()(withRouter(connect(mapStateToProps, mapDispatchToProps)(DrawDuoControllerVoting)));

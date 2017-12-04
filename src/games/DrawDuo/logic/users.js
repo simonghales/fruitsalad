@@ -10,50 +10,62 @@ const DEFAULT_USERS = [
   {
     image: '',
     name: 'Simon',
+    bot: true,
   },
   {
     image: '',
     name: 'Chiao',
+    bot: true,
   },
   {
     image: '',
     name: 'Jono',
+    bot: true,
   },
   {
     image: '',
     name: 'James',
+    bot: true,
   },
   {
     image: '',
     name: 'Will',
+    bot: true,
   },
   {
     image: '',
     name: 'Karen',
+    bot: true,
   },
   {
     image: '',
     name: 'Geoff',
+    bot: true,
   },
   {
     image: '',
     name: 'Jeremy',
+    bot: true,
   },
   {
     image: '',
     name: 'Guest 1',
+    bot: true,
   },
   {
     image: '',
     name: 'Guest 2',
+    bot: true,
   },
   {
     image: '',
     name: 'Guest 3',
+    bot: true,
   },
   {
     image: '',
     name: 'Guest 4',
+    bot: true,
   }
 ];
 

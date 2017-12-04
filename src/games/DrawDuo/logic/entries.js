@@ -1,4 +1,7 @@
-import {DrawDuoModel, DrawDuoRefModel, EntryModel, EntryModelState, PairModel, PairModelKeyWrapped} from './models';
+import {
+  DrawDuoModel, DrawDuoRefModel, EntryModel, EntryModelState, PairModel, PairModelKeyWrapped,
+  UsersModel
+} from './models';
 import {
   DRAW_DUO_ENTRY_STATE_COMPLETED,
   DRAW_DUO_ENTRY_STATE_GUESSING, DRAW_DUO_ENTRY_STATE_PENDING, DRAW_DUO_ENTRY_STATE_RESULTS,
@@ -6,7 +9,7 @@ import {
 } from './constants';
 import {getCurrentRoundKey} from './rounds';
 import {
-  getNonPromptedPairs, getUserCurrentEntryPoints, getUserCurrentScore, getUserEntryKey,
+  getNonPromptedPairs, getUser, getUserCurrentEntryPoints, getUserCurrentScore, getUserEntryKey,
   getUserPairKey
 } from './users';
 import {randomIntFromInterval} from '../../../utils/numbers';
@@ -164,7 +167,7 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
 
       const offset = randomIntFromInterval(0, 10);
       setTimeout(() => {
-        submitTestAnswer(userKey, currentEntryKey, drawDuoRef);
+        submitTestAnswer(userKey, currentEntryKey, drawDuoRef, drawDuo.users);
       }, offset * 500);
 
     });
@@ -175,8 +178,10 @@ export function submitEntryTestAnswers(drawDuo: DrawDuoModel, drawDuoRef: DrawDu
 
 }
 
-function submitTestAnswer(userKey: string, currentEntryKey: string, drawDuoRef: DrawDuoRefModel) {
+function submitTestAnswer(userKey: string, currentEntryKey: string, drawDuoRef: DrawDuoRefModel, users: UsersModel) {
   const key = userKey;
+  const user = getUser(userKey, users);
+  if (!user.bot) return;
   const guessIndex = randomIntFromInterval(0, GUESSES.length - 1);
   const guess = (guessIndex < GUESSES.length - 1) ? GUESSES[guessIndex] : GUESSES[0];
   drawDuoRef.update({
@@ -229,13 +234,18 @@ export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoR
 
     pair.users.forEach((userKey) => {
 
-      const randomNumber = randomIntFromInterval(0, answerKeys.length + 4);
-      if (randomNumber > answerKeys.length - 1) {
-        votes[`/entries/${currentEntryKey}/answers/${promptAnswerKey}/votes/${userKey}`] = true;
-        votes[`/entries/${currentEntryKey}/votes/${userKey}`] = promptAnswerKey;
-      } else {
-        votes[`/entries/${currentEntryKey}/answers/${answerKeys[randomNumber]}/votes/${userKey}`] = true;
-        votes[`/entries/${currentEntryKey}/votes/${userKey}`] = answerKeys[randomNumber];
+      const user = getUser(userKey, drawDuo.users);
+      if (user.bot) {
+
+        const randomNumber = randomIntFromInterval(0, answerKeys.length + 4);
+        if (randomNumber > answerKeys.length - 1) {
+          votes[`/entries/${currentEntryKey}/answers/${promptAnswerKey}/votes/${userKey}`] = true;
+          votes[`/entries/${currentEntryKey}/votes/${userKey}`] = promptAnswerKey;
+        } else {
+          votes[`/entries/${currentEntryKey}/answers/${answerKeys[randomNumber]}/votes/${userKey}`] = true;
+          votes[`/entries/${currentEntryKey}/votes/${userKey}`] = answerKeys[randomNumber];
+        }
+      
       }
 
     });
@@ -453,4 +463,33 @@ export function getUserEntry(userKey: string, drawDuo: DrawDuoModel) {
   // const pairKey = getUserPairKey(userKey, drawDuo);
   const entryKey = getUserEntryKey(userKey, drawDuo);
   return getEntryByKey(entryKey, drawDuo);
+}
+
+export function isUserEntryParticipant(userKey: string, drawDuo: DrawDuoModel) {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  const userPairKey = getUserPairKey(userKey, drawDuo);
+  return (currentEntry.pair === userPairKey);
+}
+
+export function submitUserEntryVote(userKey: string, answerKey: string, drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  const votes = {
+    [`/entries/${currentEntryKey}/answers/${answerKey}/votes/${userKey}`]: true,
+    [`/entries/${currentEntryKey}/votes/${userKey}`]: answerKey,
+  };
+  drawDuoRef.update(votes);
+}
+
+export function submitUserEntryAnswer(userKey: string, answer: string, drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
+  const currentEntryKey = getCurrentEntryKey(drawDuo);
+  drawDuoRef.update({
+    [`/entries/${currentEntryKey}/answers/${userKey}`]: {
+      text: answer,
+      votes: {},
+      prompt: false,
+      user: userKey,
+      order: 0,
+      revealOrder: 0,
+    }
+  });
 }

@@ -5,7 +5,7 @@ import {
   DRAW_DUO_ROUND_STATE_VOTING
 } from './constants';
 import {randomIntFromInterval} from '../../../utils/numbers';
-import {getUserEntryKey, getUserPairKey, getUsers} from './users';
+import {getUser, getUserEntryKey, getUserPairKey, getUsers} from './users';
 
 export function isACurrentRound(drawDuo: DrawDuoModel) {
   return (drawDuo.currentRound);
@@ -175,6 +175,8 @@ export function submitRoundTestDrawings(drawDuo: DrawDuoModel, drawDuoRef: DrawD
 }
 
 export function submitRoundUserTestDrawing(userKey: string, drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel) {
+  const user = getUser(userKey, drawDuo.users);
+  if (!user.bot) return;
   const entryKey = getUserEntryKey(userKey, drawDuo);
   const pairKey = getUserPairKey(userKey, drawDuo);
   const currentRoundKey = getCurrentRoundKey(drawDuo);
