@@ -223,6 +223,7 @@
 
 .DrawDuoUser__image__drawing
 {
+  @include backgroundImage;
   @include fullBlock;
 }
 
