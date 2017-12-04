@@ -9,6 +9,13 @@ const PlayerCard = ({player}: { player: Player }) => {
       'PlayerCard',
     ])}>
       <div className='PlayerCard__image'>
+        {
+          (player.image) && (
+            <div className='PlayerCard__image__drawing' style={{
+              backgroundImage: `url(${player.image})`
+            }}></div>
+          )
+        }
       </div>
       <div className='PlayerCard__name'>{player.name}</div>
     </div>

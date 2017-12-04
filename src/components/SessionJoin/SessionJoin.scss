@@ -31,11 +31,40 @@
 .SessionJoin__drawing
 {
   //background-color: #FFFFFF;
-  border:     1px solid #000000;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-  height:     calc(100vw - 40px);
-  width:      calc(100vw - 40px);
-  position:   relative;
+  height:           calc(100vw - 40px);
+  width:            calc(100vw - 40px);
+  position:         relative;
+  background-color: #ffffff;
+  border-radius:    50%;
+  box-shadow:       0 3px 10px rgba(0, 0, 0, 0.15);
+  overflow:         hidden;
+  touch-action:     none;
+
+  canvas
+  {
+    outline:                     none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
+
+    &:focus
+    {
+      outline:                     none;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0); /* mobile webkit */
+    }
+
+  }
+
+}
+
+.SessionJoin__drawing__fruit
+{
+  position:            absolute;
+  top:                 0;
+  left:                0;
+  right:               0;
+  bottom:              0;
+  background-image:    url('../../assets/images/fruits/banana/banana_portrait.png');
+  background-size:     cover;
+  background-position: center;
 }
 
 .SessionJoin__drawing__message
@@ -49,7 +78,6 @@
   align-items:     center;
   justify-content: center;
 
-  opacity:         0.25;
   pointer-events:  none;
 
   @include mediumHeading;

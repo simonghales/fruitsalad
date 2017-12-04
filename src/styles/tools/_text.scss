@@ -34,6 +34,11 @@
   text-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
 }
 
+@mixin friendlyFont
+{
+  font-family: 'Indie Flower', cursive;
+}
+
 @mixin placeholder
 {
   &::-webkit-input-placeholder
@@ -158,4 +163,11 @@
   font-size:   24px;
   line-height: 30px;
   font-weight: 600;
+}
+
+@mixin largeHeading
+{
+  @include friendlyFont;
+  font-size:   48px;
+  line-height: 52px;
 }

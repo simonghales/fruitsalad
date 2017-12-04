@@ -37,9 +37,7 @@
 
 .LandingScreen__intro__title
 {
-  font-size:     48px;
-  line-height:   52px;
-  font-weight:   500;
+  @include largeHeading;
   text-align:    center;
   margin-bottom: 10px;
 }

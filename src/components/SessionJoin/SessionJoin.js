@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './SessionJoin.css';
+import DrawableCanvas from 'react-drawable-canvas';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {
@@ -16,11 +17,27 @@ class SessionJoin extends Component {
   props: {
     userName: string,
     joinSession(): void,
+    setCanvasElem(elem: any): void,
     setUserName(userName: string): void,
   };
 
   state: {
     name: string,
+  };
+
+  canvasElem;
+  canvasProps = {
+    brushColor: '#000000',
+    lineWidth: 3,
+    canvasStyle: {
+      backgroundColor: 'FFFFFF',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+    clear: false
   };
 
   constructor(props) {
@@ -30,6 +47,7 @@ class SessionJoin extends Component {
     };
     this.handleNameInputChange = this.handleNameInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.setCanvasElem = this.setCanvasElem.bind(this);
   }
 
   handleNameInputChange(event) {
@@ -44,7 +62,13 @@ class SessionJoin extends Component {
   handleSubmit(event) {
     const {joinSession} = this.props;
     event.preventDefault();
-    joinSession();
+    joinSession('');
+  }
+
+  setCanvasElem(elem) {
+    const {setCanvasElem} = this.props;
+    this.canvasElem = elem;
+    setCanvasElem(elem);
   }
 
   render() {
@@ -52,11 +76,15 @@ class SessionJoin extends Component {
     return (
       <form className='SessionJoin' onSubmit={this.handleSubmit}>
         <div className='SessionJoin__title'>
-          <div>Who are You?</div>
+          <div>Draw yourself</div>
         </div>
         <div className='SessionJoin__drawingContainer'>
           <div className='SessionJoin__drawing'>
-            <div className='SessionJoin__drawing__message'>Draw Yourself</div>
+            <div className='SessionJoin__drawing__fruit'></div>
+            <DrawableCanvas ref={(elem) => {
+              if (!this.canvasElem) this.setCanvasElem(elem);
+            }} {...this.canvasProps}/>
+            {/*<div className='SessionJoin__drawing__message'>Draw Yourself</div>*/}
           </div>
         </div>
         <div className={classNames([

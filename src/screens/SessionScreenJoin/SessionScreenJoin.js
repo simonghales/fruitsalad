@@ -13,6 +13,8 @@ import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom
 import SessionScreenJoinBottom from './SessionScreenJoinBottom';
 import {generateNewUser} from '../../models/user';
 import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
+import {FIREBASE_STORAGE_IMAGES_PATH} from '../../firebase/storage';
+import {joinAddUser} from '../../firebase/user';
 
 class SessionScreenJoin extends Component {
 
@@ -30,15 +32,20 @@ class SessionScreenJoin extends Component {
   };
 
   state: {
+    joining: boolean,
     userName: string,
   };
+
+  canvasElem;
 
   constructor(props) {
     super(props);
     this.state = {
+      joining: false,
       userName: '',
     };
     this.joinSession = this.joinSession.bind(this);
+    this.setCanvasElem = this.setCanvasElem.bind(this);
     this.setUserName = this.setUserName.bind(this);
   }
 
@@ -67,15 +74,23 @@ class SessionScreenJoin extends Component {
       return;
     } // todo - have a delay whilst session is loading...
 
+    this.setState({
+      joining: true,
+    });
+
     const currentUser = firebase.auth().currentUser;
 
-    firebase.set(`/sessions/${sessionKey}/users/${currentUser.uid}`, generateNewUser({
-      id: currentUser.uid,
-      name: userName,
-    }))
+    const image = (this.canvasElem) ? this.canvasElem.state.canvas.toDataURL('image/png').replace('data:image/png;base64,', '') : '';
+
+    joinAddUser(sessionKey, currentUser.uid, userName, image, firebase)
       .then((response) => {
         history.push(`/session/${match.params.id}/hub`);
       });
+
+  }
+
+  setCanvasElem(elem) {
+    this.canvasElem = elem;
   }
 
   setUserName(userName: string) {
@@ -101,7 +116,8 @@ class SessionScreenJoin extends Component {
       <MainLayout>
         <MainLayoutContent>
           <div className='SessionScreenJoin'>
-            <SessionJoin userName={userName} setUserName={this.setUserName} joinSession={this.joinSession}/>
+            <SessionJoin userName={userName} setCanvasElem={this.setCanvasElem} setUserName={this.setUserName}
+                         joinSession={this.joinSession}/>
           </div>
         </MainLayoutContent>
         <MainLayoutBottom>
