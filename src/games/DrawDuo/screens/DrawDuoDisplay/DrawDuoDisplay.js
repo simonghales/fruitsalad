@@ -1,45 +1,56 @@
 import React, {Component} from 'react';
 import './DrawDuoDisplay.css';
 import {connect} from 'react-redux';
-import {AppState} from '../../../../redux/index';
-import {firebaseConnect, isLoaded, isEmpty} from 'react-redux-firebase';
-import {getDisplayComponentFromGameState} from '../../functions';
-import {DrawDuoGame} from '../../models';
+import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {withRouter} from 'react-router';
+import {AppState} from '../../../../redux/index';
+import {SessionModel} from '../../logic/models';
+import {getDisplayComponentFromGameStateNEW} from '../../functions';
+import {getDisplayComponentFromGameState} from '../../logic/screens';
+import DrawDuoDisplayCenteredMessage from '../../components/DrawDuoDisplayCenteredMessage/DrawDuoDisplayCenteredMessage';
+import DrawDuoDisplayPending from '../../newscreens/DrawDuoDisplayPending/DrawDuoDisplayPending';
+import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoGameHost from '../../components/DrawDuoGameHost/DrawDuoGameHost';
 
 class DrawDuoDisplay extends Component {
 
   props: {
     host: boolean,
-    session: {
-      drawDuo: DrawDuoGame,
+    match: {
+      params: {
+        id: string,
+      },
     },
+    session: SessionModel,
     sessionLoaded: boolean,
     sessionEmpty: boolean,
     sessionValid: boolean,
   };
 
+  constructor(props) {
+    super(props);
+  }
+
   renderContent() {
-    const {session, sessionEmpty, sessionLoaded, sessionValid} = this.props;
+    const {match, session, sessionEmpty, sessionLoaded, sessionValid} = this.props;
     if (!sessionValid) {
       return (
-        <div className='DrawDuoDisplay__message'>
+        <DrawDuoDisplayCenteredMessage>
           {
             !sessionLoaded && (
-              <div>
-                LOADING SESSION
-              </div>
+              <DrawDuoAnimatedMessage label={`loading ${match.params.id} session`} size='huge'/>
             )
           }
           {
             sessionLoaded && sessionEmpty && (
-              <div>
-                NO SESSION FOUND
-              </div>
+              <DrawDuoAnimatedMessage label={`${match.params.id} not found`} size='huge'/>
             )
           }
-        </div>
+        </DrawDuoDisplayCenteredMessage>
+      )
+    } else if (!session.drawDuo) {
+      return (
+        <DrawDuoDisplayPending/>
       )
     } else {
       return getDisplayComponentFromGameState(session.drawDuo);
@@ -50,8 +61,12 @@ class DrawDuoDisplay extends Component {
     const {host} = this.props;
     return (
       <div className='DrawDuoDisplay'>
-        {host && <DrawDuoGameHost/>}
-        {this.renderContent()}
+        {
+          (host) && <DrawDuoGameHost/>
+        }
+        {
+          this.renderContent()
+        }
       </div>
     )
   }

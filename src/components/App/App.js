@@ -12,11 +12,11 @@ import GamesScreen from '../../screens/GamesScreen/GamesScreen';
 import {AppState} from '../../redux/index';
 import {UserIsAuthenticated} from '../../auth/UserIsAuthenticated/UserIsAuthenticated';
 import {Redirect, Switch} from 'react-router';
-import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplayNEW/DrawDuoDisplay';
-import DrawDuoHostWrapper from '../../games/DrawDuo/components/DrawDuoGameHostNEW/DrawDuoGameHost';
+import DrawDuoDisplay from '../../games/DrawDuo/screens/DrawDuoDisplay/DrawDuoDisplay';
 import SessionRedirect from '../../screens/SessionRedirect/SessionRedirect';
 import AppLoadingScreen from '../../screens/AppLoadingScreen/AppLoadingScreen';
 import DrawDuoController from '../../games/DrawDuo/newscreens/DrawDuoController/DrawDuoController';
+import DrawDuoHostWrapper from '../../games/DrawDuo/screens/DrawDuoHostWrapper/DrawDuoHostWrapper';
 
 class App extends Component {
 

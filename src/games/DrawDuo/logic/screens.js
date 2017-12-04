@@ -97,6 +97,29 @@ export function getControllerComponentFromGameState(drawDuo: DrawDuoModel) {
 
 }
 
+export function getEntryDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
+  if (!drawDuo) return null;
+
+  const entryCurrentState = getEntryCurrentState(drawDuo);
+
+  switch (entryCurrentState) {
+    case DRAW_DUO_ENTRY_STATE_PENDING:
+      return null;
+    case DRAW_DUO_ENTRY_STATE_GUESSING:
+      return <DrawDuoDisplayEntryGuessing/>;
+    case DRAW_DUO_ENTRY_STATE_VOTING:
+      return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
+    case DRAW_DUO_ENTRY_STATE_RESULTS:
+      return <DrawDuoDisplayEntryVoting state={entryCurrentState}/>;
+    case DRAW_DUO_ENTRY_STATE_COMPLETED:
+      return <DrawDuoDisplayEntryCompleted state={entryCurrentState}/>;
+    default:
+      console.warn(`unable to match entryCurrentState: ${entryCurrentState}`);
+      return null;
+  }
+
+}
+
 export function getGamePlayingControllerComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
 
@@ -109,7 +132,7 @@ export function getGamePlayingControllerComponentFromGameState(drawDuo: DrawDuoM
     case DRAW_DUO_ROUND_STATE_DRAWING:
       return <DrawDuoControllerDrawing/>;
     case DRAW_DUO_ROUND_STATE_VOTING:
-      return getEntryDisplayComponentFromGameState(drawDuo);
+      return getEntryControllerComponentFromGameState(drawDuo);
     case DRAW_DUO_ROUND_STATE_RESULTS:
       return <DrawDuoControllerResults/>;
     case DRAW_DUO_ROUND_STATE_COMPLETED:
@@ -121,7 +144,7 @@ export function getGamePlayingControllerComponentFromGameState(drawDuo: DrawDuoM
   }
 }
 
-export function getEntryDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
+export function getEntryControllerComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
 
   const entryCurrentState = getEntryCurrentState(drawDuo);

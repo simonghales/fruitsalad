@@ -63,6 +63,10 @@ class DrawDuoUser extends Component {
       submittedDisplay = true
     } = this.props;
     const user: UserModel = getUser(userKey, users);
+    if (!user) {
+      console.warn('user doesnt exist');
+      return null;
+    }
     const userHasSubmitted = hasUserSubmittedDrawing(userKey, session.drawDuo);
     return (
       <div className={classNames([
