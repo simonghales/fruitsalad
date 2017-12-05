@@ -8,7 +8,7 @@ import {getUserEntry} from '../../logic/entries';
 import {firebaseConnect} from 'react-redux-firebase';
 import {EntryModel, SessionModel} from '../../logic/models';
 import {uploadDrawingImage} from '../../../../firebase/user';
-import {submitRoundUserDrawing} from '../../logic/rounds';
+import {getCurrentRoundKey, submitRoundUserDrawing} from '../../logic/rounds';
 import {withRouter} from 'react-router';
 
 class DrawDuoControllerDrawing extends Component {
@@ -19,6 +19,7 @@ class DrawDuoControllerDrawing extends Component {
     userKey: string,
     session: SessionModel,
     sessionKey: string,
+    roundKey: string,
   };
 
   state: {
@@ -54,7 +55,7 @@ class DrawDuoControllerDrawing extends Component {
     console.log('submit drawing...');
     const {submitting, submitted} = this.state;
     if (submitted || submitting) return;
-    const {firebase, userKey, session, sessionKey} = this.props;
+    const {firebase, userKey, session, sessionKey, roundKey} = this.props;
     this.setState({
       submitting: true,
     });
@@ -63,7 +64,7 @@ class DrawDuoControllerDrawing extends Component {
 
     const ref = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
 
-    uploadDrawingImage(image, firebase)
+    uploadDrawingImage(image, firebase, sessionKey, roundKey, userKey)
       .then(({downloadURL}) => {
         submitRoundUserDrawing(downloadURL, userKey, session.drawDuo, ref);
         this.setState({
@@ -103,11 +104,13 @@ const mapStateToProps = (state: AppState, props) => {
   const {firebase, match} = props;
   const session = state.firebase.data.session;
   const currentUser = firebase.auth().currentUser;
+  const roundKey = getCurrentRoundKey(session.drawDuo);
   return {
     userEntry: getUserEntry(currentUser.uid, session.drawDuo),
     userKey: currentUser.uid,
     session,
     sessionKey: match.params.id,
+    roundKey,
   };
 };
 
