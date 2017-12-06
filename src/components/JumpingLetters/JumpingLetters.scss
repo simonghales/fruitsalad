@@ -1,0 +1,51 @@
+@import "../../styles/tools/animations";
+
+@mixin slowSpeed
+{
+
+  &.JumpingLetters--speed-slow,
+  .JumpingLetters--speed-slow &
+  {
+    @content;
+  }
+
+}
+
+.JumpingLetters
+{
+
+  span
+  {
+    animation: driftUpAndDown 1000ms ease infinite alternate;
+    display:   inline-block;
+
+    @for $i from 1 to 50
+    {
+
+      &:nth-child(#{$i})
+      {
+        animation-delay: ($i * 100ms);
+      }
+
+    }
+
+  }
+
+  @include slowSpeed
+  {
+
+    span
+    {
+      animation-name:     driftUpAndDownSmaller;
+      animation-duration: 1500ms;
+      //animation-timing-function: linear;
+    }
+
+  }
+
+  .emptySpace
+  {
+    margin: 0 15px;
+  }
+
+}

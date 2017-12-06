@@ -10,7 +10,12 @@
 
 @mixin headingFont
 {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Caveat Brush', cursive;
+}
+
+@mixin friendlyFont
+{
+  font-family: 'Indie Flower', cursive;
 }
 
 @mixin drawDuoHeadingFont
@@ -32,11 +37,6 @@
 @mixin textShadow
 {
   text-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-}
-
-@mixin friendlyFont
-{
-  font-family: 'Indie Flower', cursive;
 }
 
 @mixin placeholder
@@ -81,14 +81,6 @@
 {
   @include smallSizeFont;
   color: $color-medium;
-}
-
-@mixin mediumHeading
-{
-  @include headingFont;
-  @include increasedLetterSpacing;
-  font-size:   14px;
-  font-weight: 600;
 }
 
 @mixin hugeDrawDuoHeading
@@ -170,4 +162,18 @@
   @include friendlyFont;
   font-size:   48px;
   line-height: 52px;
+}
+
+@mixin hugeHeading
+{
+  @include headingFont;
+  font-size:   130px;
+  line-height: 150px;
+}
+
+@mixin mediumHeading
+{
+  @include friendlyFont;
+  font-size:   70px;
+  line-height: 80px;
 }
