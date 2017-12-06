@@ -22,7 +22,7 @@ class DrawDuoSessionUser extends Component {
           }
         </div>
         <div className='DrawDuoSessionUser__label'>
-          <span>
+          <span data-text={user.name}>
           {user.name}
           </span>
         </div>

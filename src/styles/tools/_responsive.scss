@@ -1,0 +1,9 @@
+@mixin smallDevice
+{
+
+  @media (max-width: 768px)
+  {
+    @content;
+  }
+
+}

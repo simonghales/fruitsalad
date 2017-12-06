@@ -1,45 +1,64 @@
+@import "../../styles/settings/colors";
 @import "../../styles/settings/sizes";
 @import "../../styles/tools/buttons";
 @import "../../styles/tools/drawing";
 @import "../../styles/tools/inputs";
+@import "../../styles/tools/images";
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
 .SessionJoin
 {
+  @include verticalMargin;
   @include sideMargin;
   height:          100%;
   display:         flex;
   flex-direction:  column;
   justify-content: center;
+  position:        relative;
 }
 
 .SessionJoin__title
 {
-  @include mediumHeading;
+  @include smallHeading;
   margin-top: -20px;
   text-align: center;
 }
 
 .SessionJoin__drawingContainer
 {
-  margin:          20px 0 25px 0;
+  width:  calc(100vw - 80px);
+  height: calc(1.683 * (100vw - 80px));
+  margin: 0 auto;
+}
+
+.SessionJoin__drawingMessage
+{
+  @include text-stroke($size: 4);
+  @include mediumThickHeading;
+  position:        absolute;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
   display:         flex;
   align-items:     center;
   justify-content: center;
+  text-align:      center;
 }
 
 .SessionJoin__drawing
 {
   //background-color: #FFFFFF;
-  height:           calc(100vw - 40px);
-  width:            calc(100vw - 40px);
-  position:         relative;
-  background-color: #ffffff;
-  border-radius:    50%;
-  box-shadow:       0 3px 10px rgba(0, 0, 0, 0.15);
-  overflow:         hidden;
-  touch-action:     none;
+  width:        100%;
+  height:       100%;
+  //height:           calc(100vw - 40px);
+  position:     relative;
+  //background-color: #ffffff;
+  //border-radius:    50%;
+  //box-shadow:       0 3px 10px rgba(0, 0, 0, 0.15);
+  //overflow:         hidden;
+  touch-action: none;
 
   canvas
   {
@@ -50,14 +69,15 @@
 
 .SessionJoin__drawing__fruit
 {
-  position:            absolute;
-  top:                 0;
-  left:                0;
-  right:               0;
-  bottom:              0;
-  background-image:    url('../../assets/images/fruits/banana/banana_portrait.png');
-  background-size:     cover;
-  background-position: center;
+  @include bananaFullBackground('../../');
+  position: absolute;
+  top:      0;
+  left:     0;
+  right:    0;
+  bottom:   0;
+  //background-image:    url('../../assets/images/fruits/banana/banana_portrait.png');
+  //background-size:     cover;
+  //background-position: center;
 }
 
 .SessionJoin__drawing__message
@@ -79,26 +99,60 @@
 
 .SessionJoin__nameInput
 {
-  position: relative;
-}
+  @include sideMargin;
+  position: absolute;
+  top:      10px;
+  left:     0;
+  right:    0;
+  z-index:  20;
 
-.SessionJoin__nameInput__label
-{
-  @include mediumHeading;
-  position:   absolute;
-  top:        10px;
-  left:       0;
-  transition: transform 300ms ease, opacity 300ms ease;
-
-  .SessionJoin__nameInput--active &
+  &::before
   {
-    transform: translate(-5px, -21px) scale(0.9);
-    opacity:   0.5;
+    content:          '';
+    position:         absolute;
+    bottom:           0;
+    left:             40px;
+    right:            40px;
+    height:           4px;
+    background-color: transparentize($color-text, 0);
+    border-radius:    10px;
+    transition:       background 300ms ease;
+  }
+
+  &.SessionJoin__nameInput--active
+  {
+
+    &::before
+    {
+      background-color: transparentize($color-text, 1);
+    }
+
   }
 
 }
 
 .SessionJoin__nameInput__input
 {
-  position: relative;
+  position:   relative;
+  text-align: center;
+}
+
+.SessionJoin__buttonWrapper
+{
+  position:   absolute;
+  bottom:     20px;
+  left:       20px;
+  right:      20px;
+  text-align: center;
+  z-index:    20;
+}
+
+.SessionJoin__button
+{
+  @include mediumThickHeading;
+  background-color: #ffffff;
+  color:            $color-text;
+  border:           4px solid $color-text;
+  padding:          6px 32px 8px 32px;
+  border-radius:    32px;
 }

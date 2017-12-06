@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
 import './DrawDuoDisplayPending.css';
+import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
-import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
-import {DrawDuoGame} from '../../models';
-import DrawDuoPairs from '../../components/DrawDuoPairs/DrawDuoPairs';
-import {DrawDuoModel, SessionModel} from '../../logic/models';
-import DrawDuoArtworks from '../../components/DrawDuoArtworks/DrawDuoArtworks';
-import DrawDuoTitle from '../../components/DrawDuoTitle/DrawDuoTitle';
-import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
-import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesIndicators/DrawDuoUserGuessesIndicators';
-import {getCurrentPairKey} from '../../logic/users';
-import DrawDuoDisplayEntryGuessing from '../DrawDuoDisplayEntryGuessing/DrawDuoDisplayEntryGuessing';
-import DrawDuoDisplayEntryVoting from '../DrawDuoDisplayEntryVoting/DrawDuoDisplayEntryVoting';
-import {getEntryDisplayComponentFromGameState} from '../../logic/screens';
+import {SessionModel} from '../../logic/models';
+import {getUsers, isMinimumNumberOfUsers} from '../../logic/users';
 import {withRouter} from 'react-router';
 import DrawDuoDisplayPendingUsers from '../DrawDuoDisplayPendingUsers/DrawDuoDisplayPendingUsers';
+import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
+import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
+import DrawDuoDisplayFooter from '../../components/DrawDuoDisplayFooter/DrawDuoDisplayFooter';
+import LargeHeading from '../../../../components/LargeHeading/LargeHeading';
+import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
+import DrawDuoDisplayWrapper from '../../components/DrawDuoDisplayWrapper/DrawDuoDisplayWrapper';
 
 class DrawDuoDisplayPending extends Component {
 
@@ -26,25 +23,38 @@ class DrawDuoDisplayPending extends Component {
       },
     },
     session: SessionModel,
+    promptHostToStart: boolean,
   };
 
   render() {
-    const {match, session} = this.props;
+    const {match, promptHostToStart} = this.props;
     const sessionCode = match.params.id;
     return (
-      <div className='DrawDuoDisplayPending'>
-        <header className='DrawDuoDisplayPending__header'>
-          <h2 className='DrawDuoDisplayPending__header__title'>
-            Draw Duo
-          </h2>
-          <DrawDuoAnimatedMessage label={`Join at fruitsalad.party/${sessionCode}`} size='huge'/>
-        </header>
-        <div className='DrawDuoDisplayPending__content'>
-          <DrawDuoDisplayPendingUsers/>
-        </div>
-        <footer className='DrawDuoDisplayPending__footer'>
-          <DrawDuoAnimatedMessage label='The host must press start to begin' size='huge'/>
-        </footer>
+      <div className={classNames([
+        'DrawDuoDisplayPending',
+        {
+          'DrawDuoDisplayPending--promptHostToStart': promptHostToStart,
+        }
+      ])}>
+        <DrawDuoDisplayWrapper>
+          <DrawDuoDisplayHeader>
+            <LargeHeading>
+              <JumpingLetters label={`Join at fruitsalad.party/${sessionCode}`} intensity='less'/>
+            </LargeHeading>
+          </DrawDuoDisplayHeader>
+          <DrawDuoDisplayBody>
+            <div className='DrawDuoDisplayPending__content'>
+              <DrawDuoDisplayPendingUsers/>
+            </div>
+          </DrawDuoDisplayBody>
+          <DrawDuoDisplayFooter>
+            <div className='DrawDuoDisplayPending__hostPrompt'>
+              <LargeHeading>
+                <JumpingLetters label='The host must press start to begin' intensity='less'/>
+              </LargeHeading>
+            </div>
+          </DrawDuoDisplayFooter>
+        </DrawDuoDisplayWrapper>
       </div>
     )
   }
@@ -52,8 +62,11 @@ class DrawDuoDisplayPending extends Component {
 
 const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
+  const users = getUsers(session.drawDuo);
+  const promptHostToStart = isMinimumNumberOfUsers(users);
   return {
     session: session,
+    promptHostToStart,
   };
 };
 

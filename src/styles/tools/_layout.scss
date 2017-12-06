@@ -8,3 +8,9 @@
 {
   padding-top: (20px + $extraPadding);
 }
+
+@mixin verticalMargin($extraPadding: 0)
+{
+  padding-top: (20px + $extraPadding);
+  padding-bottom: (20px + $extraPadding);
+}

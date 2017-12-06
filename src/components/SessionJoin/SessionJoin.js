@@ -75,29 +75,28 @@ class SessionJoin extends Component {
     const {name} = this.state;
     return (
       <form className='SessionJoin' onSubmit={this.handleSubmit}>
-        <div className='SessionJoin__title'>
-          <div>Draw yourself</div>
-        </div>
-        <div className='SessionJoin__drawingContainer'>
-          <div className='SessionJoin__drawing'>
-            <div className='SessionJoin__drawing__fruit'></div>
-            <DrawableCanvas ref={(elem) => {
-              if (!this.canvasElem) this.setCanvasElem(elem);
-            }} {...this.canvasProps}/>
-            {/*<div className='SessionJoin__drawing__message'>Draw Yourself</div>*/}
-          </div>
-        </div>
         <div className={classNames([
           'SessionJoin__nameInput',
           {
             'SessionJoin__nameInput--active': name !== '',
           }
         ])}>
-          <div className='SessionJoin__nameInput__label'>Enter your name</div>
           <PlainInput reducedPadding={true}>
             <input type='text' className='SessionJoin__nameInput__input'
-                   value={name} onChange={this.handleNameInputChange}/>
+                   value={name} onChange={this.handleNameInputChange} placeholder='enter your name'/>
           </PlainInput>
+        </div>
+        <div className='SessionJoin__drawingContainer'>
+          <div className='SessionJoin__drawing'>
+            <div className='SessionJoin__drawing__fruit'></div>
+            <div className='SessionJoin__drawingMessage'>draw your inner banana</div>
+            <DrawableCanvas ref={(elem) => {
+              if (!this.canvasElem) this.setCanvasElem(elem);
+            }} {...this.canvasProps}/>
+          </div>
+        </div>
+        <div className='SessionJoin__buttonWrapper'>
+          <button className='SessionJoin__button'>join</button>
         </div>
       </form>
     );

@@ -170,6 +170,7 @@ export function arePairResultsDifferent(pairResultsA, pairResultsB): boolean {
 }
 
 export function getUsers(drawDuo: DrawDuoModel): UsersModel {
+  if (!drawDuo) return {};
   const {users} = drawDuo;
   return (users) ? users : {};
 }
@@ -293,4 +294,8 @@ export function getUserDrawing(userKey: string, drawDuo: DrawDuoModel) {
     return (drawings[key].user === userKey && drawings[key].entry === currentEntryKey);
   })
   return (drawings[matchedDrawingKey]) ? drawings[matchedDrawingKey] : null;
+}
+
+export function isMinimumNumberOfUsers(users: UsersModel): boolean {
+  return (users && Object.keys(users).length > 3);
 }

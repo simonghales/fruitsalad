@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedSessionScreen = firebaseConnect((props, store) => {
-  const sessionKey = props.match.params.id;
+  const sessionKey = props.match.params.id.toUpperCase();
   let queries = [
     {
       path: `/sessions/${sessionKey}`,

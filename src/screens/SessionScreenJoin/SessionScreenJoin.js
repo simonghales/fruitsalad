@@ -114,15 +114,15 @@ class SessionScreenJoin extends Component {
 
     return (
       <MainLayout>
-        <MainLayoutContent>
-          <div className='SessionScreenJoin'>
-            <SessionJoin userName={userName} setCanvasElem={this.setCanvasElem} setUserName={this.setUserName}
-                         joinSession={this.joinSession}/>
-          </div>
-        </MainLayoutContent>
-        <MainLayoutBottom>
-          <SessionScreenJoinBottom joinSession={this.joinSession}/>
-        </MainLayoutBottom>
+        {/*<MainLayoutContent>*/}
+        <div className='SessionScreenJoin'>
+          <SessionJoin userName={userName} setCanvasElem={this.setCanvasElem} setUserName={this.setUserName}
+                       joinSession={this.joinSession}/>
+        </div>
+        {/*</MainLayoutContent>*/}
+        {/*<MainLayoutBottom>*/}
+        {/*<SessionScreenJoinBottom joinSession={this.joinSession}/>*/}
+        {/*</MainLayoutBottom>*/}
       </MainLayout>
     );
   }

@@ -5,15 +5,15 @@
 
 .MainLayoutBottom
 {
-  position:         fixed;
-  left:             0;
-  right:            0;
-  bottom:           0;
-  background-color: #FFFFFF;
-  height:           72px;
-  box-shadow:       0 -1px 5px rgba(0, 0, 0, 0.05), 0 -5px 25px rgba(0, 0, 0, 0.05);
-  transition:       transform 300ms ease, box-shadow 300ms ease;
-  overflow:         hidden;
+  position:   fixed;
+  left:       0;
+  right:      0;
+  bottom:     0;
+  //background-color: #FFFFFF;
+  height:     72px;
+  //box-shadow:       0 -1px 5px rgba(0, 0, 0, 0.05), 0 -5px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+  overflow:   hidden;
 
   &.MainLayoutBottom--hidden
   {

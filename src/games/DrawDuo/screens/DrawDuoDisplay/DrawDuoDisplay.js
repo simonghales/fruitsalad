@@ -11,6 +11,8 @@ import DrawDuoDisplayCenteredMessage from '../../components/DrawDuoDisplayCenter
 import DrawDuoDisplayPending from '../../newscreens/DrawDuoDisplayPending/DrawDuoDisplayPending';
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoGameHost from '../../components/DrawDuoGameHost/DrawDuoGameHost';
+import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
+import LargeHeading from '../../../../components/LargeHeading/LargeHeading';
 
 class DrawDuoDisplay extends Component {
 
@@ -36,16 +38,18 @@ class DrawDuoDisplay extends Component {
     if (!sessionValid) {
       return (
         <DrawDuoDisplayCenteredMessage>
-          {
-            !sessionLoaded && (
-              <DrawDuoAnimatedMessage label={`loading ${match.params.id} session`} size='huge'/>
-            )
-          }
-          {
-            sessionLoaded && sessionEmpty && (
-              <DrawDuoAnimatedMessage label={`${match.params.id} not found`} size='huge'/>
-            )
-          }
+          <LargeHeading>
+            {
+              !sessionLoaded && (
+                <JumpingLetters label={`loading ${match.params.id} session`} size='huge'/>
+              )
+            }
+            {
+              sessionLoaded && sessionEmpty && (
+                <JumpingLetters label={`${match.params.id} not found`} size='huge'/>
+              )
+            }
+          </LargeHeading>
         </DrawDuoDisplayCenteredMessage>
       )
     } else if (!session.drawDuo) {

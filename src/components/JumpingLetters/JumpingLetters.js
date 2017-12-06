@@ -10,10 +10,11 @@ function getLetters(label: string): string[] {
   return letters;
 }
 
-const JumpingLetters = ({label = '', speed = 'normal'}) => {
+const JumpingLetters = ({label = '', speed = 'normal', intensity = 'normal'}) => {
   return (
     <div className={classNames([
       'JumpingLetters',
+      `JumpingLetters--intensity-${intensity}`,
       `JumpingLetters--speed-${speed}`,
     ])}>
       {

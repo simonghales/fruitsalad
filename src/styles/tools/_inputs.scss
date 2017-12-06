@@ -1,24 +1,25 @@
+@import "../settings/colors";
 @import "./text";
 @import "./buttons";
 
 @mixin plainInput
 {
-  color:         #000000;
-  border-bottom: 1px solid #000000;
-  padding:       10px 0;
-  display:       block;
-  width:         100%;
+  @include text-stroke($size: 4);
+  color:   $color-text;
+  padding: 10px 0;
+  display: block;
+  width:   100%;
 
-  @include mediumHeading;
+  @include mediumThickHeading;
 
   @include placeholder
   {
-    color: #000000;
+    color: $color-text;
   }
 
   &:focus
   {
-    color: #000000;
+    color: $color-text;
   }
 
 }

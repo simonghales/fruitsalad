@@ -1,3 +1,4 @@
+@import "../../../../styles/settings/colors";
 @import "../../../../styles/settings/sizes";
 @import "../../../../styles/tools/buttons";
 @import "../../../../styles/tools/inputs";
@@ -14,12 +15,12 @@
 
 .DrawDuoSessionUser__image
 {
-  @include bananaBackground('../../../../');
-  width:            200px;
-  height:           200px;
-  background-color: #ffffff;
-  border-radius:    50%;
-  box-shadow:       0 2px 10px rgba(0, 0, 0, 0.15);
+  @include bananaFullBackground('../../../../');
+  width:  300px;
+  height: 610px;
+  //background-color: #ffffff;
+  //border-radius:    50%;
+  //box-shadow:       0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 .DrawDuoSessionUser__image__drawing
@@ -32,23 +33,22 @@
 .DrawDuoSessionUser__label
 {
   $extraWidth: 50px;
-  @include drawDuoFont;
-  font-size:   48px;
-  line-height: 54px;
+  @include mediumFont;
+  font-size:   64px;
+  line-height: 74px;
   position:    absolute;
   left:        -($extraWidth / 2);
   right:       -($extraWidth / 2);
-  width:       200px + $extraWidth;
+  width:       300px + $extraWidth;
+  bottom:      25%;
   text-align:  center;
-  margin-top:  -20px;
 
   span
   {
-    background-color: #ffffff;
-    display:          inline-block;
-    padding:          12px 30px;
-    border-radius:    10px;
-    box-shadow:       0 2px 10px rgba(0, 0, 0, 0.15);
+    @include text-stroke($size: 8, $color: $color-text, $correction: 3);
+    display:        inline-block;
+    color:          #ffffff;
+    letter-spacing: 1px;
   }
 
 }

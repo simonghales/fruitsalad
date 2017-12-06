@@ -11,6 +11,17 @@
 
 }
 
+@mixin lessIntensity
+{
+
+  &.JumpingLetters--intensity-less,
+  .JumpingLetters--intensity-less &
+  {
+    @content;
+  }
+
+}
+
 .JumpingLetters
 {
 
@@ -38,7 +49,16 @@
     {
       animation-name:     driftUpAndDownSmaller;
       animation-duration: 1500ms;
-      //animation-timing-function: linear;
+    }
+
+  }
+
+  @include lessIntensity
+  {
+
+    span
+    {
+      animation-name: driftUpAndDownSmaller;
     }
 
   }

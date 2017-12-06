@@ -3,6 +3,7 @@
 @import "../../styles/tools/buttons";
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
+@import "../../styles/tools/responsive";
 @import "../../styles/tools/text";
 
 .AppLoadingScreen
@@ -27,6 +28,12 @@
   @include hugeHeading;
   text-align:    center;
   margin-bottom: 10px;
+
+  @include smallDevice
+  {
+    @include hugeHeadingMobile;
+  }
+
 }
 
 .AppLoadingScreen__subtitle
@@ -34,6 +41,12 @@
   @include mediumHeading;
   text-align: center;
   margin:     0 20px;
+
+  @include smallDevice
+  {
+    @include mediumHeadingMobile;
+  }
+
 }
 
 .AppLoadingScreen__loading
