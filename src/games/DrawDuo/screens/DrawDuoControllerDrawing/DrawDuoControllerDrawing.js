@@ -11,6 +11,7 @@ import {uploadDrawingImage} from '../../../../firebase/user';
 import {getCurrentRoundKey, submitRoundUserDrawing} from '../../logic/rounds';
 import {withRouter} from 'react-router';
 import DrawingCanvas from '../../../../components/DrawingCanvas/DrawingCanvas';
+import PreventScroll from '../../../../components/PreventScroll/PreventScroll';
 
 class DrawDuoControllerDrawing extends Component {
 
@@ -87,22 +88,24 @@ class DrawDuoControllerDrawing extends Component {
       <div>SUBMITTED...</div>
     );
     return (
-      <div className='DrawDuoControllerDrawing'>
-        <div className='DrawDuoControllerDrawing__content'>
-          <h3 className='DrawDuoControllerDrawing__title'>
-            draw this
-          </h3>
-          <div className='DrawDuoControllerDrawing__prompt'>{userEntry && userEntry.prompt}</div>
-          <div className='DrawDuoControllerDrawing__drawingContainer'>
-            <DrawingCanvas ref={(elem) => {
-              if (!this.canvasElem) this.setCanvasElem(elem);
-            }} {...this.canvasProps}/>
-          </div>
-          <div className='DrawDuoControllerDrawing__buttonWrapper'>
-            <ArtyButton onClick={this.submitDrawing}>Submit</ArtyButton>
+      <PreventScroll>
+        <div className='DrawDuoControllerDrawing'>
+          <div className='DrawDuoControllerDrawing__content'>
+            <h3 className='DrawDuoControllerDrawing__title'>
+              draw this
+            </h3>
+            <div className='DrawDuoControllerDrawing__prompt'>{userEntry && userEntry.prompt}</div>
+            <div className='DrawDuoControllerDrawing__drawingContainer'>
+              <DrawingCanvas ref={(elem) => {
+                if (!this.canvasElem) this.setCanvasElem(elem);
+              }} {...this.canvasProps}/>
+            </div>
+            <div className='DrawDuoControllerDrawing__buttonWrapper'>
+              <ArtyButton onClick={this.submitDrawing}>Submit</ArtyButton>
+            </div>
           </div>
         </div>
-      </div>
+      </PreventScroll>
     )
   }
 }

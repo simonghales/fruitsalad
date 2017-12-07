@@ -27,7 +27,8 @@
   flex-direction:  column;
   justify-content: center;
   position:        relative;
-  touch-action: none;
+  touch-action:    none;
+  overflow:        hidden;
 }
 
 .SessionJoin__title

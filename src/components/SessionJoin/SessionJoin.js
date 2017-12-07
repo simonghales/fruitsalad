@@ -14,6 +14,7 @@ import {AppState} from '../../redux/index';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import DrawingCanvas from '../DrawingCanvas/DrawingCanvas';
+import PreventScroll from '../PreventScroll/PreventScroll';
 
 class SessionJoin extends Component {
 
@@ -57,6 +58,7 @@ class SessionJoin extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setCanvasElem = this.setCanvasElem.bind(this);
     this.joinSession = this.joinSession.bind(this);
+
   }
 
   handleNameInputChange(event) {
@@ -109,37 +111,39 @@ class SessionJoin extends Component {
     const {name, validNameAdded} = this.state;
     const canJoin = this.canJoin();
     return (
-      <form className={classNames([
-        'SessionJoin',
-        {
-          'SessionJoin--noValidNameAdded': !validNameAdded,
-        }
-      ])} onSubmit={this.handleSubmit}>
-        <div className={classNames([
-          'SessionJoin__nameInput',
+      <PreventScroll>
+        <form className={classNames([
+          'SessionJoin',
           {
-            'SessionJoin__nameInput--active': name !== '',
+            'SessionJoin--noValidNameAdded': !validNameAdded,
           }
-        ])}>
-          <Input type='text' ref={(element) => {
-            if (!this.nameInput) this.nameInput = element;
-          }}
-                 value={name} onChange={this.handleNameInputChange} onBlur={this.handleNameInputBlur}
-                 placeholder='enter your name'/>
-        </div>
-        <div className='SessionJoin__drawingContainer'>
-          <div className='SessionJoin__drawing'>
-            <div className='SessionJoin__drawingMessage'>draw your <br/> inner <br/> banana</div>
-            <div className='SessionJoin__drawing__fruit'></div>
-            <DrawingCanvas ref={(elem) => {
-              if (!this.canvasElem) this.setCanvasElem(elem);
-            }}/>
+        ])} onSubmit={this.handleSubmit}>
+          <div className={classNames([
+            'SessionJoin__nameInput',
+            {
+              'SessionJoin__nameInput--active': name !== '',
+            }
+          ])}>
+            <Input type='text' ref={(element) => {
+              if (!this.nameInput) this.nameInput = element;
+            }}
+                   value={name} onChange={this.handleNameInputChange} onBlur={this.handleNameInputBlur}
+                   placeholder='enter your name'/>
           </div>
-        </div>
-        <div className='SessionJoin__buttonWrapper'>
-          <Button disabled={!canJoin} mobileFullWidth={true}>join</Button>
-        </div>
-      </form>
+          <div className='SessionJoin__drawingContainer'>
+            <div className='SessionJoin__drawing'>
+              <div className='SessionJoin__drawingMessage'>draw your <br/> inner <br/> banana</div>
+              <div className='SessionJoin__drawing__fruit'></div>
+              <DrawingCanvas ref={(elem) => {
+                if (!this.canvasElem) this.setCanvasElem(elem);
+              }}/>
+            </div>
+          </div>
+          <div className='SessionJoin__buttonWrapper'>
+            <Button disabled={!canJoin} mobileFullWidth={true}>join</Button>
+          </div>
+        </form>
+      </PreventScroll>
     );
   }
 }
