@@ -1,6 +1,7 @@
 import {
   AnswerModel,
-  DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, PairsModel, RoundModel, UserModel,
+  DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, PairsModel, RoundModel, SessionModel,
+  UserModel,
   UsersModel
 } from './models';
 import {doesPairOwnEntry, getCurrentEntryData, getCurrentEntryKey} from './entries';
@@ -298,4 +299,17 @@ export function getUserDrawing(userKey: string, drawDuo: DrawDuoModel) {
 
 export function isMinimumNumberOfUsers(users: UsersModel): boolean {
   return (users && Object.keys(users).length > 3);
+}
+
+export function isUserHost(userKey: string, session: SessionModel): boolean {
+  if (!session) return false;
+  return (userKey === session.host);
+}
+
+export function isUserJoined(userKey: string, session: SessionModel): boolean {
+  if (!session) return false;
+  const matchedUser = (Object.keys(session.users).find((key: string) => {
+    return userKey === key;
+  }));
+  return (matchedUser && matchedUser !== '');
 }

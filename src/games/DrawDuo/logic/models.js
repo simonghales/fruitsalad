@@ -177,6 +177,7 @@ export interface DrawDuoModel {
 export interface SessionModel {
   drawDuo: DrawDuoModel,
   users: SessionUsersModel,
+  host: string,
 }
 
 export interface SessionUsersModel {

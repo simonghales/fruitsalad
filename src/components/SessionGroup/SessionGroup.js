@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import './SessionGroup.css';
 import {connect} from 'react-redux';
-import PlayerCard from '../PlayerCard/PlayerCard';
 import {SessionState, setGameInPlay} from '../../redux/reducers/session/reducer';
-import {Player} from '../../models/player';
-
-import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
 import {AppState} from '../../redux/index';
+import Player from '../Player/Player';
 
 class SessionGroup extends Component {
 
@@ -33,7 +30,7 @@ class SessionGroup extends Component {
         <div className='SessionGroup__playersList'>
           {
             sessionUsers && Object.keys(sessionUsers).map((key, id) => (
-              <PlayerCard player={sessionUsers[key]} key={key}/>
+              <Player player={sessionUsers[key]} key={key}/>
             ))
           }
         </div>

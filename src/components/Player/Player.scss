@@ -1,0 +1,17 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/images";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.Player
+{
+  text-align: center;
+}
+
+.Player__name
+{
+  @include mediumHeadingMobile;
+  @include mediumFont;
+}

@@ -7,33 +7,25 @@ import './SessionScreenJoin.css';
 import SessionJoin from '../../components/SessionJoin/SessionJoin';
 import {AppState} from '../../redux/index';
 import {setInvalidSessionEnforced, setJoined} from '../../redux/reducers/session/reducer';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
-import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
-import SessionScreenJoinBottom from './SessionScreenJoinBottom';
-import {generateNewUser} from '../../models/user';
-import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
-import {FIREBASE_STORAGE_IMAGES_PATH} from '../../firebase/storage';
 import {joinAddUser} from '../../firebase/user';
 import Screen from '../../components/Screen/Screen';
+import {isUserJoined} from '../../games/DrawDuo/logic/users';
 
 class SessionScreenJoin extends Component {
 
-  static contextTypes = {
-    store: PropTypes.object
-  };
-
   props: {
-    gameInPlay: boolean,
-    joined: boolean,
     match: any,
     session: {},
+    sessionCode: string,
+    userJoined: boolean,
     setJoined(): void,
     setInvalidSessionEnforced(): void,
   };
 
   state: {
+    joined: boolean,
     joining: boolean,
+    redirecting: boolean,
     userName: string,
   };
 
@@ -42,7 +34,9 @@ class SessionScreenJoin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      joined: false,
       joining: false,
+      redirecting: false,
       userName: '',
     };
     this.joinSession = this.joinSession.bind(this);
@@ -55,14 +49,26 @@ class SessionScreenJoin extends Component {
     setInvalidSessionEnforced();
   }
 
+  componentDidUpdate() {
+    if (this.state.joined) {
+      this.tryToRedirect();
+    }
+  }
+
+  tryToRedirect() {
+    if (this.props.userJoined && !this.state.redirecting) {
+      const {history, sessionCode} = this.props;
+      this.setState({
+        redirecting: true,
+      });
+      history.push(`/session/${sessionCode}/hub`);
+    }
+  }
+
   joinSession() {
     const {userName} = this.state;
-    const {history, match, session} = this.props;
+    const {history, firebase, match, session} = this.props;
     const sessionKey = match.params.id;
-
-    const firebase = this.context.store.firebase;
-
-    console.log('firebase', firebase);
 
     if (getVal(firebase, 'isInitializing') === true ||
       getVal(firebase, 'auth') === undefined) {
@@ -85,7 +91,9 @@ class SessionScreenJoin extends Component {
 
     joinAddUser(sessionKey, currentUser.uid, userName, image, firebase)
       .then((response) => {
-        history.push(`/session/${match.params.id}/hub`);
+        this.setState({
+          joined: true,
+        });
       });
 
   }
@@ -102,16 +110,7 @@ class SessionScreenJoin extends Component {
 
   render() {
 
-    const {gameInPlay, joined, match} = this.props;
     const {userName} = this.state;
-
-    if (joined && gameInPlay) {
-      return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}`,
-        }}/>
-      );
-    }
 
     return (
       <Screen>
@@ -124,12 +123,14 @@ class SessionScreenJoin extends Component {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, {firebase}) => {
   const session = state.firebase.data.session;
+  const currentUser = firebase.auth().currentUser;
+  const userJoined = isUserJoined(currentUser.uid, session);
   return {
-    gameInPlay: state.session.gameInPlay,
-    joined: state.session.joined,
     session: session,
+    sessionCode: state.session.sessionCode,
+    userJoined,
   };
 };
 
@@ -140,4 +141,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenJoin));
+export default firebaseConnect()(connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenJoin)));

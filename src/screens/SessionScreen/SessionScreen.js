@@ -12,6 +12,7 @@ import {AppState} from '../../redux/index';
 import SessionScreenRoutes from '../SessionScreenRoutes/SessionScreenRoutes';
 import SessionNotFound from '../../modals/SessionNotFound/SessionNotFound';
 import Screen from '../../components/Screen/Screen';
+import FullScreenLoadingMessage from '../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 
 class SessionScreen extends Component {
 
@@ -47,8 +48,15 @@ class SessionScreen extends Component {
   }
 
   render() {
-    const {closeQuitModal, match, showSessionBottom, quitModalOpen, invalidSession, invalidSessionEnforced} = this.props;
-    const sessionCode = match.params.id;
+    const {closeQuitModal, match, showSessionBottom, quitModalOpen, loadedSession, invalidSession, invalidSessionEnforced} = this.props;
+    const sessionCode = match.params.id.toUpperCase();
+
+    if (!loadedSession) {
+      return (
+        <FullScreenLoadingMessage title={sessionCode} subtitle='loading...'/>
+      )
+    }
+
     return (
       <Screen>
         <div className='SessionScreen'>

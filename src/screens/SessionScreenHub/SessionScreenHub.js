@@ -14,6 +14,8 @@ import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom
 import SessionScreenHubBottom from './SessionScreenHubBottom';
 import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
 import Screen from '../../components/Screen/Screen';
+import Button from '../../components/Button/Button';
+import {isUserHost, isUserJoined} from '../../games/DrawDuo/logic/users';
 
 class SessionScreenHub extends Component {
 
@@ -25,56 +27,120 @@ class SessionScreenHub extends Component {
     session: {},
     sessionUsers: {},
     sessionCode: string,
+    userJoined: boolean,
+    userIsHost: boolean,
     setInvalidSessionEnforced(): void,
   };
 
-  state: {};
+  state: {
+    redirecting: boolean,
+  };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      redirecting: false,
+    };
+    this.start = this.start.bind(this);
   }
 
   componentDidMount() {
     const {setInvalidSessionEnforced} = this.props;
     setInvalidSessionEnforced();
+    this.tryToRedirectToJoin();
+    this.tryToRedirectToGame();
+  }
+
+  componentDidUpdate() {
+    this.tryToRedirectToGame();
+  }
+
+  share() {
+    const {match} = this.props;
+    const sessionCode = match.params.id;
+    if (navigator.share) {
+      navigator.share({
+        title: `Fruit Salad - ${sessionCode}`,
+        text: 'Come play with me!',
+        url: `https://fruitsalad.herokuapp.com/session/${sessionCode}`,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    }
+  }
+
+  start() {
+    const {firebase, match} = this.props;
+    const sessionKey = match.params.id;
+
+    const sessionRef = firebase.ref(`/sessions/${sessionKey}`);
+
+    sessionRef.update({
+      'drawDuo': true,
+      'state': 'playing',
+    });
+
+  }
+
+  tryToRedirectToJoin() {
+    if (!this.props.userJoined && !this.state.redirecting) {
+      const {history, sessionCode} = this.props;
+      this.setState({
+        redirecting: true,
+      });
+      history.push(`/session/${sessionCode}/join`);
+    }
+  }
+
+  tryToRedirectToGame() {
+    const {session, userJoined} = this.props;
+    if (userJoined && (isLoaded(session) && session.state === 'playing') && !this.state.redirecting) {
+      const {history, sessionCode} = this.props;
+      this.setState({
+        redirecting: true,
+      });
+      history.push(`/session/${sessionCode}`);
+    }
   }
 
   render() {
 
-    const {match, session, sessionUsers, sessionCode} = this.props;
-
-    if (isLoaded(session) && session.state === 'playing') {
-      return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}`,
-        }}/>
-      );
-    }
+    const {sessionUsers, sessionCode, userIsHost} = this.props;
 
     return (
       <Screen>
         <div className='SessionScreenHub'>
-          <SessionJoinedChecker joinedOnly={false}>
-            <Redirect to={{
-              pathname: `/session/${match.params.id}/join`,
-            }}/>
-          </SessionJoinedChecker>
-          <header>
-            <div>fruitsalad.party/{sessionCode}</div>
+          <header className='SessionScreenHub__header'>
+            <a href={`https://fruitsalad.party/${sessionCode}`} target='_blank'>fruitsalad.party/{sessionCode}</a>
           </header>
           <div className='SessionScreenHub__group'>
             <SessionGroup sessionUsers={sessionUsers}/>
           </div>
+          {
+            userIsHost && (
+              <div className='SessionScreenHub__options'>
+                <div className='SessionScreenHub__option'>
+                  <Button>options</Button>
+                </div>
+                <div className='SessionScreenHub__option'>
+                  <Button onClick={this.start}>start</Button>
+                </div>
+              </div>
+            )
+          }
         </div>
       </Screen>
     );
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, props: { firebase: {} }) => {
+  const {firebase} = props;
   const session = state.firebase.data.session;
   const sessionUsers = state.firebase.data.sessionUsers;
+  const currentUser = firebase.auth().currentUser;
+  const userJoined = isUserJoined(currentUser.uid, session);
+  const userIsHost = isUserHost(currentUser.uid, session);
   return {
     gameInPlay: state.session.gameInPlay,
     joined: state.session.joined,
@@ -82,6 +148,8 @@ const mapStateToProps = (state: AppState) => {
     session: session,
     sessionUsers: sessionUsers,
     sessionCode: state.session.sessionCode,
+    userIsHost,
+    userJoined,
   };
 };
 
@@ -91,4 +159,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHub));
+export default firebaseConnect()(connect(mapStateToProps, mapDispatchToProps)(withRouter(SessionScreenHub)));

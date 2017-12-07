@@ -1,3 +1,4 @@
+@import "../../styles/settings/colors";
 @import "../../styles/tools/buttons";
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
@@ -7,6 +8,15 @@
   display:        flex;
   flex-direction: column;
   height:         100%;
+}
+
+.SessionScreenHub__header
+{
+  @include tinyHeadingMobile;
+  border-bottom:    2px solid $color-text;
+  padding:          20px;
+  text-align:       center;
+  background-color: #ffffff;
 }
 
 .SessionScreenHub__gameSelector
@@ -19,4 +29,35 @@
   padding-top: 20px;
   flex:        1;
   overflow-y:  auto;
+}
+
+.SessionScreenHub__options
+{
+  display:  flex;
+  position: absolute;
+  left:     20px;
+  bottom:   20px;
+  right:    20px;
+}
+
+.SessionScreenHub__option
+{
+  flex: 1;
+
+  &:first-of-type
+  {
+    margin-right: 10px;
+  }
+
+  &:last-of-type
+  {
+    margin-left: 10px;
+  }
+
+  .Button
+  {
+    width:   100%;
+    display: flex;
+  }
+
 }
