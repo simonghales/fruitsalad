@@ -13,6 +13,7 @@ import {getUserName} from '../../redux/reducers/session/state';
 import {AppState} from '../../redux/index';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import DrawingCanvas from '../DrawingCanvas/DrawingCanvas';
 
 class SessionJoin extends Component {
 
@@ -49,7 +50,7 @@ class SessionJoin extends Component {
     super(props);
     this.state = {
       name: props.userName,
-      validNameAdded: false,
+      validNameAdded: true,
     };
     this.handleNameInputBlur = this.handleNameInputBlur.bind(this);
     this.handleNameInputChange = this.handleNameInputChange.bind(this);
@@ -130,9 +131,9 @@ class SessionJoin extends Component {
           <div className='SessionJoin__drawing'>
             <div className='SessionJoin__drawingMessage'>draw your <br/> inner <br/> banana</div>
             <div className='SessionJoin__drawing__fruit'></div>
-            <DrawableCanvas ref={(elem) => {
+            <DrawingCanvas ref={(elem) => {
               if (!this.canvasElem) this.setCanvasElem(elem);
-            }} {...this.canvasProps}/>
+            }}/>
           </div>
         </div>
         <div className='SessionJoin__buttonWrapper'>

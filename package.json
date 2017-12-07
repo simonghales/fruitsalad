@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "fabric": "^2.0.0-rc.3",
     "firebase": "^4.6.2",
     "flow-bin": "^0.58.0",
     "node-sass-chokidar": "^0.0.3",

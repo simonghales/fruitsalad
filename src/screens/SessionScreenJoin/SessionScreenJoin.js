@@ -92,7 +92,7 @@ class SessionScreenJoin extends Component {
 
     const currentUser = firebase.auth().currentUser;
 
-    const image = (this.canvasElem) ? this.canvasElem.state.canvas.toDataURL('image/png').replace('data:image/png;base64,', '') : '';
+    const image = (this.canvasElem) ? this.canvasElem.getDataUrl().replace('data:image/png;base64,', '') : '';
 
     joinAddUser(sessionKey, currentUser.uid, userName, image, firebase)
       .then((response) => {

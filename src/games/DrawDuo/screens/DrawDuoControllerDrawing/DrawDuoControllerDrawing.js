@@ -10,6 +10,7 @@ import {EntryModel, SessionModel} from '../../logic/models';
 import {uploadDrawingImage} from '../../../../firebase/user';
 import {getCurrentRoundKey, submitRoundUserDrawing} from '../../logic/rounds';
 import {withRouter} from 'react-router';
+import DrawingCanvas from '../../../../components/DrawingCanvas/DrawingCanvas';
 
 class DrawDuoControllerDrawing extends Component {
 
@@ -60,7 +61,7 @@ class DrawDuoControllerDrawing extends Component {
       submitting: true,
     });
 
-    const image = (this.canvasElem) ? this.canvasElem.state.canvas.toDataURL('image/png').replace('data:image/png;base64,', '') : '';
+    const image = (this.canvasElem) ? this.canvasElem.getDataUrl().replace('data:image/png;base64,', '') : '';
 
     const ref = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
 
@@ -91,9 +92,9 @@ class DrawDuoControllerDrawing extends Component {
           <h3 className='DrawDuoControllerDrawing__title'>
             draw this
           </h3>
-          <div className='DrawDuoControllerDrawing__prompt'>{userEntry.prompt}</div>
+          <div className='DrawDuoControllerDrawing__prompt'>{userEntry && userEntry.prompt}</div>
           <div className='DrawDuoControllerDrawing__drawingContainer'>
-            <DrawableCanvas ref={(elem) => {
+            <DrawingCanvas ref={(elem) => {
               if (!this.canvasElem) this.setCanvasElem(elem);
             }} {...this.canvasProps}/>
           </div>

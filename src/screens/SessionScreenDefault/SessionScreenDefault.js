@@ -19,7 +19,9 @@ class SessionScreenDefault extends Component {
 
   props: {
     gameInPlay: boolean,
+    history: {},
     match: any,
+    sessionCode: string,
     setInvalidSessionEnforced(): void,
   };
 
@@ -33,28 +35,24 @@ class SessionScreenDefault extends Component {
   componentDidMount() {
     const {setInvalidSessionEnforced} = this.props;
     setInvalidSessionEnforced();
+    this.tryToRedirectToHub();
+  }
+
+  tryToRedirectToHub() {
+
+    const {gameInPlay, history, sessionCode} = this.props;
+
+    if (!gameInPlay) {
+      console.log('redirecting to hub...');
+      history.push(`/session/${sessionCode}/hub`);
+    }
+
   }
 
   render() {
 
-    const {gameInPlay, match} = this.props;
-
-    if (!gameInPlay) {
-      console.log('redirecting to hub...');
-      return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}/hub`,
-        }}/>
-      );
-    }
-
     return (
       <MainLayout>
-        <SessionJoinedChecker joinedOnly={false}>
-          <Redirect to={{
-            pathname: `/session/${match.params.id}/join`,
-          }}/>
-        </SessionJoinedChecker>
         <MainLayoutContent>
           <div className='SessionScreenDefault'>
             <GoFullScreen/>
@@ -70,6 +68,7 @@ const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
   return {
     session: session,
+    sessionCode: state.session.sessionCode,
     gameInPlay: isLoaded(session) && session.state === 'playing',
   };
 };
