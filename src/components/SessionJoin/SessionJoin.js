@@ -55,6 +55,7 @@ class SessionJoin extends Component {
     this.handleNameInputChange = this.handleNameInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setCanvasElem = this.setCanvasElem.bind(this);
+    this.joinSession = this.joinSession.bind(this);
   }
 
   handleNameInputChange(event) {
@@ -98,6 +99,11 @@ class SessionJoin extends Component {
     return (this.state.name !== '');
   }
 
+  joinSession() {
+    if (!this.canJoin()) return;
+    this.props.joinSession();
+  }
+
   render() {
     const {name, validNameAdded} = this.state;
     const canJoin = this.canJoin();
@@ -130,7 +136,7 @@ class SessionJoin extends Component {
           </div>
         </div>
         <div className='SessionJoin__buttonWrapper'>
-          <Button disabled={!canJoin} mobileFullWidth={true}>join</Button>
+          <Button disabled={!canJoin} mobileFullWidth={true} onClick={this.joinSession}>join</Button>
         </div>
       </form>
     );
