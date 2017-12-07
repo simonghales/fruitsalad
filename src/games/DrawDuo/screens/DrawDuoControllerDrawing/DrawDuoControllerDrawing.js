@@ -75,6 +75,10 @@ class DrawDuoControllerDrawing extends Component {
 
   }
 
+  setCanvasElem(elem) {
+    this.canvasElem = elem;
+  }
+
   render() {
     const {userEntry} = this.props;
     const {submitting, submitted} = this.state;
@@ -89,7 +93,9 @@ class DrawDuoControllerDrawing extends Component {
           </h3>
           <div className='DrawDuoControllerDrawing__prompt'>{userEntry.prompt}</div>
           <div className='DrawDuoControllerDrawing__drawingContainer'>
-            <DrawableCanvas {...this.canvasProps}/>
+            <DrawableCanvas ref={(elem) => {
+              if (!this.canvasElem) this.setCanvasElem(elem);
+            }} {...this.canvasProps}/>
           </div>
           <div className='DrawDuoControllerDrawing__buttonWrapper'>
             <ArtyButton onClick={this.submitDrawing}>Submit</ArtyButton>

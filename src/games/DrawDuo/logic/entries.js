@@ -245,7 +245,7 @@ export function submitEntryTestVotes(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoR
           votes[`/entries/${currentEntryKey}/answers/${answerKeys[randomNumber]}/votes/${userKey}`] = true;
           votes[`/entries/${currentEntryKey}/votes/${userKey}`] = answerKeys[randomNumber];
         }
-      
+
       }
 
     });
@@ -384,6 +384,25 @@ export function getOffsettedIndex(index: number, range: number) {
   return index - (Math.floor(index / range) * range);
 }
 
+let EXAMPLE_PROMPTS = [
+  'Lachlan Kirkwood',
+  'Dirty office',
+  'Traffic reporter',
+  'Nathan stuck in an elevator',
+  'A tough choice',
+  '',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+];
+
 export function generateEntry(pair: PairModelKeyWrapped, index: number) {
   return {
     answers: {},
@@ -397,7 +416,7 @@ export function generateEntry(pair: PairModelKeyWrapped, index: number) {
     },
     order: index,
     pair: pair.key,
-    prompt: Math.random().toString(),
+    prompt: EXAMPLE_PROMPTS.splice(randomIntFromInterval(0, EXAMPLE_PROMPTS.length), 1),
     state: DRAW_DUO_ENTRY_STATE_PENDING,
     votes: {},
   };

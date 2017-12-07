@@ -12,8 +12,9 @@ import {getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers} fro
 import DrawDuoVoteOption from '../../components/DrawDuoVoteOption/DrawDuoVoteOption';
 import {firebaseConnect} from 'react-redux-firebase';
 import {getAnswers, isUserEntryParticipant, submitUserEntryVote} from '../../logic/entries';
-import {AnswersModel} from '../../logic/models';
+import {AnswerModel, AnswersModel} from '../../logic/models';
 import {withRouter} from 'react-router';
+import {getUserAnswer, getUserPairKey} from '../../logic/users';
 
 class DrawDuoControllerVoting extends Component {
 
@@ -23,6 +24,8 @@ class DrawDuoControllerVoting extends Component {
     },
     userIsEntryParticipant: boolean,
     answers: AnswersModel,
+    userAnswer: AnswerModel,
+    userPairKey: string,
     submitVote(answerKey: string): void,
   };
 
@@ -58,11 +61,13 @@ class DrawDuoControllerVoting extends Component {
   }
 
   render() {
-    const {answers} = this.props;
+    const {answers, userAnswer, userPairKey, session} = this.props;
     const {selectedAnswerKey, voteSubmitted} = this.state;
 
     const sortedAnswers = Object.keys(answers).sort((answerKeyA, answerKeyB) => {
       return answers[answerKeyA].order - answers[answerKeyB].order;
+    }).filter((answerKey) => {
+      return (answers[answerKey].user !== userAnswer.user);
     }).map((key) => {
       return {
         ...answers[key],
@@ -89,10 +94,14 @@ class DrawDuoControllerVoting extends Component {
           <h3 className='DrawDuoControllerVoting__title'>{this.getTitle()}</h3>
           <div className='DrawDuoControllerVoting__answers'>
             {
-              sortedAnswers.map((answer, index) => (
-                <DrawDuoVoteOption answer={answer} key={index} voteOnAnswer={this.voteOnAnswer}
-                                   selectedAnswerKey={selectedAnswerKey}/>
-              ))
+              sortedAnswers.map((answer, index) => {
+                const answerUserPairKey = (answer.user) ? getUserPairKey(answer.user, session.drawDuo) : '';
+                const disabled = (answerUserPairKey === userPairKey);
+                return (
+                  <DrawDuoVoteOption answer={answer} disabled={disabled} key={index} voteOnAnswer={this.voteOnAnswer}
+                                     selectedAnswerKey={selectedAnswerKey}/>
+                );
+              })
             }
           </div>
         </div>
@@ -106,6 +115,8 @@ const mapStateToProps = (state: AppState, props) => {
   const session = state.firebase.data.session;
   const currentUser = firebase.auth().currentUser;
   const sessionKey = match.params.id;
+  const userAnswer = getUserAnswer(currentUser.uid, session.drawDuo);
+  const userPairKey = getUserPairKey(currentUser.uid, session.drawDuo);
   return {
     userIsEntryParticipant: isUserEntryParticipant(currentUser.uid, session.drawDuo),
     session: session,
@@ -113,7 +124,9 @@ const mapStateToProps = (state: AppState, props) => {
     submitVote: (answerKey: string) => {
       const ref = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
       submitUserEntryVote(currentUser.uid, answerKey, session.drawDuo, ref)
-    }
+    },
+    userAnswer,
+    userPairKey,
   };
 };
 

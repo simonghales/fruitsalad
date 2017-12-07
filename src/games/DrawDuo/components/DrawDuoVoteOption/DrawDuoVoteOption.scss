@@ -17,6 +17,23 @@
   text-align:       center;
   transition:       opacity 300ms ease;
 
+  &.DrawDuoVoteOption--disabled
+  {
+    opacity:  0.25;
+    position: relative;
+
+    &::after
+    {
+      content:    'somebody in your pair gave this answer';
+      position:   absolute;
+      top:        0;
+      left:       0;
+      right:      0;
+      text-align: center;
+    }
+
+  }
+
   .DrawDuoControllerVoting--voteSubmitted &
   {
     opacity: 0.25;

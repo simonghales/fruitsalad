@@ -3,6 +3,7 @@ import './DrawDuoControllerPending.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import DrawDuoCenteredMessage from '../../components/DrawDuoCenteredMessage/DrawDuoCenteredMessage';
+import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
 
 class DrawDuoControllerPending extends Component {
 
@@ -12,7 +13,7 @@ class DrawDuoControllerPending extends Component {
     return (
       <div className='DrawDuoControllerPending'>
         <DrawDuoCenteredMessage>
-          Watch the TV
+          <JumpingLetters label='watch the TV'/>
         </DrawDuoCenteredMessage>
       </div>
     )

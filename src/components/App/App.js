@@ -59,8 +59,8 @@ class App extends Component {
           <CSSTransition key={currentKey} timeout={500} classNames='pageTransition' appear>
             <Switch location={location}>
               <Route key='/' exact path='/' component={LandingScreen}/>
-              <Route key='/join' path='/join' component={JoinScreen}/>
-              <Route key='/host' path='/host' component={HostScreen}/>
+              <Route key='/join' exact path='/join' component={JoinScreen}/>
+              <Route key='/host' exact path='/host' component={HostScreen}/>
               <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
               <Route key='/display/:id' path='/display/:id' component={DrawDuoDisplay}/>
               <Route key='/host/:id' path='/host/:id' component={DrawDuoHostWrapper}/>

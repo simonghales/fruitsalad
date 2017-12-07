@@ -36,7 +36,7 @@ class DrawDuoUser extends Component {
     const userAnswer: AnswerModel = getUserAnswer(userKey, session.drawDuo);
     return (
       <div className='DrawDuoUser__label__action'>
-        "{userAnswer.text}"
+        "{userAnswer && userAnswer.text}"
       </div>
     );
   }

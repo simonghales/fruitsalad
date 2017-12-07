@@ -255,7 +255,12 @@ export function getUserVotedAnswer(userKey: string, drawDuo: DrawDuoModel): Answ
     console.warn('no current entry');
     return null;
   }
-  return (currentEntry.votes[userKey]) ? currentEntry.answers[currentEntry.votes[userKey]] : null;
+  const {votes} = currentEntry;
+  if (!votes) {
+    console.warn('no votes');
+    return null;
+  }
+  return (votes[userKey]) ? currentEntry.answers[votes[userKey]] : null;
 }
 
 export function getUserCurrentEntryPoints(userKey: string, drawDuo: DrawDuoModel): number {
@@ -291,9 +296,10 @@ export function getUserDrawing(userKey: string, drawDuo: DrawDuoModel) {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   const currentRound = getCurrentRound(drawDuo);
   const {drawings} = currentRound;
+  if (!drawings) return null;
   const matchedDrawingKey = Object.keys(drawings).find((key) => {
     return (drawings[key].user === userKey && drawings[key].entry === currentEntryKey);
-  })
+  });
   return (drawings[matchedDrawingKey]) ? drawings[matchedDrawingKey] : null;
 }
 

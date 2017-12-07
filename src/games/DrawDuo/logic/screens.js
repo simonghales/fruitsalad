@@ -91,7 +91,7 @@ export function getControllerComponentFromGameState(drawDuo: DrawDuoModel) {
       return <DrawDuoControllerCompleted/>;
     default:
       console.warn(`unable to match gameCurrentState: ${gameCurrentState}`);
-      return null;
+      return <DrawDuoControllerPending/>;
 
   }
 

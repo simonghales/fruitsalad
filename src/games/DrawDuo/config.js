@@ -12,8 +12,8 @@ export const DRAW_DUO_CONFIG = {
   defaults: {
     numberOfRounds: 2,
     pairSize: 2,
-    drawingTimer: (60 * 1000),
-    guessTimer: (30 * 1000),
+    drawingTimer: (10 * 1000),
+    guessTimer: (10 * 1000),
     voteTimer: (15 * 1000),
     revealTimer: (10 * 1000),
     revealAnswerTimer: (5 * 1000),
