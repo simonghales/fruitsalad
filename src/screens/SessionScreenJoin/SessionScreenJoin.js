@@ -66,9 +66,14 @@ class SessionScreenJoin extends Component {
   }
 
   joinSession() {
-    const {userName} = this.state;
-    const {history, firebase, match, session} = this.props;
-    const sessionKey = match.params.id;
+
+    console.log('join session..');
+
+    const {joining, userName} = this.state;
+    const {history, firebase, match, session, sessionCode} = this.props;
+    const sessionKey = sessionCode;
+
+    if (joining) return;
 
     if (getVal(firebase, 'isInitializing') === true ||
       getVal(firebase, 'auth') === undefined) {
@@ -94,6 +99,8 @@ class SessionScreenJoin extends Component {
         this.setState({
           joined: true,
         });
+      }, () => {
+        console.warn('failed to join...');
       });
 
   }

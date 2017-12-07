@@ -136,7 +136,7 @@ class SessionJoin extends Component {
           </div>
         </div>
         <div className='SessionJoin__buttonWrapper'>
-          <Button disabled={!canJoin} mobileFullWidth={true} onClick={this.joinSession}>join</Button>
+          <Button disabled={!canJoin} mobileFullWidth={true}>join</Button>
         </div>
       </form>
     );
