@@ -32,7 +32,6 @@ class SessionScreenHost extends Component {
     history: {},
     match: any,
     sessionCode: string,
-    sessionCreated: boolean,
     setInvalidSessionEnforced(): void,
   };
 
@@ -150,7 +149,6 @@ const mapStateToProps = (state: AppState) => {
   return {
     loadedSession: isLoaded(session) && !isEmpty(session),
     sessionCode: state.session.sessionCode,
-    sessionCreated: state.session.sessionCreated,
   };
 };
 

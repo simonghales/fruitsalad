@@ -13,6 +13,7 @@ import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutCont
 import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
 import SessionScreenHubBottom from './SessionScreenHubBottom';
 import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
+import Screen from '../../components/Screen/Screen';
 
 class SessionScreenHub extends Component {
 
@@ -23,6 +24,7 @@ class SessionScreenHub extends Component {
     match: any,
     session: {},
     sessionUsers: {},
+    sessionCode: string,
     setInvalidSessionEnforced(): void,
   };
 
@@ -40,7 +42,7 @@ class SessionScreenHub extends Component {
 
   render() {
 
-    const {match, session, sessionUsers} = this.props;
+    const {match, session, sessionUsers, sessionCode} = this.props;
 
     if (isLoaded(session) && session.state === 'playing') {
       return (
@@ -51,26 +53,21 @@ class SessionScreenHub extends Component {
     }
 
     return (
-      <MainLayout>
-        <SessionJoinedChecker joinedOnly={false}>
-          <Redirect to={{
-            pathname: `/session/${match.params.id}/join`,
-          }}/>
-        </SessionJoinedChecker>
-        <MainLayoutContent>
-          <div className='SessionScreenHub'>
-            <div className='SessionScreenHub__gameSelector'>
-              <GameSelector/>
-            </div>
-            <div className='SessionScreenHub__group'>
-              <SessionGroup sessionUsers={sessionUsers}/>
-            </div>
+      <Screen>
+        <div className='SessionScreenHub'>
+          <SessionJoinedChecker joinedOnly={false}>
+            <Redirect to={{
+              pathname: `/session/${match.params.id}/join`,
+            }}/>
+          </SessionJoinedChecker>
+          <header>
+            <div>fruitsalad.party/{sessionCode}</div>
+          </header>
+          <div className='SessionScreenHub__group'>
+            <SessionGroup sessionUsers={sessionUsers}/>
           </div>
-        </MainLayoutContent>
-        <MainLayoutBottom>
-          <SessionScreenHubBottom/>
-        </MainLayoutBottom>
-      </MainLayout>
+        </div>
+      </Screen>
     );
   }
 }
@@ -84,6 +81,7 @@ const mapStateToProps = (state: AppState) => {
     loadedSession: isLoaded(session),
     session: session,
     sessionUsers: sessionUsers,
+    sessionCode: state.session.sessionCode,
   };
 };
 

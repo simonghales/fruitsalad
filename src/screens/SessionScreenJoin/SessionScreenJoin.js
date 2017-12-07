@@ -15,6 +15,7 @@ import {generateNewUser} from '../../models/user';
 import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
 import {FIREBASE_STORAGE_IMAGES_PATH} from '../../firebase/storage';
 import {joinAddUser} from '../../firebase/user';
+import Screen from '../../components/Screen/Screen';
 
 class SessionScreenJoin extends Component {
 
@@ -113,17 +114,12 @@ class SessionScreenJoin extends Component {
     }
 
     return (
-      <MainLayout>
-        {/*<MainLayoutContent>*/}
+      <Screen>
         <div className='SessionScreenJoin'>
           <SessionJoin userName={userName} setCanvasElem={this.setCanvasElem} setUserName={this.setUserName}
                        joinSession={this.joinSession}/>
         </div>
-        {/*</MainLayoutContent>*/}
-        {/*<MainLayoutBottom>*/}
-        {/*<SessionScreenJoinBottom joinSession={this.joinSession}/>*/}
-        {/*</MainLayoutBottom>*/}
-      </MainLayout>
+      </Screen>
     );
   }
 }
