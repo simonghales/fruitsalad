@@ -4,6 +4,7 @@ import {Redirect, withRouter} from 'react-router';
 class SessionRedirect extends Component {
 
   props: {
+    history: {},
     match: {
       params: {
         id: string,
@@ -11,15 +12,15 @@ class SessionRedirect extends Component {
     },
   };
 
-  render() {
-    const {match} = this.props;
-
-    return (
-      <Redirect to={{
-        pathname: `/session/${match.params.id}/join`,
-      }}/>
-    );
+  componentDidMount() {
+    const {history, match} = this.props;
+    history.push(`/session/${match.params.id}/join`);
   }
+
+  render() {
+    return <div></div>;
+  }
+
 }
 
 export default withRouter(SessionRedirect);
