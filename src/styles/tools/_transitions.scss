@@ -41,3 +41,70 @@
   }
 
 }
+
+@mixin pageTransitionEnter
+{
+
+  &.pageTransition-enter,
+  .pageTransition-enter &
+  {
+    @content;
+  }
+
+}
+
+@mixin pageTransitionEnterActive
+{
+
+  &.pageTransition-enter.pageTransition-enter-active,
+  .pageTransition-enter.pageTransition-enter-active &
+  {
+    @content;
+  }
+
+}
+
+@mixin pageTransitionAppear
+{
+
+  &.pageTransition-appear,
+  .pageTransition-appear &
+  {
+    @content;
+  }
+
+}
+
+@mixin pageTransitionAppearActive
+{
+
+  &.pageTransition-appear.pageTransition-appear-active,
+  .pageTransition-appear.pageTransition-appear-active &
+  {
+    @content;
+  }
+
+}
+
+@mixin pageTransitionExit
+{
+
+  &.pageTransition-exit,
+  .pageTransition-exit &
+  {
+    @content;
+  }
+
+}
+
+@mixin pageTransitionExitActive
+{
+
+  &.pageTransition-exit.pageTransition-exit-active,
+  .pageTransition-exit.pageTransition-exit-active &
+  {
+    @content;
+  }
+
+}
+

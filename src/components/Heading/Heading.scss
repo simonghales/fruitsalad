@@ -1,0 +1,40 @@
+@import "../../styles/tools/responsive";
+@import "../../styles/tools/text";
+
+.Heading
+{
+
+  &.Heading--size-small
+  {
+    @include smallHeading;
+
+    @include smallDevice
+    {
+      @include smallHeadingMobile;
+    }
+
+  }
+
+  &.Heading--size-medium
+  {
+    @include mediumHeading;
+
+    @include smallDevice
+    {
+      @include mediumHeadingMobile;
+    }
+
+  }
+
+  &.Heading--size-huge
+  {
+    @include hugeHeading;
+
+    @include smallDevice
+    {
+      @include hugeHeadingMobile;
+    }
+
+  }
+
+}

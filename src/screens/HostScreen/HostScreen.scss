@@ -1,0 +1,48 @@
+@import "styles/tools/layout";
+@import "styles/tools/responsive";
+@import "styles/tools/text";
+
+.HostScreen
+{
+  @include mobilePadding;
+  @include fullSize;
+  @include flexCenter;
+}
+
+.HostScreen__content
+{
+  width:      100%;
+  text-align: center;
+}
+
+.HostScreen__input
+{
+  margin: 20px 0;
+}
+
+.HostScreen__submit
+{
+
+  @include smallDevice
+  {
+
+    .Button
+    {
+      width:   100%;
+      display: block;
+    }
+
+  }
+
+}
+
+.HostScreen__backWrapper
+{
+  text-align: center;
+}
+
+.HostScreen__back
+{
+  @include mediumFont;
+  margin-top: 20px;
+}

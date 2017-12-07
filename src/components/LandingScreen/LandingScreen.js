@@ -19,6 +19,10 @@ import BottomSide from '../BottomSide/BottomSide';
 import BottomFlex from '../BottomFlex/BottomFlex';
 import BottomMiddle from '../BottomMiddle/BottomMiddle';
 import {AppState} from '../../redux/index';
+import DancingFruit from '../DancingFruit/DancingFruit';
+import Heading from '../Heading/Heading';
+import Button from '../Button/Button';
+import Screen from '../Screen/Screen';
 
 class LandingScreen extends Component {
 
@@ -59,6 +63,9 @@ class LandingScreen extends Component {
     this.closeJoinHost = this.closeJoinHost.bind(this);
     this.focusSessionCodeInput = this.focusSessionCodeInput.bind(this);
     this.submitSessionCode = this.submitSessionCode.bind(this);
+
+    this.goToJoinScreen = this.goToJoinScreen.bind(this);
+    this.goToHostScreen = this.goToHostScreen.bind(this);
   }
 
   submitSessionCode(event) {
@@ -170,6 +177,16 @@ class LandingScreen extends Component {
     }
   }
 
+  goToJoinScreen() {
+    const {history} = this.props;
+    history.push('/join');
+  }
+
+  goToHostScreen() {
+    const {history} = this.props;
+    history.push('/host');
+  }
+
   render() {
     const {
       joinActive,
@@ -177,83 +194,32 @@ class LandingScreen extends Component {
       hostSessionModalOpen, sessionCode
     } = this.state;
     return (
-      <div className={classNames([
-        'LandingScreen',
-        {
-          'LandingScreen--joinable': this.sessionCodeIsValid(),
-        }
-      ])}>
-        <MainLayout>
-          <MainLayoutContent>
-            <div className='LandingScreen__intro'>
-              <div className='LandingScreen__intro__icon'></div>
-              <h2 className='LandingScreen__intro__title'>fruit salad</h2>
-              <p className='LandingScreen__intro__slogan'>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              </p>
+      <Screen>
+        <div className={classNames([
+          'LandingScreen',
+          {
+            'LandingScreen--joinable': this.sessionCodeIsValid(),
+          }
+        ])}>
+          <div className='LandingScreen__intro'>
+            <div className='LandingScreen__content'>
+              <div className='LandingScreen__title'>
+                <Heading size='huge'>fruit salad</Heading>
+                <Heading size='medium'>play games together</Heading>
+              </div>
+              <div className='LandingScreen__options'>
+                <div className='LandingScreen__option'>
+                  <Button onClick={this.goToJoinScreen}>join</Button>
+                </div>
+                <div className='LandingScreen__option'>
+                  <Button onClick={this.goToHostScreen}>host</Button>
+                </div>
+              </div>
             </div>
-          </MainLayoutContent>
-          <MainLayoutBottom>
-            <BottomFlex>
-              <BottomSide>
-                <div className={classNames([
-                  'LandingScreen__bottom__side',
-                  'LandingScreen__bottom__side--left',
-                  {
-                    'LandingScreen__bottom__side--active': hostActive,
-                    'LandingScreen__bottom__side--inactive': joinActive && !hostActive,
-                  }
-                ])} onClick={this.handleLeftClick}>
-                  <div className='LandingScreen__bottom__side__text'>
-                    host
-                  </div>
-                  <div className='LandingScreen__bottom__side__text'>
-                    back
-                  </div>
-                </div>
-              </BottomSide>
-              <BottomMiddle>
-                <form onSubmit={this.submitSessionCode} className={classNames([
-                  'LandingScreen__bottom__input',
-                  {
-                    'LandingScreen__bottom__input--active': hostActive || joinActive,
-                    'LandingScreen__bottom__input--sessionCodeInput': sessionCode !== '',
-                  }
-                ])}>
-                  <div className='LandingScreen__bottom__input__label'>{this.getSessionCodeInputLabel()}</div>
-                  <input className='LandingScreen__bottom__input__input' value={sessionCode}
-                         ref={(element) => {
-                           if (!this.sessionCodeInputElement) {
-                             this.sessionCodeInputElement = element;
-                           }
-                         }}
-                         onChange={this.handleSessionCodeInputChange}
-                         type='text'/>
-                </form>
-              </BottomMiddle>
-              <BottomSide>
-                <div className={classNames([
-                  'LandingScreen__bottom__side',
-                  'LandingScreen__bottom__side--right',
-                  {
-                    'LandingScreen__bottom__side--active': joinActive,
-                    'LandingScreen__bottom__side--inactive': hostActive && !joinActive,
-                  }
-                ])} onClick={this.handleRightClick}>
-                  <div className='LandingScreen__bottom__side__text'>
-                    join
-                  </div>
-                  <div className='LandingScreen__bottom__side__text'>
-                    done
-                  </div>
-                </div>
-              </BottomSide>
-            </BottomFlex>
-          </MainLayoutBottom>
-        </MainLayout>
-      </div>
-    )
-      ;
+          </div>
+        </div>
+      </Screen>
+    );
   }
 }
 

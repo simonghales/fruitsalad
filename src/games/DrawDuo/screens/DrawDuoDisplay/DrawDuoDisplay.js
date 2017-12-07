@@ -12,7 +12,7 @@ import DrawDuoDisplayPending from '../../newscreens/DrawDuoDisplayPending/DrawDu
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoGameHost from '../../components/DrawDuoGameHost/DrawDuoGameHost';
 import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
-import LargeHeading from '../../../../components/LargeHeading/LargeHeading';
+import LargeHeading from '../../../../components/Heading/Heading';
 
 class DrawDuoDisplay extends Component {
 

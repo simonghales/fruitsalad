@@ -1,0 +1,40 @@
+@import "../../styles/tools/responsive";
+@import "../../styles/tools/text";
+@import "../../styles/tools/transitions";
+
+.Screen
+{
+
+  &.Screen--type-full
+  {
+    position: fixed;
+    top:      0;
+    left:     0;
+    right:    0;
+    bottom:   0;
+
+    @include pageTransitionEnter
+    {
+      transform: translateX(100%);
+    }
+
+    @include pageTransitionEnterActive
+    {
+      transform:  translateX(0);
+      transition: transform 500ms ease;
+    }
+
+    @include pageTransitionExit
+    {
+      transform:  translateX(0);
+      transition: transform 500ms ease;
+    }
+
+    @include pageTransitionExitActive
+    {
+      transform: translateX(-100%);
+    }
+
+  }
+
+}

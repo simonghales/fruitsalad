@@ -1,0 +1,48 @@
+@import "styles/tools/layout";
+@import "styles/tools/responsive";
+@import "styles/tools/text";
+
+.JoinScreen
+{
+  @include mobilePadding;
+  @include fullSize;
+  @include flexCenter;
+}
+
+.JoinScreen__content
+{
+  width:      100%;
+  text-align: center;
+}
+
+.JoinScreen__input
+{
+  margin: 20px 0;
+}
+
+.JoinScreen__submit
+{
+
+  @include smallDevice
+  {
+
+    .Button
+    {
+      width:   100%;
+      display: block;
+    }
+
+  }
+
+}
+
+.JoinScreen__backWrapper
+{
+  text-align: center;
+}
+
+.JoinScreen__back
+{
+  @include mediumFont;
+  margin-top: 20px;
+}

@@ -1,0 +1,29 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/animations";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/responsive";
+@import "../../styles/tools/text";
+
+.FullScreenLoadingMessage
+{
+  position:        fixed;
+  top:             0;
+  left:            0;
+  right:           0;
+  bottom:          0;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+}
+
+.FullScreenLoadingMessage__content
+{
+  text-align: center;
+}
+
+.FullScreenLoadingMessage__title
+{
+  margin-bottom: 10px;
+}

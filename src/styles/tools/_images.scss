@@ -24,3 +24,10 @@
   background-size:  contain;
   background-image: url('#{$relativePath}assets/images/fruits/banana/banana_full.png');
 }
+
+@mixin bananaArtBackground($relativePath: './')
+{
+  @include backgroundImage;
+  background-size:  contain;
+  background-image: url('#{$relativePath}assets/images/fruits/banana/banana_art.png');
+}

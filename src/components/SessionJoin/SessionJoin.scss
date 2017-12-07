@@ -7,6 +7,17 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
+@mixin noValidNameAdded
+{
+
+  &.SessionJoin--noValidNameAdded,
+  .SessionJoin--noValidNameAdded &
+  {
+    @content;
+  }
+
+}
+
 .SessionJoin
 {
   @include verticalMargin;
@@ -27,24 +38,26 @@
 
 .SessionJoin__drawingContainer
 {
-  width:  calc(100vw - 80px);
-  height: calc(1.683 * (100vw - 80px));
-  margin: 0 auto;
+  width:      calc(100vw - 80px);
+  height:     calc(1.683 * (100vw - 80px));
+  margin:     0 auto;
+  transition: transform 300ms ease, opacity 300ms ease;
+
+  @include noValidNameAdded
+  {
+    transform: translateX(100%);
+    opacity:   0;
+  }
+
 }
 
 .SessionJoin__drawingMessage
 {
-  @include text-stroke($size: 4);
-  @include mediumThickHeading;
-  position:        absolute;
-  top:             0;
-  left:            0;
-  right:           0;
-  bottom:          0;
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  text-align:      center;
+  @include mediumFont;
+  position:  absolute;
+  top:       10px;
+  left:      -5px;
+  font-size: 20px;
 }
 
 .SessionJoin__drawing
@@ -100,11 +113,17 @@
 .SessionJoin__nameInput
 {
   @include sideMargin;
-  position: absolute;
-  top:      10px;
-  left:     0;
-  right:    0;
-  z-index:  20;
+  position:   absolute;
+  top:        20px;
+  left:       0;
+  right:      0;
+  z-index:    20;
+  transition: transform 300ms ease;
+
+  @include noValidNameAdded
+  {
+    transform: translateY(calc(50vh - 27px - 20px));
+  }
 
   &::before
   {
@@ -145,6 +164,14 @@
   right:      20px;
   text-align: center;
   z-index:    20;
+  transition: transform 300ms ease, opacity 300ms ease;
+
+  @include noValidNameAdded
+  {
+    transform: translateY(100%);
+    opacity:   0;
+  }
+
 }
 
 .SessionJoin__button

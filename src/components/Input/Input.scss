@@ -1,0 +1,8 @@
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/responsive";
+@import "../../styles/tools/text";
+
+.Input
+{
+  @include plainFlatInput;
+}

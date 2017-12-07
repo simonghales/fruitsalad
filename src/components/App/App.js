@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {firebaseConnect, isLoaded, isEmpty, toJS} from 'react-redux-firebase';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import LandingScreen from '../LandingScreen/LandingScreen';
 import SessionScreen from '../../screens/SessionScreen/SessionScreen';
 import GamesScreen from '../../screens/GamesScreen/GamesScreen';
@@ -17,12 +18,15 @@ import SessionRedirect from '../../screens/SessionRedirect/SessionRedirect';
 import AppLoadingScreen from '../../screens/AppLoadingScreen/AppLoadingScreen';
 import DrawDuoController from '../../games/DrawDuo/newscreens/DrawDuoController/DrawDuoController';
 import DrawDuoHostWrapper from '../../games/DrawDuo/screens/DrawDuoHostWrapper/DrawDuoHostWrapper';
+import JoinScreen from '../../screens/JoinScreen/JoinScreen';
+import HostScreen from '../../screens/HostScreen/HostScreen';
 
 class App extends Component {
 
   props: {
     firebase: any,
     isAuthed: boolean,
+    location: {},
   };
 
   constructor(props) {
@@ -41,26 +45,34 @@ class App extends Component {
 
   render() {
 
-    const {isAuthed} = this.props;
+    const {isAuthed, location} = this.props;
 
     if (!isAuthed) {
       return <AppLoadingScreen/>
     }
 
+    const currentKey = location.pathname.split('/')[1] || '/';
+
     return (
       <div className='App'>
-        <Switch>
-          <Route key='/' exact path='/' component={LandingScreen}/>
-          <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
-          <Route key='/display/:id' path='/display/:id' component={DrawDuoDisplay}/>
-          <Route key='/host/:id' path='/host/:id' component={DrawDuoHostWrapper}/>
-          <Route key='/drawDuo' path='/drawDuo' component={GamesScreen}/>
-          <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
-            <div>test</div>
-          ))}/>
-          <Route key='/controller/:id' path='/controller/:id' component={DrawDuoController}/>
-          <Route key='/:id' path='/:id' component={SessionRedirect}/>
-        </Switch>
+        <TransitionGroup component='main' className='App__transitionContainer'>
+          <CSSTransition key={currentKey} timeout={500} classNames='pageTransition' appear>
+            <Switch location={location}>
+              <Route key='/' exact path='/' component={LandingScreen}/>
+              <Route key='/join' path='/join' component={JoinScreen}/>
+              <Route key='/host' path='/host' component={HostScreen}/>
+              <Route key='/session/:id' path='/session/:id' component={SessionScreen}/>
+              <Route key='/display/:id' path='/display/:id' component={DrawDuoDisplay}/>
+              <Route key='/host/:id' path='/host/:id' component={DrawDuoHostWrapper}/>
+              <Route key='/drawDuo' path='/drawDuo' component={GamesScreen}/>
+              <Route key='/test' path='/test' component={UserIsAuthenticated(() => (
+                <div>test</div>
+              ))}/>
+              <Route key='/controller/:id' path='/controller/:id' component={DrawDuoController}/>
+              <Route key='/:id' path='/:id' component={SessionRedirect}/>
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
       </div>
     );
   }

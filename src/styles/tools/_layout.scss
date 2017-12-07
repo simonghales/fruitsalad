@@ -1,3 +1,5 @@
+@import "./responsive";
+
 @mixin sideMargin
 {
   padding-left:  20px;
@@ -11,6 +13,29 @@
 
 @mixin verticalMargin($extraPadding: 0)
 {
-  padding-top: (20px + $extraPadding);
+  padding-top:    (20px + $extraPadding);
   padding-bottom: (20px + $extraPadding);
+}
+
+@mixin mobilePadding
+{
+
+  @include smallDevice
+  {
+    padding: 20px;
+  }
+
+}
+
+@mixin fullSize
+{
+  width:  100%;
+  height: 100%;
+}
+
+@mixin flexCenter
+{
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
 }

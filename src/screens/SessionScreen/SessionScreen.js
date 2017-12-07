@@ -11,6 +11,7 @@ import {closeQuitModal, SessionState, setSessionCode} from '../../redux/reducers
 import {AppState} from '../../redux/index';
 import SessionScreenRoutes from '../SessionScreenRoutes/SessionScreenRoutes';
 import SessionNotFound from '../../modals/SessionNotFound/SessionNotFound';
+import Screen from '../../components/Screen/Screen';
 
 class SessionScreen extends Component {
 
@@ -49,33 +50,35 @@ class SessionScreen extends Component {
     const {closeQuitModal, match, showSessionBottom, quitModalOpen, invalidSession, invalidSessionEnforced} = this.props;
     const sessionCode = match.params.id;
     return (
-      <div className='SessionScreen'>
-        <SessionScreenRoutes top={true}/>
-        <TransitionGroup>
-          {
-            quitModalOpen ? (
-              <CSSTransition
-                timeout={350}
-                classNames='fade'
-                key='quitSession'>
-                <QuitSession close={closeQuitModal} sessionCode={sessionCode} quit={this.quitSession}/>
-              </CSSTransition>
-            ) : null
-          }
-        </TransitionGroup>
-        <TransitionGroup>
-          {
-            (invalidSession && invalidSessionEnforced) ? (
-              <CSSTransition
-                timeout={350}
-                classNames='fade'
-                key='quitSession'>
-                <SessionNotFound sessionCode={sessionCode}/>
-              </CSSTransition>
-            ) : null
-          }
-        </TransitionGroup>
-      </div>
+      <Screen>
+        <div className='SessionScreen'>
+          <SessionScreenRoutes/>
+          <TransitionGroup>
+            {
+              quitModalOpen ? (
+                <CSSTransition
+                  timeout={350}
+                  classNames='fade'
+                  key='quitSession'>
+                  <QuitSession close={closeQuitModal} sessionCode={sessionCode} quit={this.quitSession}/>
+                </CSSTransition>
+              ) : null
+            }
+          </TransitionGroup>
+          <TransitionGroup>
+            {
+              (invalidSession && invalidSessionEnforced) ? (
+                <CSSTransition
+                  timeout={350}
+                  classNames='fade'
+                  key='quitSession'>
+                  <SessionNotFound sessionCode={sessionCode}/>
+                </CSSTransition>
+              ) : null
+            }
+          </TransitionGroup>
+        </div>
+      </Screen>
     );
   }
 }

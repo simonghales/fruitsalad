@@ -11,6 +11,8 @@ import MainButton from '../MainButton/MainButton';
 import {SessionState, setJoined, setUserName} from '../../redux/reducers/session/reducer';
 import {getUserName} from '../../redux/reducers/session/state';
 import {AppState} from '../../redux/index';
+import Input from '../Input/Input';
+import Button from '../Button/Button';
 
 class SessionJoin extends Component {
 
@@ -23,6 +25,7 @@ class SessionJoin extends Component {
 
   state: {
     name: string,
+    validNameAdded: boolean,
   };
 
   canvasElem;
@@ -40,11 +43,15 @@ class SessionJoin extends Component {
     clear: false
   };
 
+  nameInput;
+
   constructor(props) {
     super(props);
     this.state = {
       name: props.userName,
+      validNameAdded: false,
     };
+    this.handleNameInputBlur = this.handleNameInputBlur.bind(this);
     this.handleNameInputChange = this.handleNameInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setCanvasElem = this.setCanvasElem.bind(this);
@@ -59,9 +66,25 @@ class SessionJoin extends Component {
     setUserName(name);
   }
 
+  handleNameInputBlur(event) {
+    if (this.state.name !== '') {
+      this.setState({
+        validNameAdded: true,
+      });
+    }
+  }
+
   handleSubmit(event) {
-    const {joinSession} = this.props;
     event.preventDefault();
+
+    if (!this.state.validNameAdded) {
+      if (this.nameInput) {
+        this.nameInput.element.blur();
+      }
+      return;
+    }
+
+    const {joinSession} = this.props;
     joinSession('');
   }
 
@@ -71,32 +94,43 @@ class SessionJoin extends Component {
     setCanvasElem(elem);
   }
 
+  canJoin() {
+    return (this.state.name !== '');
+  }
+
   render() {
-    const {name} = this.state;
+    const {name, validNameAdded} = this.state;
+    const canJoin = this.canJoin();
     return (
-      <form className='SessionJoin' onSubmit={this.handleSubmit}>
+      <form className={classNames([
+        'SessionJoin',
+        {
+          'SessionJoin--noValidNameAdded': !validNameAdded,
+        }
+      ])} onSubmit={this.handleSubmit}>
         <div className={classNames([
           'SessionJoin__nameInput',
           {
             'SessionJoin__nameInput--active': name !== '',
           }
         ])}>
-          <PlainInput reducedPadding={true}>
-            <input type='text' className='SessionJoin__nameInput__input'
-                   value={name} onChange={this.handleNameInputChange} placeholder='enter your name'/>
-          </PlainInput>
+          <Input type='text' ref={(element) => {
+            if (!this.nameInput) this.nameInput = element;
+          }}
+                 value={name} onChange={this.handleNameInputChange} onBlur={this.handleNameInputBlur}
+                 placeholder='enter your name'/>
         </div>
         <div className='SessionJoin__drawingContainer'>
           <div className='SessionJoin__drawing'>
+            <div className='SessionJoin__drawingMessage'>draw your <br/> inner <br/> banana</div>
             <div className='SessionJoin__drawing__fruit'></div>
-            <div className='SessionJoin__drawingMessage'>draw your inner banana</div>
             <DrawableCanvas ref={(elem) => {
               if (!this.canvasElem) this.setCanvasElem(elem);
             }} {...this.canvasProps}/>
           </div>
         </div>
         <div className='SessionJoin__buttonWrapper'>
-          <button className='SessionJoin__button'>join</button>
+          <Button disabled={!canJoin} mobileFullWidth={true}>join</Button>
         </div>
       </form>
     );

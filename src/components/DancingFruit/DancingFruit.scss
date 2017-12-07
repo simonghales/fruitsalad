@@ -1,0 +1,24 @@
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/images";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.DancingFruit
+{
+  display:         flex;
+  justify-content: center;
+  align-items:     flex-end;
+  margin:          0 auto;
+}
+
+.DancingFruit__fruit
+{
+  margin: 0 25px;
+
+  .Fruit img
+  {
+    width: 200px;
+  }
+
+}

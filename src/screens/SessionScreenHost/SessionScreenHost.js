@@ -16,6 +16,10 @@ import SessionScreenJoinBottom from '../SessionScreenJoin/SessionScreenJoinBotto
 import SessionScreenHostBottom from './SessionScreenHostBottom';
 import {generateNewUser} from '../../models/user';
 import {isEmpty, isLoaded} from 'react-redux-firebase';
+import JumpingLetters from '../../components/JumpingLetters/JumpingLetters';
+import Heading from '../../components/Heading/Heading';
+import FullScreenLoadingMessage from '../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import Button from '../../components/Button/Button';
 
 class SessionScreenHost extends Component {
 
@@ -25,6 +29,7 @@ class SessionScreenHost extends Component {
 
   props: {
     loadedSession: boolean,
+    history: {},
     match: any,
     sessionCode: string,
     sessionCreated: boolean,
@@ -44,6 +49,7 @@ class SessionScreenHost extends Component {
     };
     this.checkAndCreateSession = this.checkAndCreateSession.bind(this);
     this.createSession = this.createSession.bind(this);
+    this.goToJoinStep = this.goToJoinStep.bind(this);
   }
 
   componentDidMount() {
@@ -54,7 +60,7 @@ class SessionScreenHost extends Component {
 
   checkAndCreateSession() {
     const {match} = this.props;
-    const sessionKey = match.params.id;
+    const sessionKey = match.params.id.toUpperCase();
 
     const sessionRef = this.context.store.firebase.ref(`/sessions/${sessionKey}`);
 
@@ -78,7 +84,7 @@ class SessionScreenHost extends Component {
 
     const firebase = this.context.store.firebase;
     const currentUser = firebase.auth().currentUser;
-    const sessionKey = match.params.id;
+    const sessionKey = match.params.id.toUpperCase();
 
     firebase.set(`/sessions/${sessionKey}`, generateNewSession({
       id: match.params.id,
@@ -98,33 +104,43 @@ class SessionScreenHost extends Component {
       });
   }
 
+  goToJoinStep() {
+    const {history, sessionCode} = this.props;
+    history.push(`/session/${sessionCode}/join`);
+  }
+
   render() {
     const {sessionAlreadyCreated, sessionCreated} = this.state;
-    const {loadedSession, match, sessionCode} = this.props;
+    const {loadedSession, sessionCode} = this.props;
 
-    if ((loadedSession && sessionAlreadyCreated) || (sessionCreated && loadedSession)) {
-      console.log('redirecting to join???');
+    const canRedirect = ((loadedSession && sessionAlreadyCreated) || (sessionCreated && loadedSession));
+
+    if (!canRedirect) {
       return (
-        <Redirect to={{
-          pathname: `/session/${match.params.id}/join`,
-        }}/>
-      );
+        <FullScreenLoadingMessage title={sessionCode} subtitle='creating session...'/>
+      )
     }
 
     return (
-      <MainLayout>
-        <MainLayoutContent>
-          <div className='SessionScreenHost'>
-            <div className='SessionScreenHost__message'>
-              <div className='SessionScreenHost__message__label'>Creating Session</div>
-              <div className='SessionScreenHost__message__code'>{sessionCode}</div>
+      <div className='SessionScreenHost'>
+        <div className='SessionScreenHost__content'>
+          <Heading size='huge'>{sessionCode}</Heading>
+          <div>
+            <div className='SessionScreenHost__linkBlock'>
+              <div>Invite others to join at</div>
+              <a href={`https://fruitsalad.party/${sessionCode}`} target='_blank'>fruitsalad.party/{sessionCode}</a>
+            </div>
+            <div className='SessionScreenHost__linkBlock'>
+              <div>You need to display and host the game at</div>
+              <a href={`https://fruitsalad.party/host/${sessionCode}`}
+                 target='_blank'>fruitsalad.party/host/{sessionCode}</a>
+            </div>
+            <div className='SessionScreenHost__join'>
+              <Button type='firm' mobileFullWidth={true} onClick={this.goToJoinStep}>join</Button>
             </div>
           </div>
-        </MainLayoutContent>
-        <MainLayoutBottom>
-          <SessionScreenHostBottom/>
-        </MainLayoutBottom>
-      </MainLayout>
+        </div>
+      </div>
     );
   }
 }

@@ -10,7 +10,7 @@ import DrawDuoDisplayPendingUsers from '../DrawDuoDisplayPendingUsers/DrawDuoDis
 import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
 import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
 import DrawDuoDisplayFooter from '../../components/DrawDuoDisplayFooter/DrawDuoDisplayFooter';
-import LargeHeading from '../../../../components/LargeHeading/LargeHeading';
+import LargeHeading from '../../../../components/Heading/Heading';
 import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
 import DrawDuoDisplayWrapper from '../../components/DrawDuoDisplayWrapper/DrawDuoDisplayWrapper';
 

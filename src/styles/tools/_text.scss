@@ -204,6 +204,20 @@
   line-height: 42px;
 }
 
+@mixin smallHeadingMobile
+{
+  @include friendlyFont;
+  font-size:   28px;
+  line-height: 32px;
+}
+
+@mixin tinyHeadingMobile
+{
+  @include mediumFont;
+  font-size:   18px;
+  line-height: 22px;
+}
+
 @mixin mediumThickHeading
 {
   @include smallHeading;

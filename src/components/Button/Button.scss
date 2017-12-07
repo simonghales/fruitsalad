@@ -1,0 +1,27 @@
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/responsive";
+@import "../../styles/tools/text";
+
+.Button
+{
+  @include firmButton;
+  transition: opacity 300ms ease;
+
+  &.Button--disabled
+  {
+    opacity: 0.33;
+    cursor:  default;
+  }
+
+  &.Button--mobileFullWidth
+  {
+
+    @include smallDevice
+    {
+      width:   100%;
+      display: block;
+    }
+
+  }
+
+}
