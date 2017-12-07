@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './DrawingCanvas.css';
 import classNames from 'classnames';
-import {fabric} from 'fabric';
+
+declare var fabric;
 
 class DrawingCanvas extends Component {
 
