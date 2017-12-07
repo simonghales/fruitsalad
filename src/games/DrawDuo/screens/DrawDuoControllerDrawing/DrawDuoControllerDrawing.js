@@ -30,7 +30,7 @@ class DrawDuoControllerDrawing extends Component {
   canvasElem;
   canvasProps = {
     brushColor: '#000000',
-    lineWidth: 3,
+    lineWidth: 2,
     canvasStyle: {
       backgroundColor: 'FFFFFF',
       position: 'absolute',
