@@ -11,6 +11,11 @@ import DrawDuoTitle from '../../components/DrawDuoTitle/DrawDuoTitle';
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
 import DrawDuoUserGuessesIndicators from '../../components/DrawDuoUserGuessesIndicators/DrawDuoUserGuessesIndicators';
 import {getCurrentPairKey, getPairByKey} from '../../logic/users';
+import DrawDuoDisplayWrapper from '../../components/DrawDuoDisplayWrapper/DrawDuoDisplayWrapper';
+import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
+import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
+import Heading from '../../../../components/Heading/Heading';
+import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
 
 class DrawDuoDisplayEntryGuessing extends Component {
 
@@ -31,17 +36,26 @@ class DrawDuoDisplayEntryGuessing extends Component {
     const pair = getPairByKey(currentPairKey, session.drawDuo);
     return (
       <div className='DrawDuoDisplayEntryGuessing'>
-        <header className='DrawDuoDisplayEntryGuessing__header'>
-          <div className='DrawDuoDisplayEntryGuessing__header__content'>
-            <DrawDuoTitle>Describe the drawings!</DrawDuoTitle>
-            <DrawDuoAnimatedMessage label='Answer via your device'/>
-          </div>
-        </header>
-        <div className='DrawDuoDisplayEntryGuessing__content'>
-          <DrawDuoArtworks pairKey={currentPairKey}/>
-          <DrawDuoUserGuessesIndicators alignment={this.getIndicatorsAlignment(pair)}/>
-        </div>
-        <footer className='DrawDuoDisplayEntryGuessing__footer'></footer>
+        <DrawDuoDisplayWrapper>
+          <DrawDuoDisplayHeader>
+            <header className='DrawDuoDisplayEntryGuessing__header'>
+              <div className='DrawDuoDisplayEntryGuessing__header__title'>
+                <Heading>describe the drawings!</Heading>
+              </div>
+              <div className='DrawDuoDisplayEntryGuessing__header__subtitle'>
+                <Heading size='small'>
+                  <JumpingLetters label={`answer via your device`} intensity='less'/>
+                </Heading>
+              </div>
+            </header>
+          </DrawDuoDisplayHeader>
+          <DrawDuoDisplayBody>
+            <div className='DrawDuoDisplayEntryGuessing__content'>
+              <DrawDuoArtworks pairKey={currentPairKey}/>
+              <DrawDuoUserGuessesIndicators alignment={this.getIndicatorsAlignment(pair)}/>
+            </div>
+          </DrawDuoDisplayBody>
+        </DrawDuoDisplayWrapper>
       </div>
     )
   }

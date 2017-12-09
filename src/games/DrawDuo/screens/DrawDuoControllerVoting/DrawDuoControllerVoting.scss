@@ -14,14 +14,17 @@
   overflow-y: auto;
 }
 
-.DrawDuoControllerVoting__title
+.DrawDuoControllerVoting__content
 {
-  @include mediumDrawDuoHeading;
-  margin:     40px 20px;
+  @include mobilePadding;
+}
+
+.DrawDuoControllerVoting__header
+{
   text-align: center;
 }
 
 .DrawDuoControllerVoting__answers
 {
-  margin-bottom: 40px;
+  margin: 20px 0;
 }

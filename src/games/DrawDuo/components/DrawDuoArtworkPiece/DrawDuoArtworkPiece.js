@@ -7,12 +7,14 @@ import {AppState} from '../../../../redux/index';
 import {getUser, getUserDrawing, getUsers} from '../../logic/users';
 import {DrawingModel, UserModel, UsersModel} from '../../logic/models';
 import {firebaseConnect} from 'react-redux-firebase';
+import Player from '../../../../components/Player/Player';
 
 class DrawDuoArtworkPiece extends Component {
 
   props: {
     hideUser?: boolean,
     size?: string,
+    user: UserModel,
     userKey: string,
     userSize?: string,
     drawing: DrawingModel,
@@ -23,7 +25,7 @@ class DrawDuoArtworkPiece extends Component {
   }
 
   render() {
-    const {hideUser = false, size = 'default', userKey, userSize = 'medium', drawing} = this.props;
+    const {hideUser = false, size = 'default', userSize = 'small', user, drawing} = this.props;
 
     const drawingStyle = (drawing) ? {
       backgroundImage: `url(${drawing.image})`
@@ -39,7 +41,11 @@ class DrawDuoArtworkPiece extends Component {
       ])}>
         <div className='DrawDuoArtworkPiece__drawing' style={drawingStyle}></div>
         <div className='DrawDuoArtworkPiece__attribution'>
-          <DrawDuoUser alignment='horizontal' size={userSize} userKey={userKey} submittedDisplay={false}/>
+          {
+            user && (
+              <Player player={user} size={userSize}/>
+            )
+          }
         </div>
       </div>
     )
@@ -47,10 +53,12 @@ class DrawDuoArtworkPiece extends Component {
 }
 
 const mapStateToProps = (state: AppState, props) => {
-  const {firebase, userKey} = props;
+  const {userKey} = props;
   const session = state.firebase.data.session;
+  const users = getUsers(session.drawDuo);
   return {
     drawing: getUserDrawing(userKey, session.drawDuo),
+    user: getUser(userKey, users),
   };
 };
 

@@ -4,6 +4,28 @@
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
+@mixin tinySize
+{
+
+  &.Fruit--size-tiny,
+  .Fruit--size-tiny &
+  {
+    @content;
+  }
+
+}
+
+@mixin miniSize
+{
+
+  &.Fruit--size-mini,
+  .Fruit--size-mini &
+  {
+    @content;
+  }
+
+}
+
 @mixin smallSize
 {
 
@@ -19,6 +41,16 @@
 {
   width:     250px;
   position:  relative;
+
+  @include tinySize
+  {
+    width: 110px;
+  }
+
+  @include miniSize
+  {
+    width: 125px;
+  }
 
   @include smallSize
   {

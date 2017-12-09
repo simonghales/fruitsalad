@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './DrawDuoControllerResults.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
-import DrawDuoCenteredMessage from '../../components/DrawDuoCenteredMessage/DrawDuoCenteredMessage';
+import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 
 class DrawDuoControllerResults extends Component {
 
@@ -11,9 +11,7 @@ class DrawDuoControllerResults extends Component {
   render() {
     return (
       <div className='DrawDuoControllerResults'>
-        <DrawDuoCenteredMessage>
-          Watch the TV for the results
-        </DrawDuoCenteredMessage>
+        <FullScreenLoadingMessage title='results' subtitle='watch the TV' subtitleSize='small'/>
       </div>
     )
   }

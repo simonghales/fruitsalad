@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {getPair, getPairs, getPairUsersKeys, getUser, getUsers, hasUserSubmittedAnswer} from '../../logic/users';
 import {AppState} from '../../../../redux/index';
 import {PairsModel, SessionModel, UserModel, UsersModel} from '../../logic/models';
+import Player from '../../../../components/Player/Player';
 
 class DrawDuoPairSlots extends Component {
 
@@ -25,6 +26,7 @@ class DrawDuoPairSlots extends Component {
     const {users, session} = this.props;
     const user: UserModel = getUser(userKey, users);
     const userHasSubmitted = hasUserSubmittedAnswer(userKey, session.drawDuo);
+    const action = (userHasSubmitted) ? 'VOTED' : 'VOTING';
     return (
       <div className={classNames([
         'DrawDuoPairSlots__slot',
@@ -32,7 +34,7 @@ class DrawDuoPairSlots extends Component {
           'DrawDuoPairSlots__slot--submitted': userHasSubmitted,
         }
       ])} key={userKey}>
-        <div className='DrawDuoPairSlots__slot__user'></div>
+        <Player player={user} size='tiny' action={action} disabled={!userHasSubmitted} showAction={true}/>
       </div>
     );
   }

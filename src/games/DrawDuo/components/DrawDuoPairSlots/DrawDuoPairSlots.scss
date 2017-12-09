@@ -29,13 +29,9 @@
 
 .DrawDuoPairSlots__slot
 {
-  width:            75px;
-  height:           75px;
-  background-color: #000000;
-  opacity:          0.25;
-  border-radius:    50%;
-  transition:       opacity 300ms ease, background 300ms ease;
-  margin:           0 5px;
+  border-radius: 50%;
+  transition:    opacity 300ms ease, background 300ms ease;
+  margin:        0 5px;
 
   @include userSubmitted
   {

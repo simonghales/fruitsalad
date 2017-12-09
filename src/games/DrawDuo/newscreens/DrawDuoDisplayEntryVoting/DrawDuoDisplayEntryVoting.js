@@ -63,12 +63,12 @@ class DrawDuoDisplayEntryVoting extends Component {
         </header>
         <div className='DrawDuoDisplayEntryVoting__content'>
           <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[0]) ? usersKeys[0] : ''}
-                               userSize='small'/>
+                               userSize='tiny'/>
           <div className='DrawDuoDisplayEntryVoting__answers'>
             <DrawDuoAnswers/>
           </div>
           <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[1]) ? usersKeys[1] : ''}
-                               userSize='small'/>
+                               userSize='tiny'/>
         </div>
         <footer className='DrawDuoDisplayEntryVoting__footer'>
           <DrawDuoRevealAnswers/>

@@ -37,7 +37,9 @@ class DrawDuoVoteOption extends Component {
           'DrawDuoVoteOption--selected': (selectedAnswerKey === answer.key),
         }
       ])} onClick={this.voteOnAnswer}>
-        {text}
+        <div className='DrawDuoVoteOption__text'>
+          {text}
+        </div>
       </div>
     )
   }

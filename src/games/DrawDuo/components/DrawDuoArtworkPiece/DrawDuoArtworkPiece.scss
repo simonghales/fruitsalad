@@ -16,6 +16,17 @@
 
 }
 
+@mixin smallSize
+{
+
+  &.DrawDuoArtworkPiece--size-small,
+  .DrawDuoArtworkPiece--size-small &
+  {
+    @content;
+  }
+
+}
+
 @mixin mediumSize
 {
 
@@ -51,11 +62,28 @@
 .DrawDuoArtworkPiece__attribution
 {
   position:        absolute;
-  left:            0;
-  right:           0;
+  right:           -100px;
+  bottom:          -100px;
   display:         flex;
   justify-content: center;
-  margin-top:      50px;
+
+  .DrawDuoArtworkPiece:first-child &
+  {
+    right: auto;
+    left:  -110px;
+  }
+
+  @include mediumSize
+  {
+    right:  -30px;
+    bottom: -110px;
+  }
+
+  .DrawDuoArtworkPiece--size-medium.DrawDuoArtworkPiece:first-child &
+  {
+    right: auto;
+    left:  -30px;
+  }
 
   @include hideUser
   {

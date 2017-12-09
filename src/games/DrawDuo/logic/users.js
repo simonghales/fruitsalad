@@ -320,7 +320,6 @@ export function isUserHost(userKey: string, session: SessionModel): boolean {
 }
 
 export function isUserJoined(userKey: string, session: SessionModel): boolean {
-  console.log('user joined?', userKey, session);
   if (!session) return false;
   const matchedUser = (Object.keys(session.users).find((key: string) => {
     return userKey === key;

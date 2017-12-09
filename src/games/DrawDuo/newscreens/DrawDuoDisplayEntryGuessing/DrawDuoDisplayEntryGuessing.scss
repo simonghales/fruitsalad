@@ -20,26 +20,21 @@
 
 .DrawDuoDisplayEntryGuessing__header
 {
-  display:     flex;
-  align-items: center;
-  flex:        1;
-  text-align:  center;
-
+  text-align: center;
+  position:   relative;
+  width:      100%;
 }
 
-.DrawDuoDisplayEntryGuessing__header__content
+.DrawDuoDisplayEntryGuessing__header__title
 {
-  position: relative;
+  margin-bottom: 10px;
+}
 
-  .DrawDuoAnimatedMessage
-  {
-    position:   absolute;
-    margin-top: 10px;
-    left:       0;
-    right:      0;
-    text-align: center;
-  }
-
+.DrawDuoDisplayEntryGuessing__header__subtitle
+{
+  position: absolute;
+  left:     0;
+  right:    0;
 }
 
 .DrawDuoDisplayEntryGuessing__footer

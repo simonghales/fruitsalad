@@ -7,18 +7,19 @@
 .DrawDuoArtworks
 {
   display:         flex;
-  justify-content: space-between;
+  //justify-content: space-between;
+  justify-content: space-around;
   width:           100%;
 
-  &::before,
-  &::after
-  {
-    content:  '';
-    display:  block;
-    width:    0;
-    height:   0;
-    overflow: hidden;
-  }
+  //&::before,
+  //&::after
+  //{
+  //  content:  '';
+  //  display:  block;
+  //  width:    0;
+  //  height:   0;
+  //  overflow: hidden;
+  //}
 
 }
 

@@ -6,6 +6,16 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
+@mixin tinySize
+{
+
+  .Fruit--size-tiny &
+  {
+    @content;
+  }
+
+}
+
 @mixin smallSize
 {
 
@@ -113,6 +123,14 @@
     left:   60px;
     right:  20px;
     bottom: 150px;
+  }
+
+  @include tinySize
+  {
+    top:    10px;
+    left:   40px;
+    right:  15px;
+    bottom: 100px;
   }
 
 }

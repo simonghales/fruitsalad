@@ -1,3 +1,4 @@
+@import "../../../../styles/settings/colors";
 @import "../../../../styles/settings/sizes";
 @import "../../../../styles/tools/animations";
 @import "../../../../styles/tools/buttons";
@@ -7,19 +8,18 @@
 
 .DrawDuoVoteOption
 {
-  @include mediumDrawDuoHeading;
-  @include drawDuoFont;
+  @include smallThickHeading;
   background-color: #FFFFFF;
   border-radius:    4px;
-  border:           1px solid #F0F0F0;
-  margin:           10px;
+  border:           2px solid $color-text;
+  margin:           10px 0;
   padding:          20px 10px;
   text-align:       center;
   transition:       opacity 300ms ease;
 
   &.DrawDuoVoteOption--disabled
   {
-    opacity:  0.25;
+
     position: relative;
 
     &::after
@@ -30,6 +30,12 @@
       left:       0;
       right:      0;
       text-align: center;
+      font-size:  14px;
+    }
+
+    .DrawDuoVoteOption__text
+    {
+      opacity: 0.25;
     }
 
   }
@@ -45,4 +51,9 @@
 
   }
 
+}
+
+.DrawDuoVoteOption__text
+{
+  transition: opacity 300ms ease;
 }

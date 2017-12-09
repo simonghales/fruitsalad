@@ -3,16 +3,16 @@ import './DrawDuoControllerGuessing.css';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import {
-  DRAW_DUO_GAME_VOTING_SUB_STATE_GUESSING, DRAW_DUO_GAME_VOTING_SUB_STATE_RESULTS,
-  DRAW_DUO_GAME_VOTING_SUB_STATE_VOTING,
   DrawDuoGame, FormattedAnswer
 } from '../../models';
-import {getCurrentEntryData, getGameVotingCurrentSubState, getSortedAnswers} from '../../functions';
-import DrawDuoVoteOption from '../../components/DrawDuoVoteOption/DrawDuoVoteOption';
 import ArtyButton from '../../../../components/ArtyButton/ArtyButton';
 import {firebaseConnect} from 'react-redux-firebase';
 import {isUserEntryParticipant, submitUserEntryAnswer} from '../../logic/entries';
 import withRouter from 'react-router-dom/es/withRouter';
+import Screen from '../../../../components/Screen/Screen';
+import Heading from '../../../../components/Heading/Heading';
+import Button from '../../../../components/Button/Button';
+import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 
 class DrawDuoControllerGuessing extends Component {
 
@@ -69,39 +69,47 @@ class DrawDuoControllerGuessing extends Component {
   }
 
   render() {
+
+    return (
+      <Screen>
+        <div className='DrawDuoControllerGuessing'>
+          {this.renderContent()}
+        </div>
+      </Screen>
+    )
+  }
+
+  renderContent() {
     const {guess, submitted} = this.state;
+
+    const canSubmit = this.canSubmit();
 
     const {userIsEntryParticipant} = this.props;
 
     if (userIsEntryParticipant) {
-      return (
-        <div>You drew this, so keep quiet!</div>
-      )
+      return <FullScreenLoadingMessage title='you drew this' subtitle='keep quiet' subtitleSize='small'/>;
     }
 
     if (submitted) {
-      return (
-        <div>
-          SUBMITTED!
-        </div>
-      )
+      return <FullScreenLoadingMessage title='SUBMITTED!' subtitle='waiting for others' subtitleSize='small'/>;
     }
 
     return (
-      <div className='DrawDuoControllerGuessing'>
-        <div className='DrawDuoControllerGuessing__content'>
-          <h3 className='DrawDuoControllerGuessing__title'>Describe it!</h3>
-          <form className='DrawDuoControllerGuessing__form' onSubmit={this.handleSubmitForm}>
+      <div className='DrawDuoControllerGuessing__content'>
+        <header className='DrawDuoControllerGuessing__header'>
+          <Heading>describe it...</Heading>
+        </header>
+        <form className='DrawDuoControllerGuessing__form' onSubmit={this.handleSubmitForm}>
             <textarea className='DrawDuoControllerGuessing__input' placeholder='Enter your guess here'
                       value={guess} onChange={this.handleUpdateInput}></textarea>
-            <div className='DrawDuoControllerGuessing__buttonWrapper'>
-              <ArtyButton onClick={this.submitGuess}>Submit</ArtyButton>
-            </div>
-          </form>
-        </div>
+          <div className='DrawDuoControllerGuessing__buttonWrapper'>
+            <Button disabled={!canSubmit} mobileFullWidth={true}>submit</Button>
+          </div>
+        </form>
       </div>
     )
   }
+
 }
 
 const mapStateToProps = (state: AppState, props) => {

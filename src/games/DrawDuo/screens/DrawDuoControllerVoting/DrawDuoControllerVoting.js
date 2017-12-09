@@ -15,6 +15,9 @@ import {getAnswers, isUserEntryParticipant, submitUserEntryVote} from '../../log
 import {AnswerModel, AnswersModel} from '../../logic/models';
 import {withRouter} from 'react-router';
 import {getUserAnswer, getUserPairKey} from '../../logic/users';
+import Screen from '../../../../components/Screen/Screen';
+import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import Heading from '../../../../components/Heading/Heading';
 
 class DrawDuoControllerVoting extends Component {
 
@@ -57,12 +60,29 @@ class DrawDuoControllerVoting extends Component {
 
   getTitle() {
     const {voteSubmitted} = this.state;
-    return (voteSubmitted) ? 'Answer submitted' : 'Select an answer';
+    return (voteSubmitted) ? 'vote submitted' : 'select an answer';
   }
 
   render() {
+    const {voteSubmitted} = this.state;
+
+    return (
+      <Screen>
+        <div className={classNames([
+          'DrawDuoControllerVoting',
+          {
+            'DrawDuoControllerVoting--voteSubmitted': voteSubmitted,
+          }
+        ])}>
+          {this.renderContent()}
+        </div>
+      </Screen>
+    )
+  }
+
+  renderContent() {
     const {answers, userAnswer, userPairKey, session} = this.props;
-    const {selectedAnswerKey, voteSubmitted} = this.state;
+    const {selectedAnswerKey} = this.state;
 
     const sortedAnswers = Object.keys(answers).sort((answerKeyA, answerKeyB) => {
       return answers[answerKeyA].order - answers[answerKeyB].order;
@@ -78,36 +98,30 @@ class DrawDuoControllerVoting extends Component {
     const {userIsEntryParticipant} = this.props;
 
     if (userIsEntryParticipant) {
-      return (
-        <div>You drew this, so keep quiet!</div>
-      )
+      return <FullScreenLoadingMessage title='you drew this' subtitle='keep quiet' subtitleSize='small'/>;
     }
 
     return (
-      <div className={classNames([
-        'DrawDuoControllerVoting',
-        {
-          'DrawDuoControllerVoting--voteSubmitted': voteSubmitted,
-        }
-      ])}>
-        <div className='DrawDuoControllerVoting__content'>
-          <h3 className='DrawDuoControllerVoting__title'>{this.getTitle()}</h3>
-          <div className='DrawDuoControllerVoting__answers'>
-            {
-              sortedAnswers.map((answer, index) => {
-                const answerUserPairKey = (answer.user) ? getUserPairKey(answer.user, session.drawDuo) : '';
-                const disabled = (answerUserPairKey === userPairKey);
-                return (
-                  <DrawDuoVoteOption answer={answer} disabled={disabled} key={index} voteOnAnswer={this.voteOnAnswer}
-                                     selectedAnswerKey={selectedAnswerKey}/>
-                );
-              })
-            }
-          </div>
+      <div className='DrawDuoControllerVoting__content'>
+        <header className='DrawDuoControllerVoting__header'>
+          <Heading>{this.getTitle()}</Heading>
+        </header>
+        <div className='DrawDuoControllerVoting__answers'>
+          {
+            sortedAnswers.map((answer, index) => {
+              const answerUserPairKey = (answer.user) ? getUserPairKey(answer.user, session.drawDuo) : '';
+              const disabled = (answerUserPairKey === userPairKey);
+              return (
+                <DrawDuoVoteOption answer={answer} disabled={disabled} key={index} voteOnAnswer={this.voteOnAnswer}
+                                   selectedAnswerKey={selectedAnswerKey}/>
+              );
+            })
+          }
         </div>
       </div>
     )
   }
+
 }
 
 const mapStateToProps = (state: AppState, props) => {

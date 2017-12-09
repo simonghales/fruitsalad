@@ -224,6 +224,12 @@
   @include mediumFont;
 }
 
+@mixin smallThickHeading
+{
+  @include smallHeadingMobile;
+  @include mediumFont;
+}
+
 @function text-stroke($size: 2, $color: #fff, $correction: 0)
 {
   $radius: $size - $correction;
