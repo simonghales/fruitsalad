@@ -1,31 +1,20 @@
 import React, {Component} from 'react';
 import './DrawDuoSessionUser.css';
 import {SessionUserModel} from '../../logic/models';
+import Player from '../../../../components/Player/Player';
 
 class DrawDuoSessionUser extends Component {
 
   props: {
     user: SessionUserModel,
+    size?: string,
   };
 
   render() {
-    const {user} = this.props;
+    const {user, size} = this.props;
     return (
       <div className='DrawDuoSessionUser'>
-        <div className='DrawDuoSessionUser__image'>
-          {
-            (user.image) && (
-              <div className='DrawDuoSessionUser__image__drawing' style={{
-                backgroundImage: `url(${user.image})`
-              }}></div>
-            )
-          }
-        </div>
-        <div className='DrawDuoSessionUser__label'>
-          <span data-text={user.name}>
-          {user.name}
-          </span>
-        </div>
+        <Player player={user} size={size}/>
       </div>
     )
   }

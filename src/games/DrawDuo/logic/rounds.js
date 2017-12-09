@@ -194,6 +194,18 @@ export function submitRoundUserDrawing(image: string, userKey: string, drawDuo: 
   const entryKey = getUserEntryKey(userKey, drawDuo);
   const pairKey = getUserPairKey(userKey, drawDuo);
   const currentRoundKey = getCurrentRoundKey(drawDuo);
+  if (!entryKey) {
+    console.warn('no entry key');
+    return;
+  }
+  if (!pairKey) {
+    console.warn('no pair key');
+    return;
+  }
+  if (!currentRoundKey) {
+    console.warn('no round key');
+    return;
+  }
   drawDuoRef.update({
     [`/rounds/${currentRoundKey}/drawings/${userKey}`]: {
       user: userKey,

@@ -5,29 +5,12 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
-@mixin disabled
-{
-
-  &.Player--disabled
-  {
-    @content;
-  }
-
-}
-
-.Player
+.PlayerCompact
 {
   text-align: center;
-  transition: opacity 300ms ease;
-
-  @include disabled
-  {
-    opacity: 0.5;
-  }
-
 }
 
-.Player__name
+.PlayerCompact__name
 {
   @include mediumHeadingMobile;
   @include mediumFont;

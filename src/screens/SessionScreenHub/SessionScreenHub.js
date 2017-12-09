@@ -47,12 +47,9 @@ class SessionScreenHub extends Component {
   componentDidMount() {
     const {setInvalidSessionEnforced} = this.props;
     setInvalidSessionEnforced();
-    this.tryToRedirectToJoin();
-    this.tryToRedirectToGame();
   }
 
   componentDidUpdate() {
-    this.tryToRedirectToGame();
   }
 
   share() {
@@ -80,27 +77,6 @@ class SessionScreenHub extends Component {
       'state': 'playing',
     });
 
-  }
-
-  tryToRedirectToJoin() {
-    if (!this.props.userJoined && !this.state.redirecting) {
-      const {history, sessionCode} = this.props;
-      this.setState({
-        redirecting: true,
-      });
-      history.push(`/session/${sessionCode}/join`);
-    }
-  }
-
-  tryToRedirectToGame() {
-    const {session, userJoined} = this.props;
-    if (userJoined && (isLoaded(session) && session.state === 'playing') && !this.state.redirecting) {
-      const {history, sessionCode} = this.props;
-      this.setState({
-        redirecting: true,
-      });
-      history.push(`/session/${sessionCode}`);
-    }
   }
 
   render() {

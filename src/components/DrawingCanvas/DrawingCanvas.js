@@ -6,12 +6,17 @@ declare var fabric;
 
 class DrawingCanvas extends Component {
 
+  props: {
+    mouseDown(): void,
+  };
+
   canvasElem;
   canvasWrapperElem;
   fabricCanvas;
 
   constructor(props) {
     super(props);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
   }
 
   getDataUrl(): string {
@@ -24,14 +29,27 @@ class DrawingCanvas extends Component {
   }
 
   setCanvasElem(elem) {
+    const {mouseDown} = this.props;
     this.canvasElem = elem;
     this.fabricCanvas = new fabric.Canvas(this.canvasElem, {
       allowTouchScrolling: true,
       containerClass: 'DrawingCanvasContainer',
       isDrawingMode: true,
     });
+    this.fabricCanvas.freeDrawingBrush.color = '#5872B2';
+    this.fabricCanvas.freeDrawingBrush.width = 5;
     this.fabricCanvas.setHeight(300);
     this.fabricCanvas.setWidth(300);
+
+    if (mouseDown) {
+      this.fabricCanvas.on('mouse:down', this.handleMouseDown);
+    }
+  }
+
+  handleMouseDown() {
+    const {mouseDown} = this.props;
+    mouseDown();
+    this.fabricCanvas.off('mouse:down', this.handleMouseDown);
   }
 
   resizeCanvas() {

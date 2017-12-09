@@ -3,7 +3,7 @@ import './SessionGroup.css';
 import {connect} from 'react-redux';
 import {SessionState, setGameInPlay} from '../../redux/reducers/session/reducer';
 import {AppState} from '../../redux/index';
-import Player from '../Player/Player';
+import PlayerCompact from '../PlayerCompact/PlayerCompact';
 
 class SessionGroup extends Component {
 
@@ -30,7 +30,7 @@ class SessionGroup extends Component {
         <div className='SessionGroup__playersList'>
           {
             sessionUsers && Object.keys(sessionUsers).map((key, id) => (
-              <Player player={sessionUsers[key]} key={key}/>
+              <PlayerCompact player={sessionUsers[key]} key={key}/>
             ))
           }
         </div>

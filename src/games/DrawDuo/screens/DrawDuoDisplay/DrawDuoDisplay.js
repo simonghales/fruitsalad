@@ -13,6 +13,7 @@ import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/Draw
 import DrawDuoGameHost from '../../components/DrawDuoGameHost/DrawDuoGameHost';
 import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
 import LargeHeading from '../../../../components/Heading/Heading';
+import BigScreenDisplayPrompt from '../../../../components/BigScreenDisplayPrompt/BigScreenDisplayPrompt';
 
 class DrawDuoDisplay extends Component {
 
@@ -71,6 +72,7 @@ class DrawDuoDisplay extends Component {
         {
           this.renderContent()
         }
+        <BigScreenDisplayPrompt/>
       </div>
     )
   }

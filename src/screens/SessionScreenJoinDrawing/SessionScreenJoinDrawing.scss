@@ -1,0 +1,40 @@
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.SessionScreenJoinDrawing
+{
+  @include fullSize;
+  @include flexCenter;
+}
+
+.SessionScreenJoinDrawing__content
+{
+  @include mobilePadding;
+  width: 100%;
+}
+
+.SessionScreenJoinDrawing__drawingContainer
+{
+  width:    100%;
+  height:   calc(100vw - 40px);
+  position: relative;
+}
+
+.SessionScreenJoinDrawing__drawing__circleRef
+{
+  position:         absolute;
+  top:              0;
+  left:             0;
+  right:            0;
+  bottom:           0;
+  background-color: #ffffff;
+  border-radius:    50%;
+  border:           2px solid $color-text;
+}
+
+.SessionScreenJoinDrawing__instruction
+{
+  margin:     20px 0;
+  text-align: center;
+}

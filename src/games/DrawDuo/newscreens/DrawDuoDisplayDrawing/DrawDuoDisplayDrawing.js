@@ -7,6 +7,11 @@ import {DrawDuoGame} from '../../models';
 import DrawDuoPairs from '../../components/DrawDuoPairs/DrawDuoPairs';
 import {DrawDuoModel} from '../../logic/models';
 import DrawDuoAnimatedMessage from '../../components/DrawDuoAnimatedMessage/DrawDuoAnimatedMessage';
+import Heading from '../../../../components/Heading/Heading';
+import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
+import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
+import DrawDuoDisplayWrapper from '../../components/DrawDuoDisplayWrapper/DrawDuoDisplayWrapper';
+import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
 
 class DrawDuoDisplayDrawing extends Component {
 
@@ -23,15 +28,27 @@ class DrawDuoDisplayDrawing extends Component {
   render() {
     return (
       <div className='DrawDuoDisplayDrawing'>
-        <div className='DrawDuoDisplayDrawing__info'>
-          <h2 className='DrawDuoDisplayDrawing__title'>Get Drawing!</h2>
-          <DrawDuoAnimatedMessage label='Check your device for your prompt'/>
-        </div>
-        <div className='DrawDuoDisplayDrawing__content'>
-          <div className='DrawDuoDisplayDrawing__pairs'>
-            <DrawDuoPairs sort='score'/>
-          </div>
-        </div>
+        <DrawDuoDisplayWrapper>
+          <DrawDuoDisplayHeader>
+            <div className='DrawDuoDisplayDrawing__header'>
+              <div className='DrawDuoDisplayDrawing__header__title'>
+                <Heading>get drawing!</Heading>
+              </div>
+              <div className='DrawDuoDisplayDrawing__header__subtitle'>
+                <Heading size='small'>
+                  <JumpingLetters label={`check your device for your prompt`} intensity='less'/>
+                </Heading>
+              </div>
+            </div>
+          </DrawDuoDisplayHeader>
+          <DrawDuoDisplayBody>
+            <div className='DrawDuoDisplayDrawing__content'>
+              <div className='DrawDuoDisplayDrawing__pairs'>
+                <DrawDuoPairs sort='score' disabled='drawing'/>
+              </div>
+            </div>
+          </DrawDuoDisplayBody>
+        </DrawDuoDisplayWrapper>
       </div>
     )
   }

@@ -4,18 +4,25 @@ import {connect} from 'react-redux';
 import DrawDuoPair from '../DrawDuoPair/DrawDuoPair';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 import {AppState} from '../../../../redux/index';
-import {DrawDuoModel} from '../../logic/models';
-import {getPairs, getPairsArrays, getPairsArraysSortedByScore, WrappedPair} from '../../logic/users';
+import {DrawDuoModel, PairsModel} from '../../logic/models';
+import {
+  getPairs, getPairsArrays, getPairsArraysSortedByScore, getUsersWithoutDrawings,
+  WrappedPair
+} from '../../logic/users';
 import {getDrawingTimer} from '../../logic/game';
+import PlayerGroup from '../../../../components/PlayerGroup/PlayerGroup';
 
 class DrawDuoPairs extends Component {
 
   props: {
+    disabled?: 'drawing',
+    pairs: PairsModel,
     session: {
       drawDuo: DrawDuoModel,
     },
     sort?: 'score',
     userProps?: {},
+    usersWithoutDrawings: string[],
   };
 
   constructor(props) {
@@ -40,9 +47,11 @@ class DrawDuoPairs extends Component {
   }
 
   render() {
-    const {session, sort, userProps} = this.props;
-    const pairs = (sort && sort === 'score') ? getPairsArraysSortedByScore(session.drawDuo) : getPairsArrays(session.drawDuo);
-    const rows = this.getRows(pairs);
+    const {disabled, pairs, session, sort, usersWithoutDrawings, userProps} = this.props;
+    const sortedPairs = (sort && sort === 'score') ? getPairsArraysSortedByScore(session.drawDuo) : getPairsArrays(session.drawDuo);
+    const rows = this.getRows(sortedPairs);
+    const disabledUsers = (disabled && disabled === 'drawing') ? usersWithoutDrawings : [];
+    console.log('disabledUsers', disabledUsers);
     return (
       <div className='DrawDuoPairs'>
         {
@@ -50,9 +59,10 @@ class DrawDuoPairs extends Component {
             <div className='DrawDuoPairs__row' key={index}>
               {
                 row.map((pairKey: string) => (
-                  <DrawDuoPair pairKey={pairKey} key={pairKey} userProps={userProps}/>
+                  <PlayerGroup disabledUsers={disabledUsers} pairKey={pairKey} pair={pairs[pairKey]} key={pairKey}/>
                 ))
               }
+              {/*<DrawDuoPair pairKey={pairKey} key={pairKey} userProps={userProps}/>*/}
             </div>
           ))
         }
@@ -63,8 +73,11 @@ class DrawDuoPairs extends Component {
 
 const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
+  const usersWithoutDrawings = getUsersWithoutDrawings(session.drawDuo);
   return {
+    pairs: getPairs(session.drawDuo),
     session: session,
+    usersWithoutDrawings: usersWithoutDrawings,
   };
 };
 

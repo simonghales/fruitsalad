@@ -5,13 +5,37 @@
 @import "../../../../styles/tools/text";
 @import "../../../../styles/tools/textures";
 
+@mixin largeCount
+{
+
+  &.DrawDuoDisplayPendingUsers--largeCount
+  {
+    @content;
+  }
+
+}
+
 .DrawDuoDisplayPendingUsers
 {
   height:          100%;
   width:           100%;
   display:         flex;
-  flex-flow:       column wrap;
+  flex-flow:       row wrap;
   justify-content: space-around;
   align-items:     center;
   align-content:   stretch;
+
+  @include largeCount
+  {
+    padding: 0 100px;
+
+    .DrawDuoSessionUser
+    {
+      flex-basis:      20%;
+      display:         flex;
+      justify-content: center;
+    }
+
+  }
+
 }

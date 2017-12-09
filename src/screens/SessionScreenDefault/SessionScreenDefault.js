@@ -8,17 +8,13 @@ import './SessionScreenDefault.css';
 import {SessionState, setInvalidSessionEnforced, setShowSessionBottom} from '../../redux/reducers/session/reducer';
 import SessionInPlay from '../../components/SessionInPlay/SessionInPlay';
 import GoFullScreen from '../../components/GoFullScreen/GoFullScreen';
-import MainLayout from '../../components/MainLayout/MainLayout';
-import MainLayoutContent from '../../components/MainLayoutContent/MainLayoutContent';
-import MainLayoutBottom from '../../components/MainLayoutBottom/MainLayoutBottom';
-import SessionJoinedChecker from '../session/components/SessionJoinedChecker/SessionJoinedChecker';
 import {AppState} from '../../redux/index';
-import {isLoaded} from 'react-redux-firebase';
+import Screen from '../../components/Screen/Screen';
+import DrawDuoHub from '../../games/DrawDuo/components/DrawDuoHub/DrawDuoHub';
 
 class SessionScreenDefault extends Component {
 
   props: {
-    gameInPlay: boolean,
     history: {},
     match: any,
     sessionCode: string,
@@ -35,31 +31,16 @@ class SessionScreenDefault extends Component {
   componentDidMount() {
     const {setInvalidSessionEnforced} = this.props;
     setInvalidSessionEnforced();
-    this.tryToRedirectToHub();
-  }
-
-  tryToRedirectToHub() {
-
-    const {gameInPlay, history, sessionCode} = this.props;
-
-    if (!gameInPlay) {
-      console.log('redirecting to hub...');
-      history.push(`/session/${sessionCode}/hub`);
-    }
-
   }
 
   render() {
 
     return (
-      <MainLayout>
-        <MainLayoutContent>
-          <div className='SessionScreenDefault'>
-            <GoFullScreen/>
-            <SessionInPlay/>
-          </div>
-        </MainLayoutContent>
-      </MainLayout>
+      <Screen>
+        <div className='SessionScreenDefault'>
+          <DrawDuoHub/>
+        </div>
+      </Screen>
     );
   }
 }
@@ -69,7 +50,6 @@ const mapStateToProps = (state: AppState) => {
   return {
     session: session,
     sessionCode: state.session.sessionCode,
-    gameInPlay: isLoaded(session) && session.state === 'playing',
   };
 };
 

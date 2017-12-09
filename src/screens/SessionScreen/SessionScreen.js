@@ -13,10 +13,13 @@ import SessionScreenRoutes from '../SessionScreenRoutes/SessionScreenRoutes';
 import SessionNotFound from '../../modals/SessionNotFound/SessionNotFound';
 import Screen from '../../components/Screen/Screen';
 import FullScreenLoadingMessage from '../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import {SessionModel} from '../../games/DrawDuo/logic/models';
+import {getSessionControllerComponentFromSessionState} from '../../games/DrawDuo/logic/screens';
 
 class SessionScreen extends Component {
 
   props: {
+    currentUserKey: string,
     match: any,
     history: any,
     showSessionBottom: boolean,
@@ -24,6 +27,7 @@ class SessionScreen extends Component {
     loadedSession: boolean,
     invalidSession: boolean,
     invalidSessionEnforced: boolean,
+    session: SessionModel,
     closeQuitModal(): void,
     setSessionCode(sessionCode: string): void,
   };
@@ -48,57 +52,38 @@ class SessionScreen extends Component {
   }
 
   render() {
-    const {closeQuitModal, match, showSessionBottom, quitModalOpen, loadedSession, invalidSession, invalidSessionEnforced} = this.props;
+    const {currentUserKey, match, loadedSession, session} = this.props;
     const sessionCode = match.params.id.toUpperCase();
 
     if (!loadedSession) {
       return (
-        <FullScreenLoadingMessage title={sessionCode} subtitle='loading...'/>
+        <FullScreenLoadingMessage title={sessionCode} subtitle='loading...' subtitleSize='small'/>
       )
     }
 
     return (
       <Screen>
         <div className='SessionScreen'>
-          <SessionScreenRoutes/>
-          <TransitionGroup>
-            {
-              quitModalOpen ? (
-                <CSSTransition
-                  timeout={350}
-                  classNames='fade'
-                  key='quitSession'>
-                  <QuitSession close={closeQuitModal} sessionCode={sessionCode} quit={this.quitSession}/>
-                </CSSTransition>
-              ) : null
-            }
-          </TransitionGroup>
-          <TransitionGroup>
-            {
-              (invalidSession && invalidSessionEnforced) ? (
-                <CSSTransition
-                  timeout={350}
-                  classNames='fade'
-                  key='quitSession'>
-                  <SessionNotFound sessionCode={sessionCode}/>
-                </CSSTransition>
-              ) : null
-            }
-          </TransitionGroup>
+          {
+            getSessionControllerComponentFromSessionState(session, currentUserKey)
+          }
         </div>
       </Screen>
     );
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, {firebase}) => {
   const session = state.firebase.data.session;
+  const currentUser = firebase.auth().currentUser;
   return {
+    currentUserKey: currentUser.uid,
     showSessionBottom: state.session.showSessionBottom,
     quitModalOpen: state.session.quitModalOpen,
     loadedSession: isLoaded(session),
     invalidSession: isLoaded(session) && isEmpty(session),
     invalidSessionEnforced: state.session.invalidSessionEnforced,
+    session,
   };
 };
 
@@ -109,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const wrappedSessionScreen = firebaseConnect((props, store) => {
+export default firebaseConnect((props, store) => {
   const sessionKey = props.match.params.id.toUpperCase();
   let queries = [
     {
@@ -122,7 +107,5 @@ const wrappedSessionScreen = firebaseConnect((props, store) => {
     }
   ];
   return queries;
-})(SessionScreen);
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(wrappedSessionScreen));
+})(withRouter(connect(mapStateToProps, mapDispatchToProps)(SessionScreen)));
 

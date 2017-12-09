@@ -10,6 +10,9 @@ import {setInvalidSessionEnforced, setJoined} from '../../redux/reducers/session
 import {joinAddUser} from '../../firebase/user';
 import Screen from '../../components/Screen/Screen';
 import {isUserJoined} from '../../games/DrawDuo/logic/users';
+import SessionScreenJoinName from '../SessionScreenJoinName/SessionScreenJoinName';
+import SessionScreenJoinDrawing from '../SessionScreenJoinDrawing/SessionScreenJoinDrawing';
+import FullScreenLoadingMessage from '../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 
 class SessionScreenJoin extends Component {
 
@@ -23,10 +26,12 @@ class SessionScreenJoin extends Component {
   };
 
   state: {
+    currentScreen: string,
     joined: boolean,
     joining: boolean,
     redirecting: boolean,
-    userName: string,
+    image: string,
+    name: string,
   };
 
   canvasElem;
@@ -34,14 +39,17 @@ class SessionScreenJoin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentScreen: 'name',
       joined: false,
       joining: false,
       redirecting: false,
-      userName: '',
+      image: '',
+      name: '',
     };
     this.joinSession = this.joinSession.bind(this);
     this.setCanvasElem = this.setCanvasElem.bind(this);
-    this.setUserName = this.setUserName.bind(this);
+    this.submitName = this.submitName.bind(this);
+    this.submitDrawing = this.submitDrawing.bind(this);
   }
 
   componentDidMount() {
@@ -50,41 +58,14 @@ class SessionScreenJoin extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.joined) {
-      this.tryToRedirect();
-    }
-  }
-
-  tryToRedirect() {
-    if (this.props.userJoined && !this.state.redirecting) {
-      const {history, sessionCode} = this.props;
-      this.setState({
-        redirecting: true,
-      });
-      history.push(`/session/${sessionCode}/hub`);
-    }
   }
 
   joinSession() {
 
-    console.log('join session..');
-
-    const {joining, userName} = this.state;
-    const {history, firebase, match, session, sessionCode} = this.props;
-    const sessionKey = sessionCode;
+    const {joining, name, image} = this.state;
+    const {firebase, sessionCode} = this.props;
 
     if (joining) return;
-
-    if (getVal(firebase, 'isInitializing') === true ||
-      getVal(firebase, 'auth') === undefined) {
-      console.warn('not authenticated???');
-      return;
-    } // todo - have a delay whilst auth is loading...
-
-    if (!session) {
-      console.warn('no session???', session, sessionKey);
-      return;
-    } // todo - have a delay whilst session is loading...
 
     this.setState({
       joining: true,
@@ -92,13 +73,8 @@ class SessionScreenJoin extends Component {
 
     const currentUser = firebase.auth().currentUser;
 
-    const image = (this.canvasElem) ? this.canvasElem.getDataUrl().replace('data:image/png;base64,', '') : '';
-
-    joinAddUser(sessionKey, currentUser.uid, userName, image, firebase)
-      .then((response) => {
-        this.setState({
-          joined: true,
-        });
+    joinAddUser(sessionCode, currentUser.uid, name, image, firebase)
+      .then(() => {
       }, () => {
         console.warn('failed to join...');
       });
@@ -109,24 +85,35 @@ class SessionScreenJoin extends Component {
     this.canvasElem = elem;
   }
 
-  setUserName(userName: string) {
+  submitName(name: string) {
     this.setState({
-      userName,
+      currentScreen: 'drawing',
+      name: name,
     });
+  }
+
+  submitDrawing(image: string) {
+    this.setState({
+      currentScreen: 'submitting',
+      image: image,
+    }, this.joinSession);
   }
 
   render() {
 
-    const {userName} = this.state;
+    const {sessionCode} = this.props;
+    const {currentScreen} = this.state;
 
-    return (
-      <Screen>
-        <div className='SessionScreenJoin'>
-          <SessionJoin userName={userName} setCanvasElem={this.setCanvasElem} setUserName={this.setUserName}
-                       joinSession={this.joinSession}/>
-        </div>
-      </Screen>
-    );
+    if (currentScreen === 'name') {
+      return <SessionScreenJoinName submitName={this.submitName}/>;
+    } else if (currentScreen === 'drawing') {
+      return <SessionScreenJoinDrawing submitDrawing={this.submitDrawing}/>;
+    } else {
+      return (
+        <FullScreenLoadingMessage title={sessionCode} subtitle='joining...'/>
+      )
+    }
+
   }
 }
 

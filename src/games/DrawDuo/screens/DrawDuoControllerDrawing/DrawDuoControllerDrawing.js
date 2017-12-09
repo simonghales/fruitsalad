@@ -12,6 +12,10 @@ import {getCurrentRoundKey, submitRoundUserDrawing} from '../../logic/rounds';
 import {withRouter} from 'react-router';
 import DrawingCanvas from '../../../../components/DrawingCanvas/DrawingCanvas';
 import PreventScroll from '../../../../components/PreventScroll/PreventScroll';
+import Screen from '../../../../components/Screen/Screen';
+import Button from '../../../../components/Button/Button';
+import Heading from '../../../../components/Heading/Heading';
+import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 
 class DrawDuoControllerDrawing extends Component {
 
@@ -82,32 +86,41 @@ class DrawDuoControllerDrawing extends Component {
   }
 
   render() {
+    return (
+      <Screen>
+        <PreventScroll>
+          {this.renderContent()}
+        </PreventScroll>
+      </Screen>
+    )
+  }
+
+  renderContent() {
     const {userEntry} = this.props;
     const {submitting, submitted} = this.state;
     if (submitting || submitted) return (
-      <div>SUBMITTED...</div>
+      <FullScreenLoadingMessage title='SUBMITTED!' subtitle='waiting for others' subtitleSize='small'/>
     );
     return (
-      <PreventScroll>
-        <div className='DrawDuoControllerDrawing'>
-          <div className='DrawDuoControllerDrawing__content'>
-            <h3 className='DrawDuoControllerDrawing__title'>
-              draw this
-            </h3>
-            <div className='DrawDuoControllerDrawing__prompt'>{userEntry && userEntry.prompt}</div>
-            <div className='DrawDuoControllerDrawing__drawingContainer'>
-              <DrawingCanvas ref={(elem) => {
-                if (!this.canvasElem) this.setCanvasElem(elem);
-              }} {...this.canvasProps}/>
-            </div>
-            <div className='DrawDuoControllerDrawing__buttonWrapper'>
-              <ArtyButton onClick={this.submitDrawing}>Submit</ArtyButton>
-            </div>
-          </div>
+      <div className='DrawDuoControllerDrawing__content'>
+        <header className='DrawDuoControllerDrawing__header'>
+          <Heading>draw this...</Heading>
+          <div className='DrawDuoControllerDrawing__prompt'>{
+            (userEntry && userEntry.prompt) ? userEntry.prompt : 'no entry'
+          }</div>
+        </header>
+        <div className='DrawDuoControllerDrawing__drawingContainer'>
+          <DrawingCanvas ref={(elem) => {
+            if (!this.canvasElem) this.setCanvasElem(elem);
+          }} {...this.canvasProps}/>
         </div>
-      </PreventScroll>
+        <div className='DrawDuoControllerDrawing__buttonWrapper'>
+          <Button onClick={this.submitDrawing} mobileFullWidth={true}>submit</Button>
+        </div>
+      </div>
     )
   }
+
 }
 
 const mapStateToProps = (state: AppState, props) => {

@@ -18,6 +18,25 @@
   //justify-content: center;
 }
 
+.DrawDuoDisplayDrawing__header
+{
+  text-align: center;
+  position:   relative;
+  width:      100%;
+}
+
+.DrawDuoDisplayDrawing__header__title
+{
+  margin-bottom: 10px;
+}
+
+.DrawDuoDisplayDrawing__header__subtitle
+{
+  position: absolute;
+  left:     0;
+  right:    0;
+}
+
 .DrawDuoDisplayDrawing__info
 {
   text-align:      center;

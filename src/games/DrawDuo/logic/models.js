@@ -5,7 +5,7 @@ import {
   DRAW_DUO_ROUND_STATE_COMPLETED,
   DRAW_DUO_ROUND_STATE_DRAWING, DRAW_DUO_ROUND_STATE_PENDING, DRAW_DUO_ROUND_STATE_RESULTS,
   DRAW_DUO_ROUND_STATE_VOTING, DRAW_DUO_STATE_COMPLETED, DRAW_DUO_STATE_INITIATING, DRAW_DUO_STATE_PENDING,
-  DRAW_DUO_STATE_PLAYING
+  DRAW_DUO_STATE_PLAYING, SESSION_STATE_COMPLETED, SESSION_STATE_PENDING, SESSION_STATE_PLAYING
 } from './constants';
 
 export interface DrawDuoRefModel {
@@ -174,10 +174,13 @@ export interface DrawDuoModel {
   timer: string,
 }
 
+export type SessionModelState = SESSION_STATE_PENDING | SESSION_STATE_PLAYING | SESSION_STATE_COMPLETED;
+
 export interface SessionModel {
   drawDuo: DrawDuoModel,
+  host: string, // userKey
   users: SessionUsersModel,
-  host: string,
+  state: SessionModelState,
 }
 
 export interface SessionUsersModel {

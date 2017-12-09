@@ -4,14 +4,14 @@ import classNames from 'classnames';
 import JumpingLetters from '../../components/JumpingLetters/JumpingLetters';
 import Heading from '../Heading/Heading';
 
-const FullScreenLoadingMessage = ({title, subtitle}) => {
+const FullScreenLoadingMessage = ({title, subtitle, subtitleSize = 'medium'}) => {
   return (
     <div className='FullScreenLoadingMessage'>
       <div className='FullScreenLoadingMessage__content'>
         <div className='FullScreenLoadingMessage__title'>
           <Heading size='huge'>{title}</Heading>
         </div>
-        <Heading size='medium'>
+        <Heading size={subtitleSize}>
           <JumpingLetters label={subtitle}/>
         </Heading>
       </div>

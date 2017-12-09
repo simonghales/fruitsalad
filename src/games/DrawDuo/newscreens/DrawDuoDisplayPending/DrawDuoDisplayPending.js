@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import {SessionModel} from '../../logic/models';
-import {getUsers, isMinimumNumberOfUsers} from '../../logic/users';
+import {getSessionUsers, getUsers, isMinimumNumberOfUsers} from '../../logic/users';
 import {withRouter} from 'react-router';
 import DrawDuoDisplayPendingUsers from '../DrawDuoDisplayPendingUsers/DrawDuoDisplayPendingUsers';
 import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
@@ -39,7 +39,7 @@ class DrawDuoDisplayPending extends Component {
         <DrawDuoDisplayWrapper>
           <DrawDuoDisplayHeader>
             <LargeHeading>
-              <JumpingLetters label={`Join at fruitsalad.party/${sessionCode}`} intensity='less'/>
+              <JumpingLetters label={`join at fruitsalad.party/${sessionCode}`} intensity='less'/>
             </LargeHeading>
           </DrawDuoDisplayHeader>
           <DrawDuoDisplayBody>
@@ -62,7 +62,7 @@ class DrawDuoDisplayPending extends Component {
 
 const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
-  const users = getUsers(session.drawDuo);
+  const users = getSessionUsers(session);
   const promptHostToStart = isMinimumNumberOfUsers(users);
   return {
     session: session,

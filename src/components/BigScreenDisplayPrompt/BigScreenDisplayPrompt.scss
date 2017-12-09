@@ -1,34 +1,24 @@
+@import "../../styles/settings/colors";
 @import "../../styles/settings/sizes";
 @import "../../styles/tools/buttons";
 @import "../../styles/tools/images";
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
+@import "../../styles/tools/responsive";
 @import "../../styles/tools/text";
 
-@mixin disabled
+.BigScreenDisplayPrompt
 {
+  display: none;
 
-  &.Player--disabled
+  @include smallDevice
   {
-    @content;
+    display: block;
   }
 
-}
-
-.Player
-{
-  text-align: center;
-  transition: opacity 300ms ease;
-
-  @include disabled
+  .FullScreenLoadingMessage
   {
-    opacity: 0.5;
+    background-color: rgba(255, 255, 255, 0.75);
   }
 
-}
-
-.Player__name
-{
-  @include mediumHeadingMobile;
-  @include mediumFont;
 }

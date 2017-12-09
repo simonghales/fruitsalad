@@ -1,14 +1,18 @@
 import React, {Component} from 'react';
 import './Fruit.css';
 import classNames from 'classnames';
-import FruitBanana from '../FruitBanana/FruitBanana';
 
-const Fruit = ({children}) => {
+const Fruit = ({children, size = 'default'}) => {
   return (
-    <div className='Fruit'>
-      {children}
+    <div className={classNames([
+      'Fruit',
+      `Fruit--size-${size}`
+    ])}>
+      <div className='Fruit__fruit'>
+        {children}
+      </div>
     </div>
   );
-}
+};
 
 export default Fruit;

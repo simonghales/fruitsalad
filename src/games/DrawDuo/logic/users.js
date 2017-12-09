@@ -1,6 +1,7 @@
 import {
   AnswerModel,
   DrawDuoModel, DrawDuoRefModel, EntryModel, PairModel, PairModelWrapper, PairsModel, RoundModel, SessionModel,
+  SessionUserModel,
   UserModel,
   UsersModel
 } from './models';
@@ -176,6 +177,12 @@ export function getUsers(drawDuo: DrawDuoModel): UsersModel {
   return (users) ? users : {};
 }
 
+export function getSessionUsers(session: SessionModel): SessionUserModel {
+  if (!session) return {};
+  const {users} = session;
+  return (users) ? users : {};
+}
+
 export function getUser(userKey: string, users: UsersModel): UserModel {
   return (users && users[userKey]) ? users[userKey] : null;
 }
@@ -313,9 +320,23 @@ export function isUserHost(userKey: string, session: SessionModel): boolean {
 }
 
 export function isUserJoined(userKey: string, session: SessionModel): boolean {
+  console.log('user joined?', userKey, session);
   if (!session) return false;
   const matchedUser = (Object.keys(session.users).find((key: string) => {
     return userKey === key;
   }));
   return (matchedUser && matchedUser !== '');
+}
+
+export function getUsersWithoutDrawings(drawDuo: DrawDuoModel): string[] {
+  if (!drawDuo) return [];
+  if (!drawDuo.users) return [];
+  const {users} = drawDuo;
+  let usersWithoutDrawings = [];
+  for (let userKey in users) {
+    if (!hasUserSubmittedDrawing(userKey, drawDuo)) {
+      usersWithoutDrawings.push(userKey);
+    }
+  }
+  return usersWithoutDrawings;
 }

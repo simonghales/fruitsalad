@@ -4,7 +4,55 @@
 @import "../../styles/tools/inputs";
 @import "../../styles/tools/layout";
 
+@mixin smallSize
+{
+
+  &.Fruit--size-small,
+  .Fruit--size-small &
+  {
+    @content;
+  }
+
+}
+
 .Fruit
+{
+  width:     250px;
+  position:  relative;
+
+  @include smallSize
+  {
+    width: 175px;
+  }
+
+  @at-root
+  {
+
+    @keyframes DriftUpAndDown
+    {
+      0%
+      {
+        transform: translateY(-10px);
+      }
+      100%
+      {
+        transform: translateY(10px);
+      }
+    }
+
+  }
+
+  animation: DriftUpAndDown 2500ms alternate ease infinite;
+
+  svg
+  {
+    width:  100%;
+    height: auto;
+  }
+
+}
+
+.Fruit__fruit
 {
 
 }

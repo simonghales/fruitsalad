@@ -14,7 +14,7 @@ class SessionRedirect extends Component {
 
   componentDidMount() {
     const {history, match} = this.props;
-    history.push(`/session/${match.params.id}/join`);
+    history.push(`/session/${match.params.id}`);
   }
 
   render() {

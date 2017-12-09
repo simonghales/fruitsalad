@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './DrawDuoDisplayPendingUsers.css';
+import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import {SessionUsersModel} from '../../logic/models';
@@ -13,12 +14,20 @@ class DrawDuoDisplayPendingUsers extends Component {
 
   render() {
     const {users} = this.props;
-    console.log('users', users);
+    const usersList = Object.keys(users);
+    const smallSize = (usersList.length > 6);
+    const userSize = (smallSize) ? 'small' : 'default';
     return (
-      <div className='DrawDuoDisplayPendingUsers'>
+      <div className={classNames([
+        'DrawDuoDisplayPendingUsers',
+        `DrawDuoDisplayPendingUsers--count-${usersList.length}`,
         {
-          Object.keys(users).map((userKey) => (
-            <DrawDuoSessionUser user={users[userKey]} key={userKey}/>
+          'DrawDuoDisplayPendingUsers--largeCount': smallSize,
+        }
+      ])}>
+        {
+          usersList.map((userKey) => (
+            <DrawDuoSessionUser user={users[userKey]} key={userKey} size={userSize}/>
           ))
         }
       </div>

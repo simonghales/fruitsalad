@@ -6,7 +6,7 @@
 @import "../../styles/tools/responsive";
 @import "../../styles/tools/text";
 
-.FullScreenLoadingMessage
+.TestingScreen
 {
   position:        fixed;
   top:             0;
@@ -18,13 +18,6 @@
   justify-content: center;
 }
 
-.FullScreenLoadingMessage__content
+.TestingScreen__content
 {
-  @include mobilePadding;
-  text-align: center;
-}
-
-.FullScreenLoadingMessage__title
-{
-  margin-bottom: 10px;
 }

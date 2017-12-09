@@ -1,5 +1,5 @@
 import React from 'react';
-import {DrawDuoModel, DrawDuoModelState, RoundModelState} from './models';
+import {DrawDuoModel, DrawDuoModelState, RoundModelState, SessionModel} from './models';
 import DrawDuoDisplayDrawing from '../newscreens/DrawDuoDisplayDrawing/DrawDuoDisplayDrawing';
 import {
   DRAW_DUO_ENTRY_STATE_COMPLETED,
@@ -26,6 +26,13 @@ import DrawDuoControllerResults from '../screens/DrawDuoControllerResults/DrawDu
 import DrawDuoControllerGuessing from '../screens/DrawDuoControllerGuessing/DrawDuoControllerGuessing';
 import DrawDuoControllerVoting from '../screens/DrawDuoControllerVoting/DrawDuoControllerVoting';
 import DrawDuoControllerPending from '../screens/DrawDuoControllerPending/DrawDuoControllerPending';
+import {isUserJoined} from './users';
+import {sessionGameInPlay} from './session';
+import SessionScreenJoin from '../../../screens/SessionScreenJoin/SessionScreenJoin';
+import FullScreenLoadingMessage from '../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import SessionScreenNotFound from '../../../screens/SessionScreenNotFound/SessionScreenNotFound';
+import SessionScreenHub from '../../../screens/SessionScreenHub/SessionScreenHub';
+import SessionScreenDefault from '../../../screens/SessionScreenDefault/SessionScreenDefault';
 
 export function getDisplayComponentFromGameState(drawDuo: DrawDuoModel) {
   if (!drawDuo) return null;
@@ -165,4 +172,21 @@ export function getEntryControllerComponentFromGameState(drawDuo: DrawDuoModel) 
       return null;
   }
 
+}
+
+export function getSessionControllerComponentFromSessionState(session: SessionModel, currentUserKey: string) {
+
+  const userJoined = isUserJoined(currentUserKey, session);
+  const gameInPlay = sessionGameInPlay(session);
+
+  if (!session) {
+    return <SessionScreenNotFound/>;
+  }
+  if (!userJoined) {
+    return <SessionScreenJoin/>;
+  }
+  if (!gameInPlay) {
+    return <SessionScreenHub/>;
+  }
+  return <SessionScreenDefault/>;
 }

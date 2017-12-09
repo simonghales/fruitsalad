@@ -1,0 +1,30 @@
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.SessionScreenNotFound
+{
+  @include fixedFullScreen;
+  @include flexCenter;
+}
+
+.SessionScreenNotFound__content
+{
+  text-align: center;
+}
+
+.SessionScreenNotFound__title
+{
+  margin-bottom: 10px;
+}
+
+.SessionScreenNotFound__linkWrapper
+{
+  margin-top: 10px;
+
+  a
+  {
+    text-decoration: underline;
+  }
+
+}

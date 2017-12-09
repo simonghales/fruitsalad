@@ -1,24 +1,22 @@
 import React, {Component} from 'react';
 import './DancingFruit.css';
-import classNames from 'classnames';
-import Fruit from '../Fruit/Fruit';
-import FruitBanana from '../FruitBanana/FruitBanana';
-import FruitStrawberry from '../FruitStrawberry/FruitStrawberry';
+import smile from '../../assets/images/temp/smile.png';
+import Player from '../Player/Player';
 
 const DancingFruit = () => {
   return (
     <div className='DancingFruit'>
       <div className='DancingFruit__fruit'>
-        <FruitBanana/>
+        <Player name='simon' image={smile} showName={false}/>
       </div>
       <div className='DancingFruit__fruit'>
-        <FruitBanana/>
+        <Player name='jono' image={smile} size='small'/>
       </div>
       <div className='DancingFruit__fruit'>
-        <FruitBanana/>
+        <Player name='aya' image={smile} showPoints={true}/>
       </div>
       <div className='DancingFruit__fruit'>
-        <FruitBanana/>
+        <Player name='chiao' image={smile}/>
       </div>
     </div>
   );

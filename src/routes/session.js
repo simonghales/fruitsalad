@@ -2,9 +2,6 @@ import React from 'react';
 import SessionScreenJoin from '../screens/SessionScreenJoin/SessionScreenJoin';
 import SessionScreenHub from '../screens/SessionScreenHub/SessionScreenHub';
 import SessionScreenHost from '../screens/SessionScreenHost/SessionScreenHost';
-import SessionScreenHostBottom from '../screens/SessionScreenHost/SessionScreenHostBottom';
-import SessionScreenJoinBottom from '../screens/SessionScreenJoin/SessionScreenJoinBottom';
-import SessionScreenHubBottom from '../screens/SessionScreenHub/SessionScreenHubBottom';
 import SessionScreenDefault from '../screens/SessionScreenDefault/SessionScreenDefault';
 
 export interface RouteInterface {

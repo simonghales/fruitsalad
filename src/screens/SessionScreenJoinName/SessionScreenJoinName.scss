@@ -1,0 +1,25 @@
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+
+.SessionScreenJoinName
+{
+  @include fullSize;
+  @include flexCenter;
+}
+
+.SessionScreenJoinName__content
+{
+  @include mobilePadding;
+  width: 100%;
+}
+
+.SessionScreenJoinName__input
+{
+  margin-bottom: 20px;
+}
+
+.SessionScreenJoinName__button
+{
+  text-align: center;
+}

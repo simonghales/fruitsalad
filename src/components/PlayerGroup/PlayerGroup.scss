@@ -5,30 +5,24 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
-@mixin disabled
+.PlayerGroup
 {
+  display: flex;
 
-  &.Player--disabled
+  .Player
   {
-    @content;
+    margin: 0 10px;
+
+    &:first-child
+    {
+      margin-left: 0;
+    }
+
+    &:last-child
+    {
+      margin-right: 0;
+    }
+
   }
 
-}
-
-.Player
-{
-  text-align: center;
-  transition: opacity 300ms ease;
-
-  @include disabled
-  {
-    opacity: 0.5;
-  }
-
-}
-
-.Player__name
-{
-  @include mediumHeadingMobile;
-  @include mediumFont;
 }

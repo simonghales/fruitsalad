@@ -15,6 +15,16 @@
   touch-action: none;
 }
 
+.DrawDuoControllerDrawing__content
+{
+  @include mobilePadding;
+}
+
+.DrawDuoControllerDrawing__header
+{
+  text-align: center;
+}
+
 .DrawDuoControllerDrawing__title
 {
   @include mediumDrawDuoHeading;
@@ -24,16 +34,15 @@
 
 .DrawDuoControllerDrawing__prompt
 {
-  @include mediumDrawDuoHeading;
-  @include drawDuoFont;
+  @include mediumThickHeading;
   text-align: center;
 }
 
 .DrawDuoControllerDrawing__drawingContainer
 {
-  margin:           20px;
+  margin:           20px 0;
   background-color: #FFFFFF;
-  border:           1px solid #F0F0F0;
+  border:           2px solid $color-text;
   height:           calc(100vw - 40px);
   position:         relative;
   touch-action:     none;
