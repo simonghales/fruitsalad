@@ -5,7 +5,7 @@ import DrawDuoPair from '../DrawDuoPair/DrawDuoPair';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 import {AppState} from '../../../../redux/index';
 import {AnswerModel, DrawDuoModel, PairsModel} from '../../logic/models';
-import {getPairs, getPairsArrays, getUserAnswer, WrappedPair} from '../../logic/users';
+import {getPairs, getPairsArrays, getUserAnswer, getUserCurrentEntryPoints, WrappedPair} from '../../logic/users';
 import {getDrawingTimer} from '../../logic/game';
 import PlayerGroup from '../../../../components/PlayerGroup/PlayerGroup';
 
@@ -20,6 +20,7 @@ class DrawDuoPairsResults extends Component {
 
   constructor(props) {
     super(props);
+    this.getPlayerAction = this.getPlayerAction.bind(this);
     this.getPlayerAside = this.getPlayerAside.bind(this);
   }
 
@@ -38,6 +39,11 @@ class DrawDuoPairsResults extends Component {
       ar[ix].push(it);
       return ar;
     }, []);
+  }
+
+  getPlayerAction(userKey: string) {
+    const {session} = this.props;
+    return `+${getUserCurrentEntryPoints(userKey, session.drawDuo)}`;
   }
 
   getPlayerAside(userKey: string) {
@@ -65,7 +71,8 @@ class DrawDuoPairsResults extends Component {
             <div className='DrawDuoPairsResults__row' key={index}>
               {
                 row.map((pairKey: string) => (
-                  <PlayerGroup action='+1000' layout='vertical' pair={pairs[pairKey]} playerSize='mini'
+                  <PlayerGroup getAction={this.getPlayerAction} layout='vertical' pair={pairs[pairKey]}
+                               playerSize='mini'
                                users={{}} key={pairKey} pairKey={pairKey} playerAside={this.getPlayerAside}
                                playerProps={{
                                  pointsSize: 'large',

@@ -17,9 +17,9 @@ class PlayerGroup extends Component {
     pair: PairModel,
     playerSize?: string,
     users: UsersModel,
-    playerAside(): any,
     playerProps?: {},
-    getAction(): string,
+    getAction(userKey: string, disabled: boolean): string,
+    playerAside(): any,
   };
 
   render() {
@@ -36,7 +36,7 @@ class PlayerGroup extends Component {
         {
           Object.keys(pair).map((playerKey, index) => {
             const disabled = disabledUsers.includes(playerKey);
-            const displayAction = (action) ? action : (getAction) ? getAction() : (disabled) ? 'DRAWING' : 'DONE';
+            const displayAction = (action) ? action : (getAction) ? getAction(playerKey, disabled) : (disabled) ? 'DRAWING' : 'DONE';
             return (
               <div className={classNames([
                 'PlayerGroup__player',

@@ -44,7 +44,7 @@
 {
   @include smallReadableText;
   overflow-wrap:    break-word;
-  word-break:       break-all;
+  //word-break:       break-all;
   background-color: #ffffff;
   padding:          20px;
   border:           2px solid $color-text;

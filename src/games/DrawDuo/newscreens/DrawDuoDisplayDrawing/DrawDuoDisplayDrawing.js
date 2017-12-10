@@ -44,7 +44,7 @@ class DrawDuoDisplayDrawing extends Component {
           <DrawDuoDisplayBody>
             <div className='DrawDuoDisplayDrawing__content'>
               <div className='DrawDuoDisplayDrawing__pairs'>
-                <DrawDuoPairs sort='score' disabled='drawing'/>
+                <DrawDuoPairs actionType='drawing' sort='score' disabled='drawing'/>
               </div>
             </div>
           </DrawDuoDisplayBody>

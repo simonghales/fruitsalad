@@ -18,34 +18,28 @@
   //justify-content: center;
 }
 
-.DrawDuoDisplayRoundResults__info
+.DrawDuoDisplayRoundResults__header
 {
-  text-align:      center;
-  position:        relative;
-  flex:            1;
-  width:           100%;
-  display:         flex;
-  flex-direction:  column;
-  justify-content: center;
-
-  .DrawDuoAnimatedMessage
-  {
-    position:   absolute;
-    left:       0;
-    right:      0;
-    margin-top: 80px;
-  }
-
+  text-align: center;
+  position:   relative;
+  width:      100%;
 }
 
-.DrawDuoDisplayRoundResults__title
+.DrawDuoDisplayRoundResults__header__title
 {
-  @include hugeDrawDuoHeading;
+  margin-bottom: 10px;
+}
+
+.DrawDuoDisplayRoundResults__header__subtitle
+{
+  position: absolute;
+  left:     0;
+  right:    0;
 }
 
 .DrawDuoDisplayRoundResults__content
 {
-  flex:        3;
+  @include fullSize;
   display:     flex;
   align-items: center;
 }

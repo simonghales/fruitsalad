@@ -6,7 +6,8 @@ import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer
 import {AppState} from '../../../../redux/index';
 import {DrawDuoModel, PairsModel} from '../../logic/models';
 import {
-  getPairs, getPairsArrays, getPairsArraysSortedByScore, getUsersWithoutDrawings,
+  getPairs, getPairsArrays, getPairsArraysSortedByScore, getUserCurrentEntryPoints, getUserCurrentScore,
+  getUsersWithoutDrawings,
   WrappedPair
 } from '../../logic/users';
 import {getDrawingTimer} from '../../logic/game';
@@ -15,6 +16,7 @@ import PlayerGroup from '../../../../components/PlayerGroup/PlayerGroup';
 class DrawDuoPairs extends Component {
 
   props: {
+    actionType?: 'drawing' | 'score',
     disabled?: 'drawing',
     pairs: PairsModel,
     session: {
@@ -27,6 +29,7 @@ class DrawDuoPairs extends Component {
 
   constructor(props) {
     super(props);
+    this.getAction = this.getAction.bind(this);
   }
 
   getTimerDuration() {
@@ -46,6 +49,15 @@ class DrawDuoPairs extends Component {
     }, []);
   }
 
+  getAction(userKey: string, disabled: boolean) {
+    const {actionType = 'score', session} = this.props;
+    if (actionType === 'score') {
+      return `${getUserCurrentScore(userKey, '', session.drawDuo)}`;
+    } else {
+      return (disabled) ? 'DRAWING' : 'DONE';
+    }
+  }
+
   render() {
     const {disabled, pairs, session, sort, usersWithoutDrawings, userProps} = this.props;
     const sortedPairs = (sort && sort === 'score') ? getPairsArraysSortedByScore(session.drawDuo) : getPairsArrays(session.drawDuo);
@@ -59,10 +71,10 @@ class DrawDuoPairs extends Component {
             <div className='DrawDuoPairs__row' key={index}>
               {
                 row.map((pairKey: string) => (
-                  <PlayerGroup disabledUsers={disabledUsers} pairKey={pairKey} pair={pairs[pairKey]} key={pairKey}/>
+                  <PlayerGroup disabledUsers={disabledUsers} getAction={this.getAction}
+                               pairKey={pairKey} pair={pairs[pairKey]} key={pairKey}/>
                 ))
               }
-              {/*<DrawDuoPair pairKey={pairKey} key={pairKey} userProps={userProps}/>*/}
             </div>
           ))
         }

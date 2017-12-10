@@ -21,7 +21,7 @@ const FruitBanana = ({
           'FruitBanana--showName': showName,
           'FruitBanana--showPoints': showPoints,
         }
-      ])} viewBox='0 0 1643 2800' xmlns='http://www.w3.org/2000/svg'>
+      ])} viewBox='0 0 1643 2700' xmlns='http://www.w3.org/2000/svg'>
         <g fill='none' fillRule='evenodd'>
           <path
             d='M549.317 2697.234c140.87 50.06 92.67-770.63 290.344-818.607-154.205 255.02 18.036 785.577 174.89 785.577 156.853 0-66.942-459.059 348.575-1037.01 108.827-189.87-153.244-404.356-397.202-404.356-243.96 0-597.5 528.091-630.298 793.557-32.797 265.465 120.741 647.809 213.691 680.84z'

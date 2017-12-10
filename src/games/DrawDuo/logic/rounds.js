@@ -217,6 +217,10 @@ export function submitRoundUserDrawing(image: string, userKey: string, drawDuo: 
 }
 
 export function areAllRoundDrawingsSubmitted(round: RoundModel, drawDuo: DrawDuoModel): boolean {
+  if (!round) {
+    console.warn('no round');
+    return false;
+  }
   const {drawings} = round;
   const {users} = drawDuo;
   if (!drawings || !users) return false;

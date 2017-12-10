@@ -87,7 +87,7 @@ class DrawDuoControllerVoting extends Component {
     const sortedAnswers = Object.keys(answers).sort((answerKeyA, answerKeyB) => {
       return answers[answerKeyA].order - answers[answerKeyB].order;
     }).filter((answerKey) => {
-      return (answers[answerKey].user !== userAnswer.user);
+      return (userAnswer) ? (answers[answerKey].user !== userAnswer.user) : true;
     }).map((key) => {
       return {
         ...answers[key],

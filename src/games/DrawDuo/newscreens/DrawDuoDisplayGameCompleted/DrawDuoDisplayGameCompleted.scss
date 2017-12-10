@@ -19,24 +19,23 @@
   //justify-content: center;
 }
 
-.DrawDuoDisplayGameCompleted__info
+.DrawDuoDisplayGameCompleted__header
 {
-  text-align:      center;
-  position:        relative;
-  width:           100%;
-  display:         flex;
-  flex-direction:  column;
-  justify-content: center;
-  margin-top:      100px;
+  text-align: center;
+  position:   relative;
+  width:      100%;
+}
 
-  .DrawDuoAnimatedMessage
-  {
-    position:   absolute;
-    left:       0;
-    right:      0;
-    margin-top: 80px;
-  }
+.DrawDuoDisplayGameCompleted__header__title
+{
+  margin-bottom: 10px;
+}
 
+.DrawDuoDisplayGameCompleted__header__subtitle
+{
+  position: absolute;
+  left:     0;
+  right:    0;
 }
 
 .DrawDuoDisplayGameCompleted__winners
@@ -75,18 +74,18 @@
 .DrawDuoDisplayGameCompleted__pairs__row
 {
   @include slideInUpAnimationDefaults;
-  @include slideInUpAnimation;
+  @include slideInUpAnimation($animationSpeed: 1500ms);
   display:         flex;
   justify-content: center;
   width:           100%;
-  margin-top:      120px;
+  margin-top:      50px;
 
   @for $i from 1 to 5
   {
 
     &.DrawDuoDisplayGameCompleted__pairs__row--display-#{$i}
     {
-      animation-delay: ($i * 500ms);
+      animation-delay: (($i - 1) * 500ms) + 500ms;
     }
 
   }
@@ -96,7 +95,7 @@
     margin-top: 0;
   }
 
-  .DrawDuoPair
+  .PlayerGroup
   {
     margin: 0 50px;
   }

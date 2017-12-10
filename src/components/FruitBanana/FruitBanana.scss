@@ -26,6 +26,16 @@
 
 }
 
+@mixin miniSize
+{
+
+  .Fruit--size-mini &
+  {
+    @content;
+  }
+
+}
+
 @mixin smallSize
 {
 
@@ -81,6 +91,11 @@
     fill: $color-text;
   }
 
+  @include miniSize
+  {
+    padding-top: 10px;
+  }
+
 }
 
 .FruitBanana__name
@@ -109,8 +124,9 @@
 
 .FruitBanana__action
 {
-  font-size: 160px;
-  opacity:   0;
+  font-size:   160px;
+  font-weight: 700;
+  opacity:     0;
 
   @include showAction
   {

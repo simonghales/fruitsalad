@@ -32,7 +32,7 @@
   {
     display: flex;
 
-    .Player
+    .PlayerGroup__player
     {
       margin: 0 10px;
 
@@ -53,7 +53,7 @@
   @include verticalLayout
   {
 
-    .Player
+    .PlayerGroup__player
     {
       margin: 10px 0;
 
