@@ -494,6 +494,11 @@ export function isUserEntryParticipant(userKey: string, drawDuo: DrawDuoModel) {
   return (currentEntry.pair === userPairKey);
 }
 
+export function getCurrentEntryPromptPair(drawDuo: DrawDuoModel): string {
+  const currentEntry = getCurrentEntryData(drawDuo);
+  return (currentEntry) ? currentEntry.pair : '';
+}
+
 export function submitUserEntryVote(userKey: string, answerKey: string, drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): void {
   const currentEntryKey = getCurrentEntryKey(drawDuo);
   const votes = {

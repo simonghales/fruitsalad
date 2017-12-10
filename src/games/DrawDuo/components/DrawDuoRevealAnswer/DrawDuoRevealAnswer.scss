@@ -92,35 +92,43 @@
 
 .DrawDuoRevealAnswer__content
 {
-  position: relative;
-  width:    100%;
+  position:    relative;
+  height:      100%;
+  display:     flex;
+  align-items: center;
+  //width:    100%;
+}
+
+.DrawDuoRevealAnswer__answer
+{
+  max-width: 500px;
 }
 
 .DrawDuoRevealAnswer__voters
 {
   position:        absolute;
-  bottom:          100%;
-  margin-bottom:   20px;
+  top:             0;
+  bottom:          0;
+  right:           100%;
   display:         flex;
   justify-content: center;
-  left:            0;
-  right:           0;
+  margin-right:    40px;
 
-  .DrawDuoUser
+  .DrawDuoRevealAnswer__voters__player
   {
     @include slideInUpAnimationDefaults;
+    position: relative;
+    top:      -50px;
 
     @include isBeingRevealed
     {
       @include slideInUpAnimation($animationSpeed: 500ms);
     }
 
-    margin: 0 15px;
-
     @for $i from 1 to 20
     {
 
-      &:nth-child(#{$i})
+      &.DrawDuoRevealAnswer__voters__player--offset-#{$i}
       {
         animation-delay: (($i - 1) * 500ms) + 1000ms;
       }
@@ -133,26 +141,33 @@
 
 .DrawDuoRevealAnswer__owner
 {
-  @include slideInDownAnimationDefaults;
-  position:        absolute;
-  top:             100%;
-  left:            0;
-  right:           0;
-  margin-top:      20px;
-  display:         flex;
-  justify-content: center;
-  align-items:     center;
+  @include slideInUpAnimationDefaults;
+  position:    absolute;
+  top:         0;
+  bottom:      0;
+  left:        100%;
+  margin-left: 40px;
+  display:     flex;
+  //justify-content: center;
+  align-items: center;
+  min-width:   550px;
 
   @include isBeingRevealed
   {
-    @include slideInDownAnimation($animationSpeed: 500ms, $animationDelay: 3000ms);
+    @include slideInUpAnimation($animationSpeed: 500ms, $animationDelay: 3000ms);
+  }
+
+  .Player
+  {
+    position: relative;
+    top:      -30px;
   }
 
 }
 
 .DrawDuoRevealAnswer__owner__text
 {
-  @include drawDuoHeadingFont;
+  @include friendlyFont;
 }
 
 .DrawDuoRevealAnswer__answer

@@ -132,34 +132,34 @@
 
 @mixin hugeReadableText
 {
-  @include headingFont;
+  @include mediumFont;
   font-size:   44px;
   line-height: 48px;
-  font-weight: 600;
+  //font-weight: 600;
 }
 
 @mixin largeReadableText
 {
-  @include headingFont;
+  @include mediumFont;
   font-size:   38px;
   line-height: 42px;
-  font-weight: 600;
+  //font-weight: 600;
 }
 
 @mixin mediumReadableText
 {
-  @include headingFont;
+  @include mediumFont;
   font-size:   32px;
   line-height: 36px;
-  font-weight: 600;
+  //font-weight: 600;
 }
 
 @mixin smallReadableText
 {
-  @include headingFont;
+  @include mediumFont;
   font-size:   24px;
   line-height: 30px;
-  font-weight: 600;
+  //font-weight: 600;
 }
 
 @mixin largeHeading

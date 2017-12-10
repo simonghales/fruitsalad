@@ -10,6 +10,7 @@ class Player extends Component {
     action?: string,
     disabled?: boolean,
     player: SessionUserModel | UserModel,
+    pointsSize?: string,
     showAction?: boolean,
     showName?: boolean,
     showPoints?: boolean,
@@ -21,6 +22,7 @@ class Player extends Component {
       action = '',
       disabled,
       player,
+      pointsSize = 'default',
       showAction = false,
       showName = true,
       showPoints = false,
@@ -30,6 +32,7 @@ class Player extends Component {
     return (
       <div className={classNames([
         'Player',
+        `Player--pointsSize-${pointsSize}`,
         {
           'Player--disabled': disabled,
         }

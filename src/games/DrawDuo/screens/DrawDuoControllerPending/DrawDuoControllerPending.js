@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {AppState} from '../../../../redux/index';
 import DrawDuoCenteredMessage from '../../components/DrawDuoCenteredMessage/DrawDuoCenteredMessage';
 import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
+import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 
 class DrawDuoControllerPending extends Component {
 
@@ -12,9 +13,7 @@ class DrawDuoControllerPending extends Component {
   render() {
     return (
       <div className='DrawDuoControllerPending'>
-        <DrawDuoCenteredMessage>
-          <JumpingLetters label='watch the TV'/>
-        </DrawDuoCenteredMessage>
+        <FullScreenLoadingMessage subtitle='watch the TV' subtitleSize='small'/>
       </div>
     )
   }

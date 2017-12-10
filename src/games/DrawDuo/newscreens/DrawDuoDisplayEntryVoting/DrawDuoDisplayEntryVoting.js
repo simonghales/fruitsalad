@@ -15,6 +15,12 @@ import DrawDuoArtworkPiece from '../../components/DrawDuoArtworkPiece/DrawDuoArt
 import DrawDuoAnswers from '../../components/DrawDuoAnswers/DrawDuoAnswers';
 import DrawDuoRevealAnswers from '../../components/DrawDuoRevealAnswers/DrawDuoRevealAnswers';
 import {DRAW_DUO_ENTRY_STATE_RESULTS, DRAW_DUO_ENTRY_STATE_VOTING} from '../../logic/constants';
+import DrawDuoDisplayFooter from '../../components/DrawDuoDisplayFooter/DrawDuoDisplayFooter';
+import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
+import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
+import DrawDuoDisplayWrapper from '../../components/DrawDuoDisplayWrapper/DrawDuoDisplayWrapper';
+import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
+import Heading from '../../../../components/Heading/Heading';
 
 class DrawDuoDisplayEntryVoting extends Component {
 
@@ -44,35 +50,47 @@ class DrawDuoDisplayEntryVoting extends Component {
   }
 
   renderTitle() {
-    return (this.isResults()) ? 'Here are the results' : 'Select an answer!';
+    return (this.isResults()) ? 'here are the results' : 'select an answer!';
   }
 
   render() {
     const usersKeys = this.getUserKeys();
     return (
       <div className='DrawDuoDisplayEntryVoting'>
-        <header className='DrawDuoDisplayEntryVoting__header'>
-          <div className='DrawDuoDisplayEntryVoting__header__content'>
-            <DrawDuoTitle>{this.renderTitle()}</DrawDuoTitle>
-            {
-              (this.isVoting()) && (
-                <DrawDuoAnimatedMessage label='Select via your device'/>
-              )
-            }
-          </div>
-        </header>
-        <div className='DrawDuoDisplayEntryVoting__content'>
-          <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[0]) ? usersKeys[0] : ''}
-                               userSize='tiny'/>
-          <div className='DrawDuoDisplayEntryVoting__answers'>
-            <DrawDuoAnswers/>
-          </div>
-          <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[1]) ? usersKeys[1] : ''}
-                               userSize='tiny'/>
-        </div>
-        <footer className='DrawDuoDisplayEntryVoting__footer'>
-          <DrawDuoRevealAnswers/>
-        </footer>
+        <DrawDuoDisplayWrapper>
+          <DrawDuoDisplayHeader>
+            <header className='DrawDuoDisplayEntryVoting__header'>
+              <div className='DrawDuoDisplayEntryGuessing__header__title'>
+                <Heading>{this.renderTitle()}</Heading>
+              </div>
+              <div className='DrawDuoDisplayEntryGuessing__header__subtitle'>
+                {
+                  (this.isVoting()) && (
+                    <Heading size='small'>
+                      <JumpingLetters label={`select via your device`} intensity='less'/>
+                    </Heading>
+                  )
+                }
+              </div>
+            </header>
+          </DrawDuoDisplayHeader>
+          <DrawDuoDisplayBody>
+            <div className='DrawDuoDisplayEntryVoting__content'>
+              <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[0]) ? usersKeys[0] : ''}
+                                   userSize='tiny'/>
+              <div className='DrawDuoDisplayEntryVoting__answers'>
+                <DrawDuoAnswers/>
+              </div>
+              <DrawDuoArtworkPiece size='medium' userKey={(usersKeys && usersKeys[1]) ? usersKeys[1] : ''}
+                                   userSize='tiny'/>
+            </div>
+          </DrawDuoDisplayBody>
+          <DrawDuoDisplayFooter>
+            <footer className='DrawDuoDisplayEntryVoting__footer'>
+              <DrawDuoRevealAnswers/>
+            </footer>
+          </DrawDuoDisplayFooter>
+        </DrawDuoDisplayWrapper>
       </div>
     )
   }

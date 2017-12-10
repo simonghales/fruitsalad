@@ -6,8 +6,10 @@ import {FormattedAnswer} from '../../models';
 import UserImage from '../../../../components/UserImage/UserImage';
 import {randomIntFromInterval} from '../../../../utils/numbers';
 import {AnswerModel, SessionModel} from '../../logic/models';
-import {hasAnswerBeenRevealed, isAnswerBeingRevealed} from '../../logic/entries';
+import {getCurrentEntryPromptPair, hasAnswerBeenRevealed, isAnswerBeingRevealed} from '../../logic/entries';
 import DrawDuoUser from '../DrawDuoUser/DrawDuoUser';
+import Player from '../../../../components/Player/Player';
+import {getPair, getPairs, getPairUsersKeys, getUsers} from '../../logic/users';
 
 class DrawDuoRevealAnswer extends Component {
 
@@ -24,22 +26,32 @@ class DrawDuoRevealAnswer extends Component {
   }
 
   renderOwner() {
-    const {answerWrapper} = this.props;
+    const {answerWrapper, session} = this.props;
     const {answer} = answerWrapper;
+    const users = getUsers(session.drawDuo);
     if (answer.prompt) {
+      const pairKey = getCurrentEntryPromptPair(session.drawDuo);
+      const pairs = getPairs(session.drawDuo);
+      const pair = getPair(pairKey, pairs);
+      const pairUsers = getPairUsersKeys(pair);
       return (
         <div className='DrawDuoRevealAnswer__owner'>
+          {
+            pairUsers.map((userKey) => (
+              <Player player={users[userKey]} size='mini' key={userKey}/>
+            ))
+          }
           <div className='DrawDuoRevealAnswer__owner__text'>
-            Actual Prompt
+            actual prompt
           </div>
         </div>
       )
     } else {
       return (
         <div className='DrawDuoRevealAnswer__owner'>
-          <DrawDuoUser userKey={answer.user} submittedDisplay={false} alignment='horizontal' size='tiny'/>
+          <Player player={users[answer.user]} size='mini'/>
           <div className='DrawDuoRevealAnswer__owner__text'>
-            Fooled Ya
+            fooled ya
           </div>
         </div>
       )
@@ -52,6 +64,7 @@ class DrawDuoRevealAnswer extends Component {
     const {answer} = answerWrapper;
     const voters = (answer.votes) ? Object.keys(answer.votes) : [];
     const answerisBeingRevealed = isAnswerBeingRevealed(answerWrapper.key, session.drawDuo);
+    const users = getUsers(session.drawDuo);
 
     return (
       <div className={classNames([
@@ -66,8 +79,13 @@ class DrawDuoRevealAnswer extends Component {
         <div className='DrawDuoRevealAnswer__content'>
           <div className='DrawDuoRevealAnswer__voters'>
             {
-              voters.map((key) => (
-                <DrawDuoUser userKey={key} submittedDisplay={false} alignment='horizontal' size='tiny' key={key}/>
+              voters.map((key, index) => (
+                <div className={classNames([
+                  'DrawDuoRevealAnswer__voters__player',
+                  `DrawDuoRevealAnswer__voters__player--offset-${voters.length - index}`,
+                ])} key={key}>
+                  <Player player={users[key]} size='mini'/>
+                </div>
               ))
             }
           </div>

@@ -37,6 +37,17 @@
 
 }
 
+@mixin mediumSize
+{
+
+  &.Fruit--size-medium,
+  .Fruit--size-medium &
+  {
+    @content;
+  }
+
+}
+
 .Fruit
 {
   width:     250px;

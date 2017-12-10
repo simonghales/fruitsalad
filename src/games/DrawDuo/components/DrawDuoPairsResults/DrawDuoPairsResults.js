@@ -4,13 +4,15 @@ import {connect} from 'react-redux';
 import DrawDuoPair from '../DrawDuoPair/DrawDuoPair';
 import CountdownTimer from '../../../../components/CountdownTimer/CountdownTimer';
 import {AppState} from '../../../../redux/index';
-import {DrawDuoModel} from '../../logic/models';
-import {getPairs, getPairsArrays, WrappedPair} from '../../logic/users';
+import {AnswerModel, DrawDuoModel, PairsModel} from '../../logic/models';
+import {getPairs, getPairsArrays, getUserAnswer, WrappedPair} from '../../logic/users';
 import {getDrawingTimer} from '../../logic/game';
+import PlayerGroup from '../../../../components/PlayerGroup/PlayerGroup';
 
 class DrawDuoPairsResults extends Component {
 
   props: {
+    pairs: PairsModel,
     session: {
       drawDuo: DrawDuoModel,
     },
@@ -18,6 +20,7 @@ class DrawDuoPairsResults extends Component {
 
   constructor(props) {
     super(props);
+    this.getPlayerAside = this.getPlayerAside.bind(this);
   }
 
   getTimerDuration() {
@@ -37,10 +40,24 @@ class DrawDuoPairsResults extends Component {
     }, []);
   }
 
-  render() {
+  getPlayerAside(userKey: string) {
     const {session} = this.props;
-    const pairs = getPairsArrays(session.drawDuo);
-    const rows = this.getRows(pairs);
+    const answer: AnswerModel = getUserAnswer(userKey, session.drawDuo);
+    return (
+      <div className='DrawDuoPairsResults__playerAside'>
+        <div className='DrawDuoPairsResults__playerAside__text'>
+          <span>
+            {answer && answer.text}
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  render() {
+    const {pairs, session} = this.props;
+    const pairsArray = getPairsArrays(session.drawDuo);
+    const rows = this.getRows(pairsArray);
     return (
       <div className='DrawDuoPairsResults'>
         {
@@ -48,13 +65,11 @@ class DrawDuoPairsResults extends Component {
             <div className='DrawDuoPairsResults__row' key={index}>
               {
                 row.map((pairKey: string) => (
-                  <DrawDuoPair pairKey={pairKey} key={pairKey} alignment='vertical' userProps={{
-                    alignment: 'horizontal',
-                    pairMargin: false,
-                    pointsDisplay: 'entry',
-                    submittedDisplay: false,
-                    showEntryAction: true,
-                  }}/>
+                  <PlayerGroup action='+1000' layout='vertical' pair={pairs[pairKey]} playerSize='mini'
+                               users={{}} key={pairKey} pairKey={pairKey} playerAside={this.getPlayerAside}
+                               playerProps={{
+                                 pointsSize: 'large',
+                               }}/>
                 ))
               }
             </div>
@@ -68,6 +83,7 @@ class DrawDuoPairsResults extends Component {
 const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
   return {
+    pairs: getPairs(session.drawDuo),
     session: session,
   };
 };

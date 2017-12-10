@@ -8,9 +8,13 @@ const FullScreenLoadingMessage = ({title, subtitle, subtitleSize = 'medium'}) =>
   return (
     <div className='FullScreenLoadingMessage'>
       <div className='FullScreenLoadingMessage__content'>
-        <div className='FullScreenLoadingMessage__title'>
-          <Heading size='huge'>{title}</Heading>
-        </div>
+        {
+          title && (
+            <div className='FullScreenLoadingMessage__title'>
+              <Heading size='huge'>{title}</Heading>
+            </div>
+          )
+        }
         <Heading size={subtitleSize}>
           <JumpingLetters label={subtitle}/>
         </Heading>

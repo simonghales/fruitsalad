@@ -5,24 +5,80 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
+@mixin horizontalLayout
+{
+
+  &.PlayerGroup--layout-horizontal
+  {
+    @content;
+  }
+
+}
+
+@mixin verticalLayout
+{
+
+  &.PlayerGroup--layout-vertical
+  {
+    @content;
+  }
+
+}
+
 .PlayerGroup
 {
-  display: flex;
 
-  .Player
+  @include horizontalLayout
   {
-    margin: 0 10px;
+    display: flex;
 
-    &:first-child
+    .Player
     {
-      margin-left: 0;
+      margin: 0 10px;
+
+      &:first-child
+      {
+        margin-left: 0;
+      }
+
+      &:last-child
+      {
+        margin-right: 0;
+      }
+
     }
 
-    &:last-child
+  }
+
+  @include verticalLayout
+  {
+
+    .Player
     {
-      margin-right: 0;
+      margin: 10px 0;
+
+      &:first-child
+      {
+        margin-top: 0;
+      }
+
+      &:last-child
+      {
+        margin-bottom: 0;
+      }
+
     }
 
+  }
+
+}
+
+.PlayerGroup__player
+{
+
+  &.PlayerGroup__player--asideIncluded
+  {
+    display: flex;
   }
 
 }

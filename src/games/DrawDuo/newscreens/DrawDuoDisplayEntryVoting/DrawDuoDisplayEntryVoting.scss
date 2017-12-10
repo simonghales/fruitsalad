@@ -20,40 +20,32 @@
 
 .DrawDuoDisplayEntryVoting__header
 {
-  display:     flex;
-  align-items: center;
-  flex:        1;
-  text-align:  center;
+  text-align: center;
+  position:   relative;
+  width:      100%;
 }
 
-.DrawDuoDisplayEntryVoting__header__content
+.DrawDuoDisplayEntryVoting__header__title
 {
-  position: relative;
+  margin-bottom: 10px;
+}
 
-  .DrawDuoAnimatedMessage
-  {
-    position:   absolute;
-    margin-top: 10px;
-    left:       0;
-    right:      0;
-    text-align: center;
-  }
-
+.DrawDuoDisplayEntryVoting__header__subtitle
+{
+  position: absolute;
+  left:     0;
+  right:    0;
 }
 
 .DrawDuoDisplayEntryVoting__footer
 {
-  display:     flex;
-  align-items: center;
-  flex:        1;
-  width:       100%;
+  @include fullSize;
 }
 
 .DrawDuoDisplayEntryVoting__content
 {
+  @include fullSize;
   position:    relative;
-  height:      28vw;
-  width:       100%;
   display:     flex;
   align-items: center;
 

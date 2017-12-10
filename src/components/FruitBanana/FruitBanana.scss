@@ -6,6 +6,16 @@
 @import "../../styles/tools/layout";
 @import "../../styles/tools/text";
 
+@mixin largePointsSize
+{
+
+  .Player--pointsSize-large &
+  {
+    @content;
+  }
+
+}
+
 @mixin tinySize
 {
 
@@ -105,6 +115,11 @@
   @include showAction
   {
     opacity: 1;
+  }
+
+  @include largePointsSize
+  {
+    font-size: 230px;
   }
 
 }
