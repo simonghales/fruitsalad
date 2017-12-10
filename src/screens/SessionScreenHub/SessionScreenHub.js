@@ -16,6 +16,7 @@ import SessionJoinedChecker from '../session/components/SessionJoinedChecker/Ses
 import Screen from '../../components/Screen/Screen';
 import Button from '../../components/Button/Button';
 import {isUserHost, isUserJoined} from '../../games/DrawDuo/logic/users';
+import {SESSION_STATE_PENDING, SESSION_STATE_PLAYING} from '../../games/DrawDuo/logic/constants';
 
 class SessionScreenHub extends Component {
 
@@ -74,7 +75,7 @@ class SessionScreenHub extends Component {
 
     sessionRef.update({
       'drawDuo': true,
-      'state': 'playing',
+      'state': SESSION_STATE_PENDING,
     });
 
   }

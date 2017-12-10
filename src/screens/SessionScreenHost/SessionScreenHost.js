@@ -15,6 +15,7 @@ import JumpingLetters from '../../components/JumpingLetters/JumpingLetters';
 import Heading from '../../components/Heading/Heading';
 import FullScreenLoadingMessage from '../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 import Button from '../../components/Button/Button';
+import {SESSION_STATE_SETTING_UP} from '../../games/DrawDuo/logic/constants';
 
 class SessionScreenHost extends Component {
 
@@ -89,7 +90,7 @@ class SessionScreenHost extends Component {
           name: 'The Host',
         })
       },
-      state: 'pending',
+      state: SESSION_STATE_SETTING_UP,
     }))
       .then((response) => {
         this.setState({

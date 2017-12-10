@@ -20,7 +20,8 @@ import {
   DRAW_DUO_ROUND_STATE_DRAWING,
   DRAW_DUO_ROUND_STATE_PENDING, DRAW_DUO_ROUND_STATE_RESULTS, DRAW_DUO_ROUND_STATE_VOTING,
   DRAW_DUO_STATE_COMPLETED, DRAW_DUO_STATE_INITIATING, DRAW_DUO_STATE_PENDING,
-  DRAW_DUO_STATE_PLAYING
+  DRAW_DUO_STATE_PLAYING, SESSION_STATE_COMPLETED, SESSION_STATE_PAUSED, SESSION_STATE_PENDING, SESSION_STATE_PLAYING,
+  SESSION_STATE_SETTING_UP
 } from '../../logic/constants';
 import {
   areAllRoundDrawingsSubmitted,
@@ -40,14 +41,18 @@ import {
   setNextEntryAnswer, shuffleEntryAnswerRevealOrder, startEntryGuessing, startEntryResults, startEntryVoting,
   startNextEntry, submitEntryPromptAnswer, submitEntryTestAnswers, submitEntryTestVotes
 } from '../../logic/entries';
+import {getSessionState, setSessionStatePlaying} from '../../logic/session';
 
-class DrawDuoGameHostNEW extends Component {
+class DrawDuoGameHost extends Component {
 
   initiated = false;
   drawDuoRef;
   currentEntryRef;
   currentRoundRef;
   drawDuoSnapshot: DrawDuoModel;
+  sessionRef;
+  sessionStateRef;
+  sessionState;
 
   props: {
     firebase: any,
@@ -67,6 +72,8 @@ class DrawDuoGameHostNEW extends Component {
   componentDidMount() {
     const {firebase, match} = this.props;
     const sessionKey = match.params.id.toUpperCase();
+    this.sessionRef = firebase.ref(`/sessions/${sessionKey}`);
+    this.sessionStateRef = firebase.ref(`/sessions/${sessionKey}/state`);
     this.drawDuoRef = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
     this.drawDuoRef.on('value', snapshot => {
       this.drawDuoSnapshot = snapshot.val();
@@ -76,6 +83,26 @@ class DrawDuoGameHostNEW extends Component {
       }
 
     });
+    this.sessionStateRef.on('value', snapshot => {
+      const sessionState = snapshot.val();
+      if (sessionState !== this.sessionState) {
+        this.sessionState = sessionState;
+        this.handleSessionStateChange(sessionState);
+      } else {
+        this.sessionState = sessionState;
+      }
+    });
+  }
+
+  handleSessionStateChange(sessionState: string) {
+    console.log(`new session state: ${sessionState}, old session state: ${this.sessionState}`);
+
+    switch (sessionState) {
+      case SESSION_STATE_PENDING:
+        this.initiateGame();
+        break;
+    }
+
   }
 
   setCurrentRoundDrawingsListener() {
@@ -180,8 +207,26 @@ class DrawDuoGameHostNEW extends Component {
     if (!isLoaded(session) || this.initiated || !this.drawDuoSnapshot) {
       return;
     }
-    this.initiated = true;
-    this.initiateGame();
+
+    // check if needing to start the game or resume the game...
+
+    const sessionState = getSessionState(session);
+
+    if (sessionState === SESSION_STATE_PLAYING) {
+      this.initiated = true;
+      this.nextGameStep();
+    } else if (sessionState === SESSION_STATE_PENDING) {
+      this.initiateGame();
+    } else if (sessionState === SESSION_STATE_COMPLETED) {
+      console.log('end of game nothing to do...');
+    } else if (sessionState === SESSION_STATE_PAUSED) {
+      console.log('game is paused, should wait and do nothing');
+    } else if (sessionState === SESSION_STATE_SETTING_UP) {
+      console.log('dont do anything whilst game is setting up');
+    } else {
+      console.warn(`unknown session state ${sessionState}, not sure how to handle it.`);
+    }
+
   }
 
   sessionKeyMatchesKey(key: string) {
@@ -194,7 +239,9 @@ class DrawDuoGameHostNEW extends Component {
 
   initiateGame(): void {
 
+    this.initiated = true;
     initiateGame(this.drawDuoSnapshot, this.drawDuoRef);
+    setSessionStatePlaying(this.sessionRef);
     this.terminateAndCallNextGameStep();
 
   }
@@ -593,7 +640,7 @@ const wrappedComponent = firebaseConnect((props, store) => {
     // }
   ];
   return queries;
-})(DrawDuoGameHostNEW);
+})(DrawDuoGameHost);
 
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(wrappedComponent));

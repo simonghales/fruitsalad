@@ -14,6 +14,8 @@ import DrawDuoGameHost from '../../components/DrawDuoGameHost/DrawDuoGameHost';
 import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
 import LargeHeading from '../../../../components/Heading/Heading';
 import BigScreenDisplayPrompt from '../../../../components/BigScreenDisplayPrompt/BigScreenDisplayPrompt';
+import {getSessionState} from '../../logic/session';
+import {SESSION_STATE_PENDING, SESSION_STATE_SETTING_UP} from '../../logic/constants';
 
 class DrawDuoDisplay extends Component {
 
@@ -36,6 +38,7 @@ class DrawDuoDisplay extends Component {
 
   renderContent() {
     const {match, session, sessionEmpty, sessionLoaded, sessionValid} = this.props;
+    const sessionState = getSessionState(session);
     if (!sessionValid) {
       return (
         <DrawDuoDisplayCenteredMessage>
@@ -53,7 +56,7 @@ class DrawDuoDisplay extends Component {
           </LargeHeading>
         </DrawDuoDisplayCenteredMessage>
       )
-    } else if (!session.drawDuo) {
+    } else if (!session.drawDuo || sessionState === SESSION_STATE_SETTING_UP || sessionState === SESSION_STATE_PENDING) {
       return (
         <DrawDuoDisplayPending/>
       )
