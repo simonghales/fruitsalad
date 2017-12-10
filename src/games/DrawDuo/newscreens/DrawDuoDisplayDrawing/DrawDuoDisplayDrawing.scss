@@ -71,6 +71,12 @@
 
 .DrawDuoDisplayDrawing__countdown
 {
+  position:        absolute;
+  left:            0;
+  right:           0;
+  bottom:          10px;
+  display:         flex;
+  justify-content: center;
 }
 
 .DrawDuoDisplayDrawing__pairs

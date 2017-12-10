@@ -173,7 +173,13 @@ class DrawDuoGameHost extends Component {
     if (currentEntryAllVotes(currentEntry, this.drawDuoSnapshot)) {
       this.disableCurrentEntryListener();
       this.clearTimerKey();
-      this.terminateAndCallNextGameStep();
+
+      const timer = this.drawDuoSnapshot.config.timers.sleep;
+
+      setTimeout(() => {
+        this.terminateAndCallNextGameStep();
+      }, timer);
+
     }
   }
 

@@ -16,10 +16,13 @@ import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoD
 import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
 import Heading from '../../../../components/Heading/Heading';
 import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters';
+import DrawDuoDisplayFooter from '../../components/DrawDuoDisplayFooter/DrawDuoDisplayFooter';
+import {getDrawingTimer, getGuessingTimer} from '../../logic/game';
 
 class DrawDuoDisplayEntryGuessing extends Component {
 
   props: {
+    guessingDuration: number,
     session: {
       drawDuo: DrawDuoModel,
     },
@@ -31,7 +34,7 @@ class DrawDuoDisplayEntryGuessing extends Component {
   }
 
   render() {
-    const {session} = this.props;
+    const {guessingDuration, session} = this.props;
     const currentPairKey = getCurrentPairKey(session.drawDuo);
     const pair = getPairByKey(currentPairKey, session.drawDuo);
     return (
@@ -55,6 +58,9 @@ class DrawDuoDisplayEntryGuessing extends Component {
               <DrawDuoUserGuessesIndicators alignment={this.getIndicatorsAlignment(pair)}/>
             </div>
           </DrawDuoDisplayBody>
+          <DrawDuoDisplayFooter>
+            <CountdownTimer timerDuration={(guessingDuration / 1000)}/>
+          </DrawDuoDisplayFooter>
         </DrawDuoDisplayWrapper>
       </div>
     )
@@ -65,6 +71,7 @@ const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
   return {
     session: session,
+    guessingDuration: getGuessingTimer(session.drawDuo),
   };
 };
 

@@ -74,6 +74,7 @@ class DrawDuoDisplayGameCompleted extends Component {
                       {
                         pairsGroup.map((pairKey) => (
                           <PlayerGroup pair={pairs[pairKey]} pairKey={pairKey} getAction={this.getAction}
+                                       playerSize={(index === 0) ? 'small' : (index === 1) ? 'mini' : 'tiny'}
                                        key={pairKey}/>
                         ))
                       }

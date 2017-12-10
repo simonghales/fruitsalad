@@ -95,3 +95,11 @@ function generateInitialGameState(): DrawDuoModel {
 export function getDrawingTimer(drawDuo: DrawDuoModel) {
   return drawDuo.config.timers.drawing;
 }
+
+export function getGuessingTimer(drawDuo: DrawDuoModel) {
+  return drawDuo.config.timers.guess;
+}
+
+export function getVotingTimer(drawDuo: DrawDuoModel) {
+  return drawDuo.config.timers.vote;
+}

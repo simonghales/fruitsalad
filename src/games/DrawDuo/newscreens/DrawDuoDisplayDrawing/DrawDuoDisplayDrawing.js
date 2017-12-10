@@ -12,10 +12,13 @@ import JumpingLetters from '../../../../components/JumpingLetters/JumpingLetters
 import DrawDuoDisplayHeader from '../../components/DrawDuoDisplayHeader/DrawDuoDisplayHeader';
 import DrawDuoDisplayWrapper from '../../components/DrawDuoDisplayWrapper/DrawDuoDisplayWrapper';
 import DrawDuoDisplayBody from '../../components/DrawDuoDisplayBody/DrawDuoDisplayBody';
+import DrawDuoDisplayFooter from '../../components/DrawDuoDisplayFooter/DrawDuoDisplayFooter';
+import {getDrawingTimer} from '../../logic/game';
 
 class DrawDuoDisplayDrawing extends Component {
 
   props: {
+    drawingTimerDuration: number,
     session: {
       drawDuo: DrawDuoModel,
     },
@@ -26,6 +29,7 @@ class DrawDuoDisplayDrawing extends Component {
   }
 
   render() {
+    const {drawingTimerDuration} = this.props;
     return (
       <div className='DrawDuoDisplayDrawing'>
         <DrawDuoDisplayWrapper>
@@ -48,6 +52,9 @@ class DrawDuoDisplayDrawing extends Component {
               </div>
             </div>
           </DrawDuoDisplayBody>
+          <DrawDuoDisplayFooter>
+            <CountdownTimer timerDuration={(drawingTimerDuration / 1000)}/>
+          </DrawDuoDisplayFooter>
         </DrawDuoDisplayWrapper>
       </div>
     )
@@ -58,6 +65,7 @@ const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
   return {
     session: session,
+    drawingTimerDuration: getDrawingTimer(session.drawDuo),
   };
 };
 

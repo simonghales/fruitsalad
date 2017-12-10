@@ -1,3 +1,4 @@
+@import "../../styles/settings/colors";
 @import "../../styles/settings/sizes";
 @import "../../styles/tools/buttons";
 @import "../../styles/tools/inputs";
@@ -8,20 +9,18 @@
 {
   background-color: #FFFFFF;
   text-align:       center;
-  width:            200px;
-  height:           150px;
+  width:            100px;
+  height:           100px;
   display:          flex;
   align-items:      center;
   justify-content:  center;
-  border-radius:    50px;
-  box-shadow:       0 1px 5px rgba(0, 0, 0, 0.15);
+  border-radius:    50%;
+  border:           2px solid $color-text;
 }
 
 .CountdownTimer__text
 {
-  @include drawDuoPlainHeadingFont;
-  font-size:   120px;
-  line-height: 140px;
-  position:    relative;
-  top:         -17px;
+  @include headingFont;
+  font-size:   90px;
+  line-height: 90px;
 }
