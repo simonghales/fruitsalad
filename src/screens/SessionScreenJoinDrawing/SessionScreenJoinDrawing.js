@@ -5,6 +5,7 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Heading from '../../components/Heading/Heading';
 import DrawingCanvas from '../../components/DrawingCanvas/DrawingCanvas';
+import PreventScroll from '../../components/PreventScroll/PreventScroll';
 
 class SessionScreenJoinDrawing extends Component {
 
@@ -54,24 +55,26 @@ class SessionScreenJoinDrawing extends Component {
     const validDrawing = this.validDrawing();
 
     return (
-      <Screen>
-        <div className='SessionScreenJoinDrawing'>
-          <div className='SessionScreenJoinDrawing__content'>
-            <div className='SessionScreenJoinDrawing__drawingContainer'>
-              <div className='SessionScreenJoinDrawing__drawing__circleRef'></div>
-              <DrawingCanvas ref={(elem) => {
-                if (!this.canvasElem) this.setCanvasElem(elem);
-              }} mouseDown={this.initiatedDrawingTouch}/>
-            </div>
-            <div className='SessionScreenJoinDrawing__instruction'>
-              <Heading>draw yourself</Heading>
-            </div>
-            <div className='SessionScreenJoinDrawing__button'>
-              <Button disabled={!validDrawing} mobileFullWidth={true} onClick={this.submitDrawing}>join</Button>
+      <PreventScroll>
+        <Screen>
+          <div className='SessionScreenJoinDrawing'>
+            <div className='SessionScreenJoinDrawing__content'>
+              <div className='SessionScreenJoinDrawing__drawingContainer'>
+                <div className='SessionScreenJoinDrawing__drawing__circleRef'></div>
+                <DrawingCanvas ref={(elem) => {
+                  if (!this.canvasElem) this.setCanvasElem(elem);
+                }} mouseDown={this.initiatedDrawingTouch}/>
+              </div>
+              <div className='SessionScreenJoinDrawing__instruction'>
+                <Heading>draw yourself</Heading>
+              </div>
+              <div className='SessionScreenJoinDrawing__button'>
+                <Button disabled={!validDrawing} mobileFullWidth={true} onClick={this.submitDrawing}>join</Button>
+              </div>
             </div>
           </div>
-        </div>
-      </Screen>
+        </Screen>
+      </PreventScroll>
     );
   }
 }

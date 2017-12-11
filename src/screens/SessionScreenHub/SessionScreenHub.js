@@ -17,6 +17,7 @@ import Screen from '../../components/Screen/Screen';
 import Button from '../../components/Button/Button';
 import {isUserHost, isUserJoined} from '../../games/DrawDuo/logic/users';
 import {SESSION_STATE_PENDING, SESSION_STATE_PLAYING} from '../../games/DrawDuo/logic/constants';
+import SessionConfig from '../../components/SessionConfig/SessionConfig';
 
 class SessionScreenHub extends Component {
 
@@ -34,12 +35,14 @@ class SessionScreenHub extends Component {
   };
 
   state: {
+    displayOptions: boolean,
     redirecting: boolean,
   };
 
   constructor(props) {
     super(props);
     this.state = {
+      displayOptions: false,
       redirecting: false,
     };
     this.start = this.start.bind(this);
@@ -83,6 +86,7 @@ class SessionScreenHub extends Component {
   render() {
 
     const {sessionUsers, sessionCode, userIsHost} = this.props;
+    const {displayOptions} = this.state;
 
     return (
       <Screen>
@@ -97,7 +101,11 @@ class SessionScreenHub extends Component {
             userIsHost && (
               <div className='SessionScreenHub__options'>
                 <div className='SessionScreenHub__option'>
-                  <Button>options</Button>
+                  <Button onClick={() => {
+                    this.setState({
+                      displayOptions: true,
+                    });
+                  }}>options</Button>
                 </div>
                 <div className='SessionScreenHub__option'>
                   <Button onClick={this.start}>start</Button>
@@ -106,6 +114,7 @@ class SessionScreenHub extends Component {
             )
           }
         </div>
+        {displayOptions && <SessionConfig/>}
       </Screen>
     );
   }

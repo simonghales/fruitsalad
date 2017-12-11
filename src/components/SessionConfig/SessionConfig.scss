@@ -1,0 +1,90 @@
+@import "../../styles/settings/colors";
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.SessionConfig
+{
+  @include flexCenter;
+  position:         fixed;
+  top:              0;
+  left:             0;
+  right:            0;
+  bottom:           0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding:          20px;
+}
+
+.SessionConfig__content
+{
+  background-color: #FFFFFF;
+  width:            100%;
+  padding:          20px;
+}
+
+.SessionConfig__inputs
+{
+
+}
+
+.SessionConfig__input
+{
+  margin-top: 20px;
+
+  &:first-of-type
+  {
+    margin-top: 0;
+  }
+
+  label
+  {
+    display: flex;
+  }
+
+  span
+  {
+    display:      inline-block;
+    margin-right: 10px;
+  }
+
+  input
+  {
+    border-bottom: 2px solid #000000;
+    flex:          1;
+  }
+
+}
+
+.SessionConfig__options
+{
+  margin-top: 20px;
+  display:    flex;
+  overflow:   hidden;
+}
+
+.SessionConfig__options__button
+{
+  flex:   1;
+  margin: 0 5px;
+
+  &:first-child
+  {
+    margin-left: 0;
+  }
+
+  &:last-child
+  {
+    margin-right: 0;
+  }
+
+  .Button
+  {
+    display:       block;
+    padding-left:  20px;
+    padding-right: 20px;
+    width:         100%;
+  }
+
+}

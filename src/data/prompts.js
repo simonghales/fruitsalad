@@ -1,7 +1,7 @@
 export const PROMPTS = [
   'Stuck in an elevator.',
   'A tough choice',
-  // 'Gay marriage',
+  'Gay marriage',
   'Tony Abbott',
   'A fight for the parking space',
   'bad haircut',
@@ -20,5 +20,6 @@ export const PROMPTS = [
   'Simple geometric shapes.',
   'Koala invasion',
   'Hunger strike',
-  // 'Dick Smith',
+  'Dick Smith',
+  'Toddler signals "help" in sign language during photo with Santa',
 ];
