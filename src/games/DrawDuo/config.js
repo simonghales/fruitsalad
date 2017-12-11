@@ -19,7 +19,7 @@ export const DRAW_DUO_CONFIG = {
     revealAnswerTimer: (5 * 1000),
     revealFinalAnswerTimer: (5 * 1000),
     completedEntryTimer: (10 * 1000),
-    sleepTimer: (3 * 1000),
+    sleepTimer: (5 * 1000),
     // numberOfRounds: 2,
     // drawingTimer: (60 * 1000),
     // guessTimer: (30 * 1000),

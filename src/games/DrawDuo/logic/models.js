@@ -181,6 +181,7 @@ export interface SessionModel {
   host: string, // userKey
   users: SessionUsersModel,
   state: SessionModelState,
+  sessionCode: string,
 }
 
 export interface SessionUsersModel {

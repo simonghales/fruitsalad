@@ -321,10 +321,11 @@ export function isUserHost(userKey: string, session: SessionModel): boolean {
 
 export function isUserJoined(userKey: string, session: SessionModel): boolean {
   if (!session) return false;
+  if (!session.users) return false;
   const matchedUser = (Object.keys(session.users).find((key: string) => {
     return userKey === key;
   }));
-  return (matchedUser && matchedUser !== '');
+  return (matchedUser && matchedUser !== '') ? true : false;
 }
 
 export function getUsersWithoutDrawings(drawDuo: DrawDuoModel): string[] {

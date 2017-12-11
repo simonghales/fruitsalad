@@ -5,10 +5,16 @@ import Button from '../../components/Button/Button';
 import Heading from '../../components/Heading/Heading';
 import Input from '../../components/Input/Input';
 import {withRouter} from 'react-router';
+import {AppState} from '../../redux/index';
+import {connect} from 'react-redux';
+import {firebaseConnect, isEmpty} from 'react-redux-firebase';
+import {generateNewSession} from '../../models/session';
+import {SESSION_STATE_SETTING_UP} from '../../games/DrawDuo/logic/constants';
 
 class HostScreen extends Component {
 
   props: {
+    firebase: {},
     history: {},
   };
 
@@ -46,14 +52,53 @@ class HostScreen extends Component {
   }
 
   hostSession() {
-    const {history} = this.props;
-    const {joining, sessionInput} = this.state;
+    const {joining} = this.state;
     if (!this.canSubmit()) return;
     if (joining) return;
     this.setState({
       joining: true,
     });
-    history.push(`/session/${sessionInput.toUpperCase()}/host`);
+    this.checkAndCreateSession();
+  }
+
+  checkAndCreateSession() {
+    const {firebase, history} = this.props;
+    const {sessionInput} = this.state;
+
+    const sessionCode = sessionInput.toUpperCase();
+
+    const sessionRef = firebase.ref(`/sessions/${sessionCode}`);
+
+    sessionRef.once('value', snapshot => {
+      console.log('sessionRef', sessionRef);
+      const sessionData = snapshot.val();
+      if (!sessionData || isEmpty(sessionData)) {
+        this.createSession();
+      } else {
+        console.log('already created...', sessionData);
+        history.push(`/session/${sessionCode}`);
+      }
+    });
+
+  }
+
+  createSession() {
+    const {firebase, history} = this.props;
+    const {sessionInput} = this.state;
+
+    const sessionCode = sessionInput.toUpperCase();
+
+    const currentUser = firebase.auth().currentUser;
+
+    firebase.set(`/sessions/${sessionCode}`, generateNewSession({
+      id: sessionCode,
+      host: currentUser.uid,
+      users: {},
+      state: SESSION_STATE_SETTING_UP,
+    }))
+      .then(() => {
+        history.push(`/session/${sessionCode}`);
+      });
   }
 
   goBack() {
@@ -90,4 +135,13 @@ class HostScreen extends Component {
   }
 }
 
-export default withRouter(HostScreen);
+const mapStateToProps = (state: AppState) => {
+  const session = state.firebase.data.session;
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default firebaseConnect()(connect(mapStateToProps, mapDispatchToProps)(withRouter(HostScreen)));

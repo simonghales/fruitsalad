@@ -13,6 +13,7 @@ import {
   getUserPairKey
 } from './users';
 import {randomIntFromInterval} from '../../../utils/numbers';
+import {PROMPTS} from '../../../data/prompts';
 
 export function isACurrentEntry(drawDuo: DrawDuoModel) {
   return (drawDuo.currentEntry);
@@ -384,28 +385,30 @@ export function getOffsettedIndex(index: number, range: number) {
   return index - (Math.floor(index / range) * range);
 }
 
-let EXAMPLE_PROMPTS = [
-  'Lachlan Kirkwood',
-  'Shitty office cleaners',
-  'Traffic reporter',
-  'Nathan stuck in an elevator',
-  'A tough choice',
-  'Gay marriage',
-  '"Oh, hi Mark"',
-  `"It's curry time!"`,
-  'Star Wars vs Star Trek',
-  'Tony Abbott',
-  'HR Bot',
-  'A fight for the parking space',
-  'The interns',
-  'Gluten free',
-  'Winter is coming',
-  'bad haircut',
-  'singing in the shower',
-  'a mushroom house',
-  'Stranger Things',
-  'fasting',
-];
+// let EXAMPLE_PROMPTS = [
+//   'Lachlan Kirkwood',
+//   'Shitty office cleaners',
+//   'Traffic reporter',
+//   'Nathan stuck in an elevator',
+//   'A tough choice',
+//   'Gay marriage',
+//   '"Oh, hi Mark"',
+//   `"It's curry time!"`,
+//   'Star Wars vs Star Trek',
+//   'Tony Abbott',
+//   'HR Bot',
+//   'A fight for the parking space',
+//   'The interns',
+//   'Gluten free',
+//   'Winter is coming',
+//   'bad haircut',
+//   'singing in the shower',
+//   'a mushroom house',
+//   'Stranger Things',
+//   'fasting',
+// ];
+
+let EXAMPLE_PROMPTS = PROMPTS.splice();
 
 export function generateEntry(pair: PairModelKeyWrapped, index: number) {
   return {
