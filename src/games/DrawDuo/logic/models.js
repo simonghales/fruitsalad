@@ -84,6 +84,8 @@ export interface ConfigModel {
     revealFinalAnswer: number,
     completedEntry: number,
     sleep: number,
+    sessionStart: number,
+    gameInitiating: number,
   },
 }
 

@@ -79,6 +79,8 @@ function generateInitialGameState(): DrawDuoModel {
         revealFinalAnswer: DRAW_DUO_CONFIG.defaults.revealFinalAnswerTimer,
         completedEntry: DRAW_DUO_CONFIG.defaults.completedEntryTimer,
         sleep: DRAW_DUO_CONFIG.defaults.sleepTimer,
+        sessionStart: DRAW_DUO_CONFIG.defaults.sessionStartTimer,
+        gameInitiating: DRAW_DUO_CONFIG.defaults.gameInitiatingTimer,
       },
     },
     currentEntry: false,

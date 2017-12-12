@@ -95,12 +95,25 @@ class DrawDuoGameHost extends Component {
     });
   }
 
+  disableSessionStateRef() {
+    if (this.sessionStateRef) {
+      this.sessionStateRef.off();
+    }
+  }
+
   handleSessionStateChange(sessionState: string) {
     console.log(`new session state: ${sessionState}, old session state: ${this.sessionState}`);
 
     switch (sessionState) {
       case SESSION_STATE_PENDING:
-        this.initiateGame();
+        this.disableSessionStateRef();
+
+        const timer = this.drawDuoSnapshot.config.timers.sessionStart;
+
+        setTimeout(() => {
+          this.initiateGame();
+        }, timer);
+
         break;
     }
 
@@ -220,13 +233,17 @@ class DrawDuoGameHost extends Component {
     const sessionState = getSessionState(session);
 
     if (sessionState === SESSION_STATE_PLAYING) {
+      this.disableSessionStateRef();
       this.initiated = true;
       this.nextGameStep();
     } else if (sessionState === SESSION_STATE_PENDING) {
+      this.disableSessionStateRef();
       this.initiateGame();
     } else if (sessionState === SESSION_STATE_COMPLETED) {
+      this.disableSessionStateRef();
       console.log('end of game nothing to do...');
     } else if (sessionState === SESSION_STATE_PAUSED) {
+      this.disableSessionStateRef();
       console.log('game is paused, should wait and do nothing');
     } else if (sessionState === SESSION_STATE_SETTING_UP) {
       console.log('dont do anything whilst game is setting up');
@@ -245,10 +262,21 @@ class DrawDuoGameHost extends Component {
 
   initiateGame(): void {
 
+    if (this.initiated) {
+      console.warn('game already initiated...');
+      return;
+    }
+
     this.initiated = true;
     initiateGame(this.drawDuoSnapshot, this.drawDuoRef);
     setSessionStatePlaying(this.sessionRef);
-    this.terminateAndCallNextGameStep();
+
+    const timer = this.drawDuoSnapshot.config.timers.gameInitiating;
+
+    setTimeout(() => {
+      this.terminateAndCallNextGameStep();
+    }, timer);
+
 
   }
 
