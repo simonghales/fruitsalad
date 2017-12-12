@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button';
 import Heading from '../../components/Heading/Heading';
 import Input from '../../components/Input/Input';
 import {withRouter} from 'react-router';
+import {MAX_SESSION_CODE_LENGTH} from '../../constants/forms';
 
 class JoinScreen extends Component {
 
@@ -37,7 +38,7 @@ class JoinScreen extends Component {
 
   handleSessionInputChange(event) {
     this.setState({
-      sessionInput: event.target.value,
+      sessionInput: event.target.value.substring(0, MAX_SESSION_CODE_LENGTH).toLowerCase(),
     });
   }
 

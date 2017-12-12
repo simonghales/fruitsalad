@@ -18,6 +18,12 @@
 .JoinScreen__input
 {
   margin: 20px 0;
+
+  input
+  {
+    text-transform: lowercase;
+  }
+
 }
 
 .JoinScreen__submit

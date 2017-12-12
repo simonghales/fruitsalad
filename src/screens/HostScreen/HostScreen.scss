@@ -18,6 +18,12 @@
 .HostScreen__input
 {
   margin: 20px 0;
+
+  input
+  {
+    text-transform: lowercase;
+  }
+
 }
 
 .HostScreen__submit

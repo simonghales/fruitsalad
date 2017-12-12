@@ -3,6 +3,7 @@ import './SessionScreenJoinName.css';
 import Screen from '../../components/Screen/Screen';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
+import {MAX_USER_NAME_LENGTH} from '../../constants/forms';
 
 class SessionScreenJoinName extends Component {
 
@@ -25,7 +26,7 @@ class SessionScreenJoinName extends Component {
 
   handleNameInputChange(event) {
     this.setState({
-      name: event.target.value,
+      name: event.target.value.substring(0, MAX_USER_NAME_LENGTH),
     });
   }
 

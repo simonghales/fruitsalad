@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import {firebaseConnect, isEmpty} from 'react-redux-firebase';
 import {generateNewSession} from '../../models/session';
 import {SESSION_STATE_SETTING_UP} from '../../games/DrawDuo/logic/constants';
+import {MAX_SESSION_CODE_LENGTH} from '../../constants/forms';
 
 class HostScreen extends Component {
 
@@ -43,7 +44,7 @@ class HostScreen extends Component {
 
   handleSessionInputChange(event) {
     this.setState({
-      sessionInput: event.target.value,
+      sessionInput: event.target.value.substring(0, MAX_SESSION_CODE_LENGTH).toLowerCase(),
     });
   }
 
