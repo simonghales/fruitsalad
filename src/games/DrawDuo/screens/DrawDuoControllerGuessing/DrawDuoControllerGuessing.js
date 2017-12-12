@@ -116,7 +116,7 @@ const mapStateToProps = (state: AppState, props) => {
   const {firebase, match} = props;
   const session = state.firebase.data.session;
   const currentUser = firebase.auth().currentUser;
-  const sessionKey = match.params.id;
+  const sessionKey = state.session.sessionCode;
   return {
     userIsEntryParticipant: isUserEntryParticipant(currentUser.uid, session.drawDuo),
     session: session,

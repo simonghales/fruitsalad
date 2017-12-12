@@ -42,7 +42,7 @@ class SessionScreen extends Component {
 
   componentDidMount() {
     const {match, setSessionCode} = this.props;
-    setSessionCode(match.params.id);
+    setSessionCode(match.params.id.toUpperCase());
   }
 
   quitSession() {

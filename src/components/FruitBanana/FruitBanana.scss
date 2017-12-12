@@ -82,8 +82,9 @@
 .FruitBanana
 {
   @include mediumFont;
-  position: relative;
-  color:    $color-text;
+  position:    relative;
+  color:       $color-text;
+  padding-top: 30px;
 
   text,
   textPath

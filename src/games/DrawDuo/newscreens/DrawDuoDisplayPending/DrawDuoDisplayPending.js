@@ -28,7 +28,7 @@ class DrawDuoDisplayPending extends Component {
 
   render() {
     const {match, promptHostToStart} = this.props;
-    const sessionCode = match.params.id;
+    const sessionCode = match.params.id.toUpperCase();
     return (
       <div className={classNames([
         'DrawDuoDisplayPending',

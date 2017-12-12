@@ -82,7 +82,7 @@ class SessionScreenHost extends Component {
     const sessionKey = match.params.id.toUpperCase();
 
     firebase.set(`/sessions/${sessionKey}`, generateNewSession({
-      id: match.params.id,
+      id: match.params.id.toUpperCase(),
       host: currentUser.uid,
       users: {
         [currentUser.uid]: generateNewUser({

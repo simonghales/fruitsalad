@@ -132,7 +132,7 @@ const mapStateToProps = (state: AppState, props) => {
     userEntry: getUserEntry(currentUser.uid, session.drawDuo),
     userKey: currentUser.uid,
     session,
-    sessionKey: match.params.id,
+    sessionKey: state.session.sessionCode,
     roundKey,
   };
 };

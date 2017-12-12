@@ -26,7 +26,7 @@ class DrawDuoPairSlots extends Component {
     const {users, session} = this.props;
     const user: UserModel = getUser(userKey, users);
     const userHasSubmitted = hasUserSubmittedAnswer(userKey, session.drawDuo);
-    const action = (userHasSubmitted) ? 'VOTED' : 'VOTING';
+    const action = (userHasSubmitted) ? 'GUESSED' : 'GUESSING';
     return (
       <div className={classNames([
         'DrawDuoPairSlots__slot',

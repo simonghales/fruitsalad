@@ -19,10 +19,10 @@ class DrawDuoAnswers extends Component {
 
   render() {
     const {answers, session} = this.props;
-    let rightAnswers = Object.keys(answers).sort((answerKeyA, answerKeyB) => {
+    let rightAnswers = (answers) ? Object.keys(answers).sort((answerKeyA, answerKeyB) => {
       return answers[answerKeyA].order - answers[answerKeyB].order;
-    });
-    let leftAnswers = rightAnswers.splice(0, Math.floor((rightAnswers.length / 2)));
+    }) : [];
+    let leftAnswers = (answers) ? rightAnswers.splice(0, Math.floor((rightAnswers.length / 2))) : [];
     rightAnswers = rightAnswers.map((answerKey) => {
       return {
         key: answerKey,

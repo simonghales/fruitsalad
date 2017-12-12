@@ -408,7 +408,7 @@ export function getOffsettedIndex(index: number, range: number) {
 //   'fasting',
 // ];
 
-let EXAMPLE_PROMPTS = PROMPTS.splice();
+let EXAMPLE_PROMPTS = PROMPTS.slice();
 
 export function generateEntry(pair: PairModelKeyWrapped, index: number) {
   return {

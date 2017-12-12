@@ -34,7 +34,7 @@ class SessionScreenHostBottom extends Component {
     const {sessionCreated} = this.props;
     if (!sessionCreated) return;
     const {history, match} = this.props;
-    history.push(`/session/${match.params.id}/join`);
+    history.push(`/session/${match.params.id.toUpperCase()}/join`);
   }
 
   render() {
@@ -75,7 +75,7 @@ const wrappedFirebaseConnect = firebaseConnect((props) => {
   return [
     {
       path: '/sessions',
-      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id}`, 'limitToFirst=1'],
+      queryParams: ['orderByChild=id', `equalTo=${props.match.params.id.toUpperCase()}`, 'limitToFirst=1'],
     },
   ];
 })(SessionScreenHostBottom);
