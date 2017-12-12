@@ -11,6 +11,7 @@ import {firebaseConnect, isEmpty} from 'react-redux-firebase';
 import {generateNewSession} from '../../models/session';
 import {SESSION_STATE_SETTING_UP} from '../../games/DrawDuo/logic/constants';
 import {MAX_SESSION_CODE_LENGTH} from '../../constants/forms';
+import analyticsEvents from '../../analytics/analyticsEvents';
 
 class HostScreen extends Component {
 
@@ -59,6 +60,7 @@ class HostScreen extends Component {
     this.setState({
       joining: true,
     });
+    analyticsEvents.hostSessionScreenButtonClicked();
     this.checkAndCreateSession();
   }
 

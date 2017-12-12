@@ -16,6 +16,7 @@ import Screen from '../../../../components/Screen/Screen';
 import Button from '../../../../components/Button/Button';
 import Heading from '../../../../components/Heading/Heading';
 import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import analyticsEvents from '../../../../analytics/analyticsEvents';
 
 class DrawDuoControllerDrawing extends Component {
 
@@ -73,6 +74,7 @@ class DrawDuoControllerDrawing extends Component {
     uploadDrawingImage(image, firebase, sessionKey, roundKey, userKey)
       .then(({downloadURL}) => {
         submitRoundUserDrawing(downloadURL, userKey, session.drawDuo, ref);
+        analyticsEvents.drawDuoDrawingSubmitted();
         this.setState({
           submitting: false,
           submitted: true,

@@ -62,6 +62,7 @@ class DrawDuoGameHost extends Component {
       },
     },
     session: SessionModel,
+    sessionCode: string,
   };
 
   constructor(props) {
@@ -236,9 +237,8 @@ class DrawDuoGameHost extends Component {
   }
 
   sessionKeyMatchesKey(key: string) {
-    const {match} = this.props;
-    const sessionKey = match.params.id;
-    return (sessionKey === key);
+    const {sessionCode} = this.props;
+    return (sessionCode.toLowerCase() === key.toLowerCase());
   }
 
   // GAME
@@ -630,6 +630,7 @@ const mapStateToProps = (state: AppState) => {
   const session = state.firebase.data.session;
   return {
     session: session,
+    sessionCode: state.session.sessionCode,
   };
 };
 

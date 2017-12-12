@@ -18,6 +18,7 @@ import {getUserAnswer, getUserPairKey} from '../../logic/users';
 import Screen from '../../../../components/Screen/Screen';
 import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 import Heading from '../../../../components/Heading/Heading';
+import analyticsEvents from '../../../../analytics/analyticsEvents';
 
 class DrawDuoControllerVoting extends Component {
 
@@ -52,6 +53,7 @@ class DrawDuoControllerVoting extends Component {
     if (voteSubmitted) return;
     console.log('answer', answer);
     submitVote(answer.key);
+    analyticsEvents.drawDuoVoteSubmitted();
     this.setState({
       selectedAnswerKey: answer.key,
       voteSubmitted: true,

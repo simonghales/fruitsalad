@@ -6,6 +6,7 @@ import Heading from '../../components/Heading/Heading';
 import Input from '../../components/Input/Input';
 import {withRouter} from 'react-router';
 import {MAX_SESSION_CODE_LENGTH} from '../../constants/forms';
+import analyticsEvents from '../../analytics/analyticsEvents';
 
 class JoinScreen extends Component {
 
@@ -54,6 +55,7 @@ class JoinScreen extends Component {
     this.setState({
       joining: true,
     });
+    analyticsEvents.joinSessionScreenButtonClicked();
     history.push(`/session/${sessionInput.toLowerCase()}`);
   }
 

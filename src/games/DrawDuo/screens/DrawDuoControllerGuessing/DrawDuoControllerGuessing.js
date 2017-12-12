@@ -14,6 +14,7 @@ import Heading from '../../../../components/Heading/Heading';
 import Button from '../../../../components/Button/Button';
 import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
 import {MAX_ENTRY_GUESS_LENGTH} from '../../../../constants/forms';
+import analyticsEvents from '../../../../analytics/analyticsEvents';
 
 class DrawDuoControllerGuessing extends Component {
 
@@ -64,6 +65,7 @@ class DrawDuoControllerGuessing extends Component {
     const {submitAnswer} = this.props;
     const {guess} = this.state;
     submitAnswer(guess);
+    analyticsEvents.drawDuoGuessSubmitted(guess);
     this.setState({
       submitted: true,
     });

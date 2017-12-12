@@ -76,7 +76,6 @@ class SessionScreen extends Component {
 const mapStateToProps = (state: AppState, {firebase}) => {
   const session = state.firebase.data.session;
   const currentUser = firebase.auth().currentUser;
-  console.log('currentUserKey', currentUser.uid);
   return {
     currentUserKey: currentUser.uid,
     loadedSession: isLoaded(session),

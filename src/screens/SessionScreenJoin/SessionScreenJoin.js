@@ -13,6 +13,7 @@ import {isUserJoined} from '../../games/DrawDuo/logic/users';
 import SessionScreenJoinName from '../SessionScreenJoinName/SessionScreenJoinName';
 import SessionScreenJoinDrawing from '../SessionScreenJoinDrawing/SessionScreenJoinDrawing';
 import FullScreenLoadingMessage from '../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import analyticsEvents from '../../analytics/analyticsEvents';
 
 class SessionScreenJoin extends Component {
 
@@ -86,6 +87,7 @@ class SessionScreenJoin extends Component {
   }
 
   submitName(name: string) {
+    analyticsEvents.joinSessionNameSubmitted(name);
     this.setState({
       currentScreen: 'drawing',
       name: name,
@@ -93,6 +95,7 @@ class SessionScreenJoin extends Component {
   }
 
   submitDrawing(image: string) {
+    analyticsEvents.joinSessionDrawingSubmitted();
     this.setState({
       currentScreen: 'submitting',
       image: image,

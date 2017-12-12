@@ -9,11 +9,13 @@ import './styles/base.css';
 import App from './components/App/App';
 import {store} from './redux/index';
 import registerServiceWorker from './registerServiceWorker';
+import withTracker from './analytics/withTracker';
+import {Route} from 'react-router';
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <App/>
+      <Route component={withTracker(App, {})}/>
     </Router>
   </Provider>
   , document.getElementById('root'));

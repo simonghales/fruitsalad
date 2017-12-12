@@ -18,6 +18,7 @@ import Button from '../../components/Button/Button';
 import {isUserHost, isUserJoined} from '../../games/DrawDuo/logic/users';
 import {SESSION_STATE_PENDING, SESSION_STATE_PLAYING} from '../../games/DrawDuo/logic/constants';
 import SessionConfig from '../../components/SessionConfig/SessionConfig';
+import analyticsEvents from '../../analytics/analyticsEvents';
 
 class SessionScreenHub extends Component {
 
@@ -76,6 +77,8 @@ class SessionScreenHub extends Component {
 
     const sessionRef = firebase.ref(`/sessions/${sessionKey}`);
 
+    analyticsEvents.sessionHostStartButtonClicked();
+
     sessionRef.update({
       'drawDuo': true,
       'state': SESSION_STATE_PENDING,
@@ -114,7 +117,7 @@ class SessionScreenHub extends Component {
             )
           }
         </div>
-        {displayOptions && <SessionConfig/>}
+        {/*{displayOptions && <SessionConfig/>}*/}
       </Screen>
     );
   }
