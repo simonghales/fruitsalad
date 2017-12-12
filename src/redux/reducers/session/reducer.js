@@ -149,7 +149,7 @@ export function setSessionCode(sessionCode: string) {
 function handleSetSessionCode(state, {sessionCode}: { sessionCode: string }): SessionState {
   return {
     ...state,
-    sessionCode: sessionCode.toUpperCase(),
+    sessionCode: sessionCode.toLowerCase(),
   }
 }
 

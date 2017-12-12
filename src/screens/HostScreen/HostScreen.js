@@ -65,7 +65,7 @@ class HostScreen extends Component {
     const {firebase, history} = this.props;
     const {sessionInput} = this.state;
 
-    const sessionCode = sessionInput.toUpperCase();
+    const sessionCode = sessionInput.toLowerCase();
 
     const sessionRef = firebase.ref(`/sessions/${sessionCode}`);
 
@@ -86,7 +86,7 @@ class HostScreen extends Component {
     const {firebase, history} = this.props;
     const {sessionInput} = this.state;
 
-    const sessionCode = sessionInput.toUpperCase();
+    const sessionCode = sessionInput.toLowerCase();
 
     const currentUser = firebase.auth().currentUser;
 

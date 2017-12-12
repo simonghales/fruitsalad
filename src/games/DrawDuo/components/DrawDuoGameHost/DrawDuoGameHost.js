@@ -71,7 +71,7 @@ class DrawDuoGameHost extends Component {
 
   componentDidMount() {
     const {firebase, match} = this.props;
-    const sessionKey = match.params.id.toUpperCase();
+    const sessionKey = match.params.id.toLowerCase();
     this.sessionRef = firebase.ref(`/sessions/${sessionKey}`);
     this.sessionStateRef = firebase.ref(`/sessions/${sessionKey}/state`);
     this.drawDuoRef = firebase.ref(`/sessions/${sessionKey}/drawDuo`);
@@ -638,7 +638,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const wrappedComponent = firebaseConnect((props, store) => {
-  const sessionKey = props.match.params.id.toUpperCase();
+  const sessionKey = props.match.params.id.toLowerCase();
   let queries = [
     // {
     //   path: `/sessions/${sessionKey}`,

@@ -11,6 +11,9 @@ const Fruit = ({children, size = 'default'}) => {
       <div className='Fruit__fruit'>
         {children}
       </div>
+      <div className='Fruit__message'>
+        Happy Birthday!
+      </div>
     </div>
   );
 };

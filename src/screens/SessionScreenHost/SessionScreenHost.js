@@ -55,7 +55,7 @@ class SessionScreenHost extends Component {
 
   checkAndCreateSession() {
     const {match} = this.props;
-    const sessionKey = match.params.id.toUpperCase();
+    const sessionKey = match.params.id.toLowerCase();
 
     const sessionRef = this.context.store.firebase.ref(`/sessions/${sessionKey}`);
 
@@ -79,10 +79,10 @@ class SessionScreenHost extends Component {
 
     const firebase = this.context.store.firebase;
     const currentUser = firebase.auth().currentUser;
-    const sessionKey = match.params.id.toUpperCase();
+    const sessionKey = match.params.id.toLowerCase();
 
     firebase.set(`/sessions/${sessionKey}`, generateNewSession({
-      id: match.params.id.toUpperCase(),
+      id: match.params.id.toLowerCase(),
       host: currentUser.uid,
       users: {
         [currentUser.uid]: generateNewUser({

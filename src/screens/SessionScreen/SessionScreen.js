@@ -42,7 +42,7 @@ class SessionScreen extends Component {
 
   componentDidMount() {
     const {match, setSessionCode} = this.props;
-    setSessionCode(match.params.id.toUpperCase());
+    setSessionCode(match.params.id.toLowerCase());
   }
 
   quitSession() {
@@ -53,7 +53,7 @@ class SessionScreen extends Component {
 
   render() {
     const {currentUserKey, match, loadedSession, session} = this.props;
-    const sessionCode = match.params.id.toUpperCase();
+    const sessionCode = match.params.id.toLowerCase();
 
     if (!loadedSession) {
       return (
@@ -94,7 +94,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default firebaseConnect((props, store) => {
-  const sessionKey = props.match.params.id.toUpperCase();
+  const sessionKey = props.match.params.id.toLowerCase();
   let queries = [
     {
       path: `/sessions/${sessionKey}`,

@@ -53,7 +53,7 @@ class JoinScreen extends Component {
     this.setState({
       joining: true,
     });
-    history.push(`/session/${sessionInput.toUpperCase()}`);
+    history.push(`/session/${sessionInput.toLowerCase()}`);
   }
 
   goBack() {

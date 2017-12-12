@@ -1,0 +1,16 @@
+@import "../../styles/settings/colors";
+@import "../../styles/settings/sizes";
+@import "../../styles/tools/buttons";
+@import "../../styles/tools/inputs";
+@import "../../styles/tools/layout";
+@import "../../styles/tools/text";
+
+.DisplayCanvas
+{
+  @include fixedFullScreen;
+}
+
+.DisplayCanvas__container
+{
+  @include fullSize;
+}

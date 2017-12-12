@@ -75,7 +75,7 @@ class LandingScreen extends Component {
 
   handleSessionCodeInputChange(event) {
     this.setState({
-      sessionCode: event.target.value.toUpperCase(),
+      sessionCode: event.target.value.toLowerCase(),
     });
   }
 

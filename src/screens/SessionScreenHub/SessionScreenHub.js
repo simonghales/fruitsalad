@@ -58,7 +58,7 @@ class SessionScreenHub extends Component {
 
   share() {
     const {match} = this.props;
-    const sessionCode = match.params.id.toUpperCase();
+    const sessionCode = match.params.id.toLowerCase();
     if (navigator.share) {
       navigator.share({
         title: `Fruit Salad - ${sessionCode}`,
@@ -72,7 +72,7 @@ class SessionScreenHub extends Component {
 
   start() {
     const {firebase, match} = this.props;
-    const sessionKey = match.params.id.toUpperCase();
+    const sessionKey = match.params.id.toLowerCase();
 
     const sessionRef = firebase.ref(`/sessions/${sessionKey}`);
 
