@@ -13,6 +13,7 @@ import Screen from '../../../../components/Screen/Screen';
 import Heading from '../../../../components/Heading/Heading';
 import Button from '../../../../components/Button/Button';
 import FullScreenLoadingMessage from '../../../../components/FullScreenLoadingMessage/FullScreenLoadingMessage';
+import {MAX_ENTRY_GUESS_LENGTH} from '../../../../constants/forms';
 
 class DrawDuoControllerGuessing extends Component {
 
@@ -44,7 +45,7 @@ class DrawDuoControllerGuessing extends Component {
 
   handleUpdateInput(event) {
     this.setState({
-      guess: event.target.value,
+      guess: event.target.value.substring(0, MAX_ENTRY_GUESS_LENGTH),
     });
   }
 
@@ -100,8 +101,8 @@ class DrawDuoControllerGuessing extends Component {
           <Heading>describe it...</Heading>
         </header>
         <form className='DrawDuoControllerGuessing__form' onSubmit={this.handleSubmitForm}>
-            <textarea className='DrawDuoControllerGuessing__input' placeholder='Enter your guess here'
-                      value={guess} onChange={this.handleUpdateInput}></textarea>
+          <input type='text' className='DrawDuoControllerGuessing__input' placeholder='Enter your guess here'
+                 value={guess} onChange={this.handleUpdateInput}/>
           <div className='DrawDuoControllerGuessing__buttonWrapper'>
             <Button disabled={!canSubmit} mobileFullWidth={true}>submit</Button>
           </div>
