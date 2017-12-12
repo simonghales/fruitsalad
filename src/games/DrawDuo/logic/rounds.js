@@ -30,7 +30,7 @@ function getNextRound(drawDuo: DrawDuoModel, drawDuoRef: DrawDuoRefModel): strin
   let nextRoundKey = null;
 
   for (let roundKey in rounds) {
-    if (rounds[roundKey].state !== DRAW_DUO_ROUND_STATE_COMPLETED) {
+    if (rounds[roundKey].state === DRAW_DUO_ROUND_STATE_PENDING) {
       nextRoundKey = roundKey;
       break;
     }
